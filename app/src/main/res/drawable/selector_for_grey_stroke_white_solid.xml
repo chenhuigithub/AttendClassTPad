@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item>
+         <shape >  
+           <!-- 填充色 -->
+           <solid  android:color="@color/white" />
+           <stroke android:color="@color/color_content_bg_base"  android:width="2dp"/>
+        </shape>
+  </item>
+
+</selector>

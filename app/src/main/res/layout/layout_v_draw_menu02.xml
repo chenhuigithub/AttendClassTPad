@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_all_layout_v_draw_menu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false"
+    android:focusable="false"
+    android:orientation="horizontal" >
+
+    <!-- 画笔(画笔) -->
+
+    <LinearLayout
+        android:id="@+id/ll_paint_layout_v_draw_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dimen_padding_005"
+        android:paddingLeft="@dimen/dimen_padding_007"
+        android:paddingRight="@dimen/dimen_padding_007"
+        android:paddingTop="@dimen/dimen_padding_005" >
+
+        <ImageView
+            android:id="@+id/iv_paint_layout_v_draw_menu"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/paint_brush01"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_paint_layout_v_draw_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_padding_003"
+            android:clickable="false"
+            android:text="画笔"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_005" />
+    </LinearLayout>
+
+    <!-- 擦除 -->
+
+    <LinearLayout
+        android:id="@+id/ll_eraser_layout_v_draw_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dimen_padding_005"
+        android:paddingLeft="@dimen/dimen_padding_007"
+        android:paddingRight="@dimen/dimen_padding_007"
+        android:paddingTop="@dimen/dimen_padding_005" >
+
+        <ImageView
+            android:id="@+id/iv_eraser_layout_v_draw_menu"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/eraser01"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_eraser_layout_v_draw_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_padding_003"
+            android:clickable="false"
+            android:text="擦除"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_005" />
+    </LinearLayout>
+
+    <!-- 撤销 -->
+
+    <LinearLayout
+        android:id="@+id/ll_revoke_layout_v_draw_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dimen_padding_005"
+        android:paddingLeft="@dimen/dimen_padding_007"
+        android:paddingRight="@dimen/dimen_padding_007"
+        android:paddingTop="@dimen/dimen_padding_005" >
+
+        <ImageView
+            android:id="@+id/iv_revoke_layout_v_draw_menu"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/revoke01"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_revoke_layout_v_draw_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_padding_003"
+            android:clickable="false"
+            android:text="撤销"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_005" />
+    </LinearLayout>
+
+    <!-- 恢复 -->
+
+    <LinearLayout
+        android:id="@+id/ll_redo_layout_v_draw_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dimen_padding_005"
+        android:paddingLeft="@dimen/dimen_padding_007"
+        android:paddingRight="@dimen/dimen_padding_007"
+        android:paddingTop="@dimen/dimen_padding_005" >
+
+        <ImageView
+            android:id="@+id/iv_redo_layout_v_draw_menu"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/redo01"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_redo_layout_v_draw_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_padding_003"
+            android:clickable="false"
+            android:text="恢复"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_005" />
+    </LinearLayout>
+
+    <!-- 清屏 -->
+
+    <LinearLayout
+        android:id="@+id/ll_clear_screen_layout_v_draw_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dimen_padding_005"
+        android:paddingLeft="@dimen/dimen_padding_007"
+        android:paddingRight="@dimen/dimen_padding_007"
+        android:paddingTop="@dimen/dimen_padding_005" >
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/clear_screen01"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_padding_003"
+            android:clickable="false"
+            android:text="清屏"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_005" />
+    </LinearLayout>
+
+    <!-- 白板 -->
+
+    <LinearLayout
+        android:id="@+id/ll_white_board_layout_v_draw_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dimen_padding_005"
+        android:paddingLeft="@dimen/dimen_padding_007"
+        android:paddingRight="@dimen/dimen_padding_007"
+        android:paddingTop="@dimen/dimen_padding_005" >
+
+        <ImageView
+            android:id="@+id/iv_white_board_layout_v_draw_menu"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/white_board01"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_padding_003"
+            android:clickable="false"
+            android:text="白板"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_005" />
+    </LinearLayout>
+
+    <!-- 全屏 -->
+
+    <LinearLayout
+        android:id="@+id/ll_full_screen_layout_v_draw_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dimen_padding_005"
+        android:paddingLeft="@dimen/dimen_padding_007"
+        android:paddingRight="@dimen/dimen_padding_007"
+        android:paddingTop="@dimen/dimen_padding_005" >
+
+        <ImageView
+            android:id="@+id/iv_full_screen_layout_v_draw_menu"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/full_screen"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_padding_003"
+            android:clickable="false"
+            android:text="全屏"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_005" />
+    </LinearLayout>
+
+    <!-- 退出全屏 -->
+
+    <LinearLayout
+        android:id="@+id/ll_exit_full_screen_layout_v_draw_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dimen_padding_005"
+        android:paddingLeft="@dimen/dimen_padding_007"
+        android:paddingRight="@dimen/dimen_padding_007"
+        android:paddingTop="@dimen/dimen_padding_005"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/exit_full_screen"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_padding_003"
+            android:clickable="false"
+            android:text="退出全屏"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_005" />
+    </LinearLayout>
+
+</LinearLayout>

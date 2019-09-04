@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#00000000">
+
+    <!-- <FrameLayout -->
+    <!-- android:id="@+id/fl_wrapper_content_layout_broad" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_marginTop="50dp" -->
+    <!-- android:background="@color/white" -->
+    <!-- android:focusable="false" -->
+    <!-- android:orientation="horizontal" -->
+    <!-- android:visibility="visible" /> -->
+
+
+    <!-- 暗色背景 -->
+
+    <com.example.attendclasstpad.view.CustomViewpager
+        android:id="@+id/sfv_board"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:visibility="visible" />
+
+    <View
+        android:id="@+id/v_dack_bg_layout_board"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#a0000000" />
+
+</RelativeLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="100dp"
+    android:paddingTop="50dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="10dp">
+
+    <!-- 标题栏 -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_light_content_bg_base"
+        android:gravity="center">
+
+        <!-- 关闭页面 -->
+
+        <RelativeLayout
+            android:id="@+id/rl_close_layout_aty_answer_statistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="15dp">
+
+            <ImageView
+                android:id="@+id/iv_layout_aty_answer_statistics"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/error"
+                android:scaleType="fitXY" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@id/rl_close_layout_aty_answer_statistics"
+            android:padding="15dp"
+            android:text="答题统计"
+            android:textColor="@color/color_text_title01"
+            android:textSize="@dimen/dimen_text_008" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:padding="10dp"
+            android:text="4.下列加点成语使用不正确的一项是（）\n A.‘恰同学少年，风华正茂；书生意气，挥斥方遒。指点江山，激扬文字，粪土当年万户侯。’ 的精神风貌。\n B.&apos;层林尽染&apos;的染字活画出岳麓山一带枫林仿佛人工染成一样的壮美景色。\n C.&apos;万山红遍&apos;的‘万’字写出了山之多，‘遍’字写出了红之广。\n D.&apos;曾记否，到中流击水，浪遏飞舟？&apos;这三句实际上是对‘谁主沉浮’的巧妙回答，要像当年一样，担负起国家命运前途的大任。\n 4.下列加点成语使用不正确的一项是（）\n A.‘恰同学少年，风华正茂；书生意气，挥斥方遒。指点江山，激扬文字，粪土当年万户侯。’ 的精神风貌。\n B.&apos;层林尽染&apos;的染字活画出岳麓山一带枫林仿佛人工染成一样的壮美景色。\n C.&apos;万山红遍&apos;的‘万’字写出了山之多，‘遍’字写出了红之广。\n D.&apos;曾记否，到中流击水，浪遏飞舟？&apos;这三句实际上是对‘谁主沉浮’的巧妙回答，要像当年一样，担负起国家命运前途的大任。\n 4.下列加点成语使用不正确的一项是（）\n A.‘恰同学少年，风华正茂；书生意气，挥斥方遒。指点江山，激扬文字，粪土当年万户侯。’ 的精神风貌。\n B.&apos;层林尽染&apos;的染字活画出岳麓山一带枫林仿佛人工染成一样的壮美景色。\n C.&apos;万山红遍&apos;的‘万’字写出了山之多，‘遍’字写出了红之广。\n D.&apos;曾记否，到中流击水，浪遏飞舟？&apos;这三句实际上是对‘谁主沉浮’的巧妙回答，要像当年一样，担负起国家命运前途的大任。"
+            android:textColor="@color/color_text_title01"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <RelativeLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tv_lbl_explain_layout_aty_answer_statistics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="点击图片可选择相应同学讲解"
+                android:textColor="@color/orange_red" />
+
+            <TextView
+                android:id="@+id/tv_explain_layout_aty_answer_statistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="5dp"
+                android:background="@color/blue6"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp"
+                android:text="讲解"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/iv_01_layout_aty_answer_statistics"
+                android:layout_width="350dp"
+                android:layout_height="500dp"
+                android:layout_above="@id/tv_explain_layout_aty_answer_statistics"
+                android:layout_below="@id/tv_lbl_explain_layout_aty_answer_statistics"
+                android:background="@drawable/answer_statistics_01" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

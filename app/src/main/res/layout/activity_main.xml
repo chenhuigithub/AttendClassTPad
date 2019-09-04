@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- 左侧菜单栏 -->
+
+    <LinearLayout
+        android:id="@+id/ll_wrapper_left_menu_bar_layout_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/blue5"
+        android:orientation="vertical">
+
+        <!-- 头像、用户名 -->
+
+        <include
+            android:id="@+id/in_layout_activity_main"
+            layout="@layout/layout_v_menu_login"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.33"
+            android:background="@color/blue5"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp" />
+
+        <!-- 切換按鈕 -->
+
+        <LinearLayout
+            android:id="@+id/ll_wrapper02_bottom_bar_layout_activity_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.33"
+            android:background="@color/blue5"
+            android:orientation="vertical">
+
+            <!-- 班级 -->
+
+            <LinearLayout
+                android:id="@+id/ll_wrapper_classes_layout_activity_main"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.33"
+                android:background="@color/blue6"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_home_layout_activity_main"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="@dimen/dimen_padding_006"
+                    android:background="@drawable/classes"
+                    android:clickable="false"
+                    android:contentDescription="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/tv_home_layout_activity_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_006"
+                    android:layout_marginRight="@dimen/dimen_padding_006"
+                    android:clickable="false"
+                    android:text="班级"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_008" />
+            </LinearLayout>
+
+            <!-- 上课 -->
+
+            <LinearLayout
+                android:id="@+id/ll_wrapper_attend_class_layout_activity_main"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.33"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_attend_class_layout_activity_main"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="@dimen/dimen_padding_006"
+                    android:background="@drawable/attend_class"
+                    android:clickable="false"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/tv_attend_class_layout_activity_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_006"
+                    android:layout_marginRight="@dimen/dimen_padding_006"
+                    android:clickable="false"
+                    android:text="上课"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_008" />
+            </LinearLayout>
+
+            <!-- 测试 -->
+
+            <LinearLayout
+                android:id="@+id/ll_wrapper_test_layout_activity_main"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.33"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_test_layout_activity_main"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="@dimen/dimen_padding_006"
+                    android:background="@drawable/test"
+                    android:clickable="false"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/tv_test_layout_activity_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_006"
+                    android:layout_marginRight="@dimen/dimen_padding_006"
+                    android:clickable="false"
+                    android:text="测试"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_008" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 全体解锁 -->
+
+        <LinearLayout
+            android:id="@+id/ll_unlocked_layout_activity_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.33"
+            android:background="@color/blue5"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:background="@drawable/not_unlocked_circle"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="全体解锁"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_text_006" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.example.attendclasstpad.view.CustomViewpager
+        android:id="@+id/vpager_content_layout_activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_toRightOf="@id/ll_wrapper_left_menu_bar_layout_activity_main"
+        android:background="@android:color/white"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/fl_right_content_layout_activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/ll_wrapper_left_menu_bar_layout_activity_main"
+        android:background="@android:color/white" />
+
+    <!-- 右三角标志展示区域 -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/ll_wrapper_left_menu_bar_layout_activity_main"
+        android:background="@color/translucent1"
+        android:orientation="vertical">
+
+        <!-- 占位 -->
+
+        <LinearLayout
+            android:id="@+id/ll_wrapper04_layout_activity_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.33"
+            android:orientation="vertical" />
+
+        <!-- 右三角图片 -->
+
+        <LinearLayout
+            android:id="@+id/ll_right_triangle01_layout_activity_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:background="@drawable/right_triangle"
+                android:scaleType="fitXY" />
+        </LinearLayout>
+
+        <!-- 右三角图片 -->
+
+        <LinearLayout
+            android:id="@+id/ll_right_triangle02_layout_activity_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:background="@drawable/right_triangle"
+                android:scaleType="fitXY" />
+        </LinearLayout>
+
+        <!-- 右三角图片 -->
+
+        <LinearLayout
+            android:id="@+id/ll_right_triangle03_layout_activity_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.11"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:background="@drawable/right_triangle"
+                android:scaleType="fitXY" />
+        </LinearLayout>
+
+        <!-- 占位 -->
+
+        <LinearLayout
+            android:id="@+id/ll_wrapper05_layout_activity_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.33"
+            android:orientation="vertical" />
+    </LinearLayout>
+
+</RelativeLayout>

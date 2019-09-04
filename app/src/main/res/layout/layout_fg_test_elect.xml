@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll_wrapper_layout_fg_test_elect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/ll_wrapper_choice_all_layout_fg_test_elect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="8dp" >
+
+            <CheckBox
+                android:id="@+id/cbox_choice_test_layout_fg_test_elect"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/cbox_n"
+                android:button="@null"
+                android:checked="false"
+                android:clickable="false"
+                android:focusable="false" />
+
+            <TextView
+                android:id="@+id/tv_choice_all_layout_fg_test_elect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:text="选择全部"
+                android:textColor="@color/color_text_additional"
+                android:textSize="@dimen/dimen_text_007" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_wrapper02_layout_fg_test_elect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/white"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tv_last_layout_fg_test_elect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="上一题"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_006" />
+
+            <!-- 题目序号 -->
+
+            <TextView
+                android:id="@+id/tv_serial_num_layout_fg_test_elect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_006" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_006" />
+
+            <!-- 题目数 -->
+
+            <TextView
+                android:id="@+id/tv_num_layout_fg_test_elect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="20"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_006" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="跳至第"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_006" />
+
+            <!-- 跳转到的题目序号 -->
+
+            <EditText
+                android:id="@+id/edt_jump_num_layout_fg_test_elect"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:textSize="@dimen/dimen_text_006" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="题"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_006" />
+
+            <TextView
+                android:id="@+id/tv_ensure_layout_fg_test_elect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:background="@color/blue5"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_text_006" />
+
+            <TextView
+                android:id="@+id/tv_next_layout_fg_test_elect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="下一题"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_006" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v_line02_layout_fg_test_elect"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/color_light_grey_for_edit" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpager_content_layout_fg_test_elect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+
+</LinearLayout>

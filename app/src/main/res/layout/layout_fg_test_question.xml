@@ -1,0 +1,420 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 标题栏01：标题文字及当前题目数 -->
+
+            <RelativeLayout
+                android:id="@+id/rl_wrapper_title_bar01_layout_activity_test_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dimen_padding_006"
+                android:paddingRight="@dimen/dimen_padding_006">
+
+                <LinearLayout
+                    android:id="@+id/ll_wrapper_serial_layout_activity_test_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="bottom|center_horizontal"
+                    android:orientation="horizontal">
+
+                    <!-- 题目序号 -->
+
+                    <TextView
+                        android:id="@+id/tv_serial_num_layout_activity_test_question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_005"
+                        android:layout_marginTop="@dimen/dimen_padding_006"
+                        android:text="2"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/dimen_text_013" />
+                    <!-- 题目总数 -->
+
+                    <TextView
+                        android:id="@+id/tv_num_layout_activity_test_question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/5"
+                        android:textColor="@color/color_text_content"
+                        android:textSize="@dimen/dimen_text_006" />
+                </LinearLayout>
+
+                <!-- 所属课时（或章节...）名称 -->
+
+                <TextView
+                    android:id="@+id/tv_course_name_layout_activity_test_questions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_padding_005"
+                    android:layout_marginTop="@dimen/dimen_padding_006"
+                    android:layout_toLeftOf="@id/ll_wrapper_serial_layout_activity_test_question"
+                    android:ellipsize="end"
+                    android:text="专项智能练习(函数)"
+                    android:textColor="@color/color_text_title"
+                    android:textSize="@dimen/dimen_text_007" />
+
+                <!-- 分隔线 -->
+
+                <View
+                    android:id="@+id/v01_layout_fg_test_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/ll_wrapper_serial_layout_activity_test_question"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_light_content_bg_base" />
+            </RelativeLayout>
+
+            <!-- 标题栏02：上下题切换 -->
+
+            <RelativeLayout
+                android:id="@+id/rl_wrapper_title_bar02_layout_fg_test_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_padding_006">
+
+                <!-- 上一题 -->
+
+                <TextView
+                    android:id="@+id/tv_last_question_layout_activity_test_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="上一题"
+                    android:textColor="@color/color_text_additional"
+                    android:textSize="@dimen/dimen_text_006" />
+
+                <!-- 下一题 -->
+
+                <TextView
+                    android:id="@+id/tv_next_question_layout_activity_test_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_padding_005"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:text="下一题"
+                    android:textColor="@color/color_text_content"
+                    android:textSize="@dimen/dimen_text_006" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/tv_next_question_layout_activity_test_question"
+                    android:layout_toRightOf="@id/tv_last_question_layout_activity_test_question"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <!-- 题目序号 -->
+
+                    <TextView
+                        android:id="@+id/tv_serial_num02_layout_activity_test_questions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_005"
+                        android:text="01"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/dimen_text_006" />
+
+                    <!-- 题目总数 -->
+
+                    <TextView
+                        android:id="@+id/tv_num02_layout_activity_test_questions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" / 05"
+                        android:textColor="@color/color_text_content"
+                        android:textSize="@dimen/dimen_text_006" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- 题干 -->
+
+            <TextView
+                android:id="@+id/tv_question_stem_layout_fg_test_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_006"
+                android:layout_marginTop="@dimen/dimen_padding_008"
+                android:layout_marginRight="@dimen/dimen_padding_006"
+                android:text="在直角坐标系中，坐标轴上的点可表示为（ ）"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_008" />
+
+            <!-- 选项 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dimen_padding_007"
+                android:orientation="vertical">
+
+                <!-- A -->
+
+                <TextView
+                    android:id="@+id/tv_true_answer_layout_fg_test_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_007"
+                    android:layout_marginTop="@dimen/dimen_padding_003"
+                    android:layout_marginRight="@dimen/dimen_padding_007"
+                    android:layout_marginBottom="@dimen/dimen_padding_003"
+                    android:text="正确答案"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/dimen_padding_006"
+                    android:visibility="invisible" />
+
+                <LinearLayout
+                    android:id="@+id/ll_a_layout_fg_test_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_007"
+                    android:layout_marginRight="@dimen/dimen_padding_007"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_padding_006">
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_launcher"
+                        android:clickable="false"
+                        android:padding="@dimen/dimen_padding_003"
+                        android:text="A"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/dimen_padding_007" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_padding_005"
+                        android:background="@color/light_grey01"
+                        android:clickable="false" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_005"
+                        android:clickable="false"
+                        android:singleLine="false"
+                        android:text="{(x,y)|xy=0}"
+                        android:textColor="@color/color_text_content"
+                        android:textSize="@dimen/dimen_text_007" />
+                </LinearLayout>
+
+                <!-- B -->
+
+                <TextView
+                    android:id="@+id/tv_your_choice_layout_fg_test_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_007"
+                    android:layout_marginTop="@dimen/dimen_padding_003"
+                    android:layout_marginRight="@dimen/dimen_padding_007"
+                    android:layout_marginBottom="@dimen/dimen_padding_003"
+                    android:text="您的选择"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/dimen_padding_006"
+                    android:visibility="invisible" />
+
+                <LinearLayout
+                    android:id="@+id/ll_b_layout_fg_test_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_007"
+                    android:layout_marginRight="@dimen/dimen_padding_007"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_padding_006">
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_launcher"
+                        android:text="B"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/dimen_padding_007" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_padding_005"
+                        android:background="@color/light_grey01" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_005"
+                        android:singleLine="false"
+                        android:text="{(x,y)|x=0且y=0}"
+                        android:textColor="@color/color_text_content"
+                        android:textSize="@dimen/dimen_text_007" />
+                </LinearLayout>
+
+                <!-- C -->
+
+                <LinearLayout
+                    android:id="@+id/ll_c_layout_fg_test_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_007"
+                    android:layout_marginTop="@dimen/dimen_padding_007"
+                    android:layout_marginRight="@dimen/dimen_padding_007"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_padding_006">
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_launcher"
+                        android:text="C"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/dimen_padding_007" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_padding_005"
+                        android:background="@color/light_grey01" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_005"
+                        android:singleLine="false"
+                        android:text="{(x,y)|x!=0,y=0或x=0,y!=0}"
+                        android:textColor="@color/color_text_content"
+                        android:textSize="@dimen/dimen_text_007" />
+                </LinearLayout>
+
+                <!-- D -->
+
+                <LinearLayout
+                    android:id="@+id/ll_d_layout_fg_test_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_007"
+                    android:layout_marginTop="@dimen/dimen_padding_007"
+                    android:layout_marginRight="@dimen/dimen_padding_007"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_padding_006">
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_launcher"
+                        android:text="D"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/dimen_padding_007" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_padding_005"
+                        android:background="@color/light_grey01" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_005"
+                        android:singleLine="false"
+                        android:text="{(x,y)|x,y不同时为零}"
+                        android:textColor="@color/color_text_content"
+                        android:textSize="@dimen/dimen_text_007" />
+                </LinearLayout>
+
+                <!-- 答案解析 -->
+
+                <LinearLayout
+                    android:id="@+id/ll_wrapper_analysis_layout_fg_test_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_padding_005"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_lbl_analysis_layout_fg_test_question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_padding_007"
+                        android:background="@color/blue"
+                        android:paddingLeft="@dimen/dimen_padding_009"
+                        android:paddingTop="@dimen/dimen_padding_004"
+                        android:paddingRight="@dimen/dimen_padding_005"
+                        android:paddingBottom="@dimen/dimen_padding_004"
+                        android:text="答案解析"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dimen_text_007" />
+
+                    <!-- 答案解析 -->
+
+                    <TextView
+                        android:id="@+id/tv_analysis01_layout_fg_test_question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_007"
+                        android:layout_marginTop="@dimen/dimen_padding_007"
+                        android:layout_marginRight="@dimen/dimen_padding_007"
+                        android:text="A选项错误，因为x=0且y=0的为原点；C选项漏掉了坐标轴上的原点{x=0且y=0}的情况；D选项错误原因同C选项"
+                        android:textColor="@color/color_text_content"
+                        android:textSize="@dimen/dimen_text_007" />
+
+                    <TextView
+                        android:id="@+id/tv_analysis02_layout_fg_test_question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_007"
+                        android:layout_marginTop="@dimen/dimen_padding_007"
+                        android:layout_marginRight="@dimen/dimen_padding_007"
+                        android:text="B选项错误，因为x=0且y=0的为原点；C选项漏掉了坐标轴上的原点{x=0且y=0}的情况；D选项错误原因同C选项"
+                        android:textColor="@color/color_text_content"
+                        android:textSize="@dimen/dimen_text_007" />
+
+                    <TextView
+                        android:id="@+id/tv_analysis03_layout_fg_test_question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_007"
+                        android:layout_marginTop="@dimen/dimen_padding_007"
+                        android:layout_marginRight="@dimen/dimen_padding_007"
+                        android:text="C选项错误，因为x=0且y=0的为原点；C选项漏掉了坐标轴上的原点{x=0且y=0}的情况；D选项错误原因同C选项"
+                        android:textColor="@color/color_text_content"
+                        android:textSize="@dimen/dimen_text_007" />
+
+                    <TextView
+                        android:id="@+id/tv_analysis04_layout_fg_test_question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_007"
+                        android:layout_marginTop="@dimen/dimen_padding_007"
+                        android:layout_marginRight="@dimen/dimen_padding_007"
+                        android:text="D选项错误，因为x=0且y=0的为原点；C选项漏掉了坐标轴上的原点{x=0且y=0}的情况；D选项错误原因同C选项"
+                        android:textColor="@color/color_text_content"
+                        android:textSize="@dimen/dimen_text_007" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

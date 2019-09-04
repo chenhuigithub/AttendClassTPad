@@ -1,0 +1,60 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- 弹框时背景阴影动画 -->
+    <style name="DarkAnimation">
+        <item name="android:windowEnterAnimation">@anim/dark_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/dark_fade_out</item>
+    </style>
+
+    <!-- 弹框时背景阴影动画 -->
+    <style name="MyDarkStyle">
+        <item name="android:windowEnterAnimation">@anim/dark_in</item>
+        <item name="android:windowExitAnimation">@anim/dark_out</item>
+    </style>
+
+    <!-- 弹框动画 -->
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+    </style>
+
+    <declare-styleable name="Gallery1">
+        <attr name="android:galleryItemBackground" />
+    </declare-styleable>
+    <declare-styleable name="LabelView">
+        <attr name="text" format="string" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
+
+    <!-- 绘制菜单栏显示风格 -->
+    <style name="style_draw_menu" parent="@android:style/Theme.Dialog">
+        <item name="@android:windowEnterAnimation">@anim/logout_dialog_enter</item>
+        <item name="@android:windowExitAnimation">@anim/logout_dialog_exit</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 设置window背景透明，也就是去边框 -->
+        <item name="android:background">@android:color/transparent</item>
+        <!-- 设置自定义布局的背景透明 -->
+        <item name="android:windowNoTitle">false</item>
+    </style>
+
+    <!-- 弹框式Activity展示样式 -->
+    <style name="ActivityInOutAnimation" parent="@android:style/Theme.Dialog">
+        <item name="android:activityOpenEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/push_bottom_out</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
+    <!-- 弹框式Activity展示样式 -->
+    <style name="Theme.Android123" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/bg</item>
+    </style>
+
+</resources>

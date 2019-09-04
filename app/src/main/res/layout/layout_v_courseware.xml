@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey06"
+    android:gravity="top"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+    <FrameLayout
+        android:id="@+id/fl_wrapper_content_layout_v_courseware"
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="0.8"
+        android:background="@color/white"
+        android:focusable="false"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/iv_file_show_layout_v_courseware"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ppt01" />
+
+        <!-- 画布 -->
+
+        <com.example.attendclasstpad.view.CustomSurfaceView
+            android:id="@+id/sfv_board_layout_v_courseware"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

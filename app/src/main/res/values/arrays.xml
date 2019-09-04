@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 学段 -->
+    <string-array name="arrays_period">
+        <item>小学</item>
+        <item>初中</item>
+        <item>高中</item>
+    </string-array>
+    <!-- 版本 -->
+    <string-array name="arrays_versions">
+        <item>北师大版</item>
+        <item>人教B版</item>
+        <item>苏教版</item>
+        <item>人教A版</item>
+    </string-array>
+    <!-- 模块 -->
+    <string-array name="arrays_module">
+        <item>必修1</item>
+        <item>必修2</item>
+        <item>必修3</item>
+        <item>必修4</item>
+        <item>必修5</item>
+        <item>必修1-1</item>
+        <item>必修1-2</item>
+        <item>必修2-1</item>
+    </string-array>
+
+    <!-- 全部题型 -->
+    <string-array name="arrays_type">
+        <item>全部题型</item>
+        <item>题型1</item>
+        <item>题型2</item>
+        <item>题型3</item>
+    </string-array>
+
+    <!-- 全部难度 -->
+    <string-array name="arrays_difficulty">
+        <item>全部难度</item>
+        <item>难度1</item>
+        <item>难度2</item>
+        <item>难度3</item>
+    </string-array>
+    <!-- 全部 -->
+    <string-array name="arrays_all">
+        <item>全部</item>
+        <item>全部1</item>
+        <item>全部2</item>
+        <item>全部3</item>
+    </string-array>
+
+    <!-- 小学学科 -->
+    <string-array name="arrays_primary_school_subject">
+        <item>语文</item>
+        <item>数学</item>
+        <item>英语</item>
+    </string-array>
+
+    <!-- 初中学科 -->
+    <string-array name="arrays_junior_middle_school_subject">
+        <item>语文</item>
+        <item>数学</item>
+        <item>英语</item>
+        <item>物理</item>
+        <item>化学</item>
+        <item>生物</item>
+        <item>政治</item>
+        <item>历史</item>
+        <item>地理</item>
+    </string-array>
+
+    <!-- 高中学科 -->
+    <string-array name="arrays_high_school_subject">
+        <item>语文</item>
+        <item>数学</item>
+        <item>英语</item>
+        <item>物理</item>
+        <item>化学</item>
+        <item>生物</item>
+        <item>政治</item>
+        <item>历史</item>
+        <item>地理</item>
+    </string-array>
+
+    <!-- 设置 -->
+    <string-array name="arrays_set">
+        <item>答题时间</item>
+        <item>导入试题</item>
+        <item>清空试题</item>
+    </string-array>
+
+</resources>

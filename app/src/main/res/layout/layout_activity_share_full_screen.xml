@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <FrameLayout
+        android:id="@+id/fl_wrapper_content_layout_activity_share_full_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusable="false"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/iv_layout_adapter_item_for_color"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ppt01"
+            android:clickable="true"
+            android:scaleType="fitXY" />
+    </FrameLayout>
+
+    <com.example.attendclasstpad.view.CustomSurfaceView
+        android:id="@+id/sfv_board_layout_activity_share_full_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+
+    <!-- 退出 -->
+
+    <TextView
+        android:id="@+id/tv_exit_layout_activity_share_full_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/selector_for_exit"
+        android:clickable="true"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="5dp"
+        android:scaleType="fitXY"
+        android:text="退出"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <!-- 右下角按钮 -->
+
+    <ImageView
+        android:id="@+id/iv_menu_layout_activity_share_full_screen"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/menu"
+        android:clickable="true"
+        android:scaleType="fitXY" />
+
+</RelativeLayout>

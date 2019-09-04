@@ -1,0 +1,95 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- text文字大小 -->
+
+    <dimen name="dimen_text_001">2sp</dimen>
+    <dimen name="dimen_text_002">4sp</dimen>
+    <dimen name="dimen_text_003">6sp</dimen>
+    <dimen name="dimen_text_004">8sp</dimen>
+    <dimen name="dimen_text_005">10sp</dimen>
+    <dimen name="dimen_text_006">12sp</dimen>
+    <dimen name="dimen_text_007">14sp</dimen>
+    <dimen name="dimen_text_008">16sp</dimen>
+    <dimen name="dimen_text_009">18sp</dimen>
+    <dimen name="dimen_text_010">20sp</dimen>
+    <dimen name="dimen_text_011">22sp</dimen>
+    <dimen name="dimen_text_012">24sp</dimen>
+    <dimen name="dimen_text_013">26sp</dimen>
+    <dimen name="dimen_text_014">28sp</dimen>
+    <dimen name="dimen_text_015">30sp</dimen>
+    <dimen name="dimen_text_016">32sp</dimen>
+    <dimen name="dimen_text_017">34sp</dimen>
+    <dimen name="dimen_text_018">36sp</dimen>
+    <dimen name="dimen_text_019">38sp</dimen>
+    <dimen name="dimen_text_020">40sp</dimen>
+    <dimen name="dimen_text_021">42sp</dimen>
+    <dimen name="dimen_text_022">44sp</dimen>
+    <dimen name="dimen_text_023">46sp</dimen>
+    <dimen name="dimen_text_024">48sp</dimen>
+    <dimen name="dimen_text_025">50sp</dimen>
+
+    <!-- padding控件间距 -->
+
+    <dimen name="dimen_padding_001">1dp</dimen>
+    <dimen name="dimen_padding_002">2dp</dimen>
+    <dimen name="dimen_padding_003">3dp</dimen>
+    <dimen name="dimen_padding_004">5dp</dimen>
+    <dimen name="dimen_padding_005">8dp</dimen>
+    <dimen name="dimen_padding_006">10dp</dimen>
+    <dimen name="dimen_padding_007">15dp</dimen>
+    <dimen name="dimen_padding_008">20dp</dimen>
+    <dimen name="dimen_padding_009">25dp</dimen>
+    <dimen name="dimen_padding_010">30dp</dimen>
+    <dimen name="dimen_padding_011">35dp</dimen>
+    <dimen name="dimen_padding_012">40dp</dimen>
+    <dimen name="dimen_padding_013">45dp</dimen>
+
+    <!-- 控件高度 -->
+    <dimen name="dimen_height_001">2dp</dimen>
+    <dimen name="dimen_height_002">5dp</dimen>
+    <dimen name="dimen_height_003">10dp</dimen>
+    <dimen name="dimen_height_004">15dp</dimen>
+    <dimen name="dimen_height_005">20dp</dimen>
+    <dimen name="dimen_height_006">25dp</dimen>
+    <dimen name="dimen_height_007">30dp</dimen>
+    <dimen name="dimen_height_008">35dp</dimen>
+    <dimen name="dimen_height_009">40dp</dimen>
+    <dimen name="dimen_height_010">45dp</dimen>
+    <dimen name="dimen_height_011">50dp</dimen>
+    <dimen name="dimen_height_012">55dp</dimen>
+    <dimen name="dimen_height_013">60dp</dimen>
+    <dimen name="dimen_height_014">65dp</dimen>
+    <dimen name="dimen_height_015">70dp</dimen>
+    <dimen name="dimen_height_016">75dp</dimen>
+    <dimen name="dimen_height_017">80dp</dimen>
+    <dimen name="dimen_height_018">85dp</dimen>
+    <dimen name="dimen_height_019">90dp</dimen>
+    <dimen name="dimen_height_020">95dp</dimen>
+    <dimen name="dimen_height_021">100dp</dimen>
+    <dimen name="dimen_height_022">105dp</dimen>
+    <dimen name="dimen_height_023">110dp</dimen>
+    <dimen name="dimen_height_024">115dp</dimen>
+    <dimen name="dimen_height_025">120dp</dimen>
+    <dimen name="dimen_height_026">125dp</dimen>
+    <dimen name="dimen_height_027">130dp</dimen>
+    <dimen name="dimen_height_028">135dp</dimen>
+    <dimen name="dimen_height_029">140dp</dimen>
+    <dimen name="dimen_height_030">145dp</dimen>
+    <dimen name="dimen_height_031">150dp</dimen>
+    <dimen name="dimen_height_032">155dp</dimen>
+    <dimen name="dimen_height_033">160dp</dimen>
+    <dimen name="dimen_height_034">165dp</dimen>
+    <dimen name="dimen_height_035">170dp</dimen>
+    <dimen name="dimen_height_036">175dp</dimen>
+    <dimen name="dimen_height_037">180dp</dimen>
+    <dimen name="dimen_height_038">185dp</dimen>
+    <dimen name="dimen_height_039">190dp</dimen>
+    <dimen name="dimen_height_040">195dp</dimen>
+    <dimen name="dimen_height_041">200dp</dimen>
+    <dimen name="dimen_height_042">205dp</dimen>
+
+</resources>
