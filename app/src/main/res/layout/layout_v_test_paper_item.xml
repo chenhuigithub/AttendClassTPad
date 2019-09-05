@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:focusable="false"
+    android:padding="@dimen/dimen_padding_006">
+
+    <TextView
+        android:id="@+id/tv_see_report_layout_v_test_paper_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/selector_for_blue_rectangle01"
+        android:paddingLeft="@dimen/dimen_padding_008"
+        android:paddingTop="@dimen/dimen_padding_006"
+        android:paddingRight="@dimen/dimen_padding_008"
+        android:paddingBottom="@dimen/dimen_padding_006"
+        android:text="查看报告"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimen_text_006" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dimen_padding_005"
+        android:layout_toLeftOf="@id/tv_see_report_layout_v_test_paper_item"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_name_layout_test_paper_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.沁园春·长沙 测试一"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_008" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/dimen_padding_004"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:text="创建时间：2019/6/8"
+                android:textColor="@color/color_text_additional"
+                android:textSize="@dimen/dimen_text_007" />
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_006"
+                android:text="题量：10道"
+                android:textColor="@color/color_text_additional"
+                android:textSize="@dimen/dimen_text_007" />
+
+
+            <TextView
+                android:id="@+id/tv_type_layout_v_test_paper_item"
+                android:layout_width="0px"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_006"
+                android:text="已布置"
+                android:textColor="@color/color_text_additional"
+                android:textSize="@dimen/dimen_text_007" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

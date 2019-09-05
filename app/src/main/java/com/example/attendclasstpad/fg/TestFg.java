@@ -3,6 +3,8 @@ package com.example.attendclasstpad.fg;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.attendclasstpad.adapter.TestPaperAdapter;
+import com.example.attendclasstpad.adapter.TestQuestionAdapter;
 import com.example.attendclasstpad.aty.AnswerStatisticsActivity;
 import com.example.attendclasstpad.aty.ChoiceTeachingMaterialAty;
 import com.example.attendclasstpad.R;
@@ -10,10 +12,13 @@ import com.example.attendclasstpad.adapter.FragmentVPagerAdapter;
 import com.example.attendclasstpad.adapter.SpinnerImitateAdapter;
 import com.example.attendclasstpad.model.Test;
 import com.example.attendclasstpad.application.CustomApplication;
+import com.example.attendclasstpad.model.TestPaper;
 import com.example.attendclasstpad.util.ConstantsUtils;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.util.VariableUtils;
 import com.example.attendclasstpad.view.BgDarkPopupWindow;
+import com.example.attendclasstpad.view.CustomListView;
+import com.example.attendclasstpad.view.CustomListView01;
 import com.example.attendclasstpad.view.CustomViewpager;
 
 import android.annotation.SuppressLint;
@@ -93,8 +98,11 @@ public class TestFg extends BaseNotPreLoadFg {
     private ImageView ivCursor01;// 滑动条
     private ImageView ivCursor02;// 滑动条
     private TextView tvHasChoicedNum;// 选中的题目个数
+    private RelativeLayout rl01;//题目相关布局
     private RelativeLayout rl02;
     private LinearLayout llAnswerStatistics;// 答题统计
+    private ListView lvTestPaper;//试卷
+    private ListView lvTestQuestion;//试题
 
     // LinearLayout mlay;
 
@@ -149,6 +157,9 @@ public class TestFg extends BaseNotPreLoadFg {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (null == allFgView) {
             allFgView = inflater.inflate(R.layout.layout_fg_test, null);
+
+            testList = new ArrayList<Test>();
+
             llSetting = (LinearLayout) allFgView
                     .findViewById(R.id.ll_setting_layout_fg_test);
             ivArrow = (ImageView) allFgView
@@ -177,8 +188,36 @@ public class TestFg extends BaseNotPreLoadFg {
                     .findViewById(R.id.ll_answer_statistics_layout_fg_test);
             llAnswerStatistics.setOnClickListener(new Listeners());
 
+            rl01 = (RelativeLayout) allFgView
+                    .findViewById(R.id.ll_wrapper01_layout_fg_test);
+
             rl02 = (RelativeLayout) allFgView
                     .findViewById(R.id.rl02_wrapper_layout_fg_test);
+
+            //返回上一层级
+            LinearLayout ivBackUpperLevel = (LinearLayout) allFgView.findViewById(R.id.ll_wrapper_back_upper_level_layout_fg_test);
+            ivBackUpperLevel.setOnClickListener(new Listeners());
+
+
+            lvTestPaper = (ListView) allFgView
+                    .findViewById(R.id.lv_test_paper_layout_fg_test);
+            lvTestPaper.setAdapter(new TestPaperAdapter(getActivity(), getTestPaperData()));
+
+            lvTestQuestion = (ListView) allFgView
+                    .findViewById(R.id.lv_test_question_layout_fg_test);
+            lvTestQuestion.setAdapter(new TestQuestionAdapter(getActivity(), getTestQuestionData()));
+
+
+            switchTestShow(0);
+
+            lvTestPaper.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    switchTestShow(1);
+                }
+            });
+
+
             // 科目的数据
             String[] names1 = getResources().getStringArray(R.array.arrays_set);
             courseList = new ArrayList<String>();
@@ -243,8 +282,8 @@ public class TestFg extends BaseNotPreLoadFg {
                     WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.WRAP_CONTENT);
 
-            initVPagerTab();
-            initVPagerContent();
+//            initVPagerTab();
+//            initVPagerContent();
             // InitWidth();
 
             llSetting.setOnClickListener(new OnClickListener() {
@@ -266,6 +305,72 @@ public class TestFg extends BaseNotPreLoadFg {
         lazyLoad();
 
         return allFgView;
+    }
+
+    /**
+     * 获取试卷列表（测试用）
+     *
+     * @return list 试卷列表
+     */
+    private List<TestPaper> getTestPaperData() {
+        List<TestPaper> list = new ArrayList<TestPaper>();
+
+        for (int i = 1; i <= 3; i++) {
+            TestPaper paper = new TestPaper();
+            paper.setID("key" + i);
+            paper.setName("沁园春·长沙 测试卷" + i);
+            paper.setCreateTime("2019/6/8");
+            paper.setTestNum("10");
+            paper.setType(String.valueOf(i - 1));
+            list.add(paper);
+        }
+        return list;
+    }
+
+    /**
+     * 获取试题列表（测试用）
+     *
+     * @return list 试卷列表
+     */
+    private List<Test> getTestQuestionData() {
+        List<Test> list = new ArrayList<Test>();
+
+        for (int i = 1; i <= 10; i++) {
+            Test test = new Test();
+            test.setId("key" + i);
+            test.setContent(i + ".以下历史事件中，与关羽无关的是（）：\n Ａ：单刀赴会　Ｂ：水淹七军　Ｃ：大意失荆州　Ｄ：七擒七纵 \n 2：“东风不与周郎便，铜雀春深锁二乔”。这首诗的作者生活的年代与诗中所描述的历史事件发生的年代大约相隔了（）：\n Ａ：４００年　Ｂ：５００年　 Ｃ：６００年　Ｄ：８００年");
+            test.setAnalysis("七擒孟获，又称南中平定战，是建兴三年蜀汉丞相诸葛亮对南中发动平定南中的战争。当时朱褒、雍闿、高定等人叛变，南中豪强孟获亦有参与，最后诸葛亮亲率大军南下，平定南中。");
+            testList.add(test);
+
+//            paper.setName("1.沁园春·长沙 测试卷" + i);
+//            paper.setCreateTime("2019/6/8");
+//            paper.setTestNum("10");
+//            paper.setType(String.valueOf(i - 1));
+            list.add(test);
+        }
+        return list;
+    }
+
+    /**
+     * 切换试卷与试题页面的显示
+     *
+     * @param a 区分标志（0：试卷，1：试题）
+     */
+    private void switchTestShow(int a) {
+        switch (a) {
+            case 0://试卷
+                lvTestPaper.setVisibility(View.VISIBLE);
+                lvTestQuestion.setVisibility(View.GONE);
+                rl02.setVisibility(View.GONE);
+
+                break;
+            case 1://试题
+                lvTestPaper.setVisibility(View.GONE);
+                lvTestQuestion.setVisibility(View.VISIBLE);
+                rl02.setVisibility(View.VISIBLE);
+
+                break;
+        }
     }
 
     private void setTabText(int pos, List<String> list, TextView tv) {
@@ -412,6 +517,7 @@ public class TestFg extends BaseNotPreLoadFg {
     private void initVPagerContent() {
         vpagerTest = (CustomViewpager) allFgView
                 .findViewById(R.id.vpager_content_layout_fg_test);
+
         // 关闭预加载，默认一次只加载一个Fragment
         vpagerTest.setOffscreenPageLimit(1);
 
@@ -533,6 +639,7 @@ public class TestFg extends BaseNotPreLoadFg {
                     Intent intent = new Intent(getActivity(),
                             AnswerStatisticsActivity.class);
                     startActivity(intent);
+
                     break;
                 case R.id.tv_omics_case_tab:// 切换教材、目录
                     // 跳转至选择教材目录界面
@@ -543,6 +650,15 @@ public class TestFg extends BaseNotPreLoadFg {
                     // catalogNameCurr);
                     intent02.putExtra(ChoiceTeachingMaterialAty.CATALOG_POS, -1);
                     startActivityForResult(intent02, ConstantsUtils.REQUEST_CODE01);
+
+                    //重新显示试卷列表
+                    switchTestShow(0);
+
+                    break;
+                case R.id.ll_wrapper_back_upper_level_layout_fg_test://返回上一层级
+                    switchTestShow(0);
+
+                    break;
             }
         }
     }

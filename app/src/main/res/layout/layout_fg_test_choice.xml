@@ -3,16 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="10dp">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -20,42 +20,43 @@
                 android:layout_gravity="top"
                 android:gravity="top"
                 android:orientation="horizontal"
-                android:visibility="visible" >
+                android:visibility="visible">
 
                 <CheckBox
                     android:id="@+id/cbox_choice_test_layout_fg_test_choice"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:background="@drawable/cbox_n"
-                    android:button="@null" />
+                    android:button="@null"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_content_layout_fg_test_choice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="1：以下历史事件中，与关羽无关的是（）：\nＡ：单刀赴会　Ｂ：水淹七军　Ｃ：大意失荆州　Ｄ：七擒七纵\n2：“东风不与周郎便，铜雀春深锁二乔”。这首诗的作者生活的年代与诗中所描述的历史事件发生的年代大约相隔了（）： \nＡ：４００年　Ｂ：５００年　 Ｃ：６００年　Ｄ：８００年\n3、&apos;中秋节&apos;吃月饼最初的兴起是为了：\nA.纪念屈原                 B.推翻元朝统治       C.南宋人民纪念抗金将士     D.由长娥奔月的传说而来"
+                    android:text="以下历史事件中，与关羽无关的是（）：\nＡ：单刀赴会　Ｂ：水淹七军　Ｃ：大意失荆州　Ｄ：七擒七纵\n2：“东风不与周郎便，铜雀春深锁二乔”。这首诗的作者生活的年代与诗中所描述的历史事件发生的年代大约相隔了（）： \nＡ：４００年　Ｂ：５００年　 Ｃ：６００年　Ｄ：８００年\n3、&apos;中秋节&apos;吃月饼最初的兴起是为了：\nA.纪念屈原                 B.推翻元朝统治       C.南宋人民纪念抗金将士     D.由长娥奔月的传说而来"
                     android:textColor="@color/color_text_content"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/dimen_text_008" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/color_light_grey_for_edit"
                 android:visibility="visible" />
 
             <LinearLayout
+                android:id="@+id/ll_wrapper_see_answer_analysis_layout_fg_test_choice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp" >
+                android:paddingRight="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -67,18 +68,30 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="A"
+                    android:text="D"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_see_analysis_layout_fg_test_choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
+                    android:clickable="true"
+                    android:padding="@dimen/dimen_padding_005"
                     android:text="查看解析"
                     android:textColor="#027DD3"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/dimen_text_008" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_analysis_layout_fg_test_choice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/dimen_padding_005"
+                android:text="七擒七纵，七擒孟获，又称南中平定战，是建兴三年蜀汉丞相诸葛亮对南中发动平定南中的战争。当时朱褒、雍闿、高定等人叛变，南中豪强孟获亦有参与，最后诸葛亮亲率大军南下，平定南中。"
+                android:textColor="@color/color_text_additional"
+                android:textSize="@dimen/dimen_text_007" />
         </LinearLayout>
     </ScrollView>
 

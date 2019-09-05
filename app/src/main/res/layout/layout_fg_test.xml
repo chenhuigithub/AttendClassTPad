@@ -17,7 +17,8 @@
         android:paddingLeft="30dp"
         android:paddingTop="10dp"
         android:paddingRight="30dp"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/rl_wrapper_vpager_tab"
@@ -109,14 +110,15 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/ll_wrapper"
+        android:id="@+id/ll_wrapper01_layout_fg_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_wrapper_vpager_tab"
         android:layout_gravity="center"
         android:layout_margin="15dp"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <!-- 二级标题栏 -->
 
@@ -126,7 +128,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="#F9F9F9"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/tv_choice_test_layout_fg_test"
@@ -141,7 +144,8 @@
                 android:paddingBottom="10dp"
                 android:text="选择题"
                 android:textColor="@color/blue5"
-                android:textSize="@dimen/dimen_text_008" />
+                android:textSize="@dimen/dimen_text_008"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_take_pic_layout_fg_test"
@@ -156,7 +160,37 @@
                 android:paddingBottom="10dp"
                 android:text="拍照答题"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dimen_text_008" />
+                android:textSize="@dimen/dimen_text_008"
+                android:visibility="gone" />
+
+            <!--返回上一层-->
+
+            <LinearLayout
+                android:id="@+id/ll_wrapper_back_upper_level_layout_fg_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_padding_007">
+
+                <ImageView
+                    android:id="@+id/iv_back_upper_level_layout_fg_test"
+                    android:layout_width="6dp"
+                    android:layout_height="10dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow_left"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_003"
+                    android:text="返回试卷"
+                    android:textColor="@color/color_text_additional"
+                    android:textSize="@dimen/dimen_text_007" />
+            </LinearLayout>
+
 
             <!-- 滑动条Cursor -->
 
@@ -170,7 +204,8 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/line"
                 android:contentDescription="@string/app_name"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:visibility="gone" />
 
             <!-- 滑动条Cursor -->
 
@@ -254,7 +289,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@id/ll_setting_layout_fg_test"
-                android:layout_toRightOf="@id/tv_take_pic_layout_fg_test"
+                android:layout_toRightOf="@id/ll_wrapper_back_upper_level_layout_fg_test"
                 android:gravity="right|center"
                 android:orientation="horizontal">
 
@@ -296,7 +331,7 @@
             android:layout_height="0.5dp"
             android:layout_below="@id/rl02_wrapper_layout_fg_test"
             android:background="@color/color_heavy_content_bg_base"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <!-- fragment布局 -->
 
@@ -310,7 +345,26 @@
             android:flipInterval="30"
             android:padding="@dimen/dimen_padding_004"
             android:persistentDrawingCache="animation"
+            android:visibility="gone" />
+
+
+        <ListView
+            android:id="@+id/lv_test_paper_layout_fg_test"
+            style="@style/NormalLv"
+            android:layout_below="@id/tv_line01_layout_course_detail"
+            android:layout_marginTop="1dp"
             android:visibility="visible" />
+
+
+        <ListView
+            android:id="@+id/lv_test_question_layout_fg_test"
+            style="@style/NormalLv"
+            android:layout_below="@id/tv_line01_layout_course_detail"
+            android:layout_marginTop="1dp"
+            android:visibility="visible" />
+
+
     </RelativeLayout>
+
 
 </RelativeLayout>
