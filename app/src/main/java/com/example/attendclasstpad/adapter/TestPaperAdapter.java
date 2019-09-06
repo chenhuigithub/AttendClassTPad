@@ -5,10 +5,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.attendclasstpad.R;
+import com.example.attendclasstpad.callback.ActivityFgInterface;
 import com.example.attendclasstpad.model.Test;
 import com.example.attendclasstpad.model.TestPaper;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -18,8 +17,12 @@ import java.util.List;
  * @author chenhui 2019.09.05
  */
 public class TestPaperAdapter extends BaseListAdapter<TestPaper> {
-    public TestPaperAdapter(Context context, List<TestPaper> dataList) {
+    private ActivityFgInterface.ICanKnowFgDoSthAboutMenu iCan;
+
+    public TestPaperAdapter(Context context, ActivityFgInterface.ICanKnowFgDoSthAboutMenu ican, List<TestPaper> dataList) {
         super(context, dataList);
+
+        this.iCan = ican;
     }
 
     @Override
@@ -28,7 +31,7 @@ public class TestPaperAdapter extends BaseListAdapter<TestPaper> {
     }
 
     @Override
-    protected void doAssignValueForView(int position, View resultView, TestPaper dataObj) {
+    protected void doAssignValueForView(final int position, View resultView, TestPaper dataObj) {
         //试卷名称
         TextView tvName = (TextView) resultView.findViewById(R.id.tv_name_layout_test_paper_item);
         tvName.setText(dataObj.getName());
@@ -38,6 +41,14 @@ public class TestPaperAdapter extends BaseListAdapter<TestPaper> {
 
         //查看报告
         TextView tvSeeReport = (TextView) resultView.findViewById(R.id.tv_see_report_layout_v_test_paper_item);
+        tvSeeReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (iCan != null) {
+                    iCan.doOnAfterClickMenu(0, position);
+                }
+            }
+        });
 
         if ("0".equals(dataObj.getType())) {
             tvType.setText("未布置");

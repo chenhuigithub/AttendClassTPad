@@ -16,4 +16,17 @@ public class ActivityFgInterface {
          */
         void jumpTo(Fragment fg);
     }
+
+    /**
+     * 按钮事件
+     */
+    public interface ICanKnowFgDoSthAboutMenu {
+        /**
+         * 按钮事件
+         *
+         * @param menuID 区分按钮的ID
+         * @param pos    数据位置
+         */
+        void doOnAfterClickMenu(int menuID, int pos);
+    }
 }

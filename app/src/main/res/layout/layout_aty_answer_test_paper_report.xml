@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:id="@+id/ll_wrapper_back_upper_level_layout_aty_atp_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen_padding_007">
+
+            <TextView
+                android:layout_width="6dp"
+                android:layout_height="10dp"
+                android:background="@drawable/arrow_left" />
+
+            <TextView
+                android:id="@+id/tv_back_layout_answer_test_paper_report"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_003"
+                android:layout_weight="2.5"
+                android:text="返回上级"
+                android:textColor="@color/color_text_additional"
+                android:textSize="@dimen/dimen_text_007" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_paper_name_layout_answer_test_paper_report"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:clickable="true"
+            android:padding="@dimen/dimen_padding_007"
+            android:text="沁园春·长沙测试卷"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dimen_text_008" />
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:background="@color/white"
+            android:gravity="center_vertical|right"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen_padding_007">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已提交:"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_007" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_003"
+                android:text="4/10"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/dimen_text_007" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:background="@color/white"
+            android:gravity="center_vertical|right"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen_padding_007">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正确率:"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_007" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_003"
+                android:text="75%"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/dimen_text_007" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"></View>
+
+    <LinearLayout
+        android:id="@+id/ll_wrapper_01_layout_aty_atp_report"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_padding_005">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_student_analysis_layout_aty_atp_report"
+                style="@style/SingBgForRectangle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="学生分析"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_006" />
+
+            <TextView
+                android:id="@+id/tv_question_analysis_layout_aty_atp_report"
+                style="@style/SingBgForRectangle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="试题分析"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_006" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"></View>
+
+    <FrameLayout
+        android:id="@+id/fl_content_layout_aty_atp_report"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/ll_wrapper_left_menu_bar_layout_activity_main"
+        android:background="@android:color/white" />
+
+</LinearLayout>

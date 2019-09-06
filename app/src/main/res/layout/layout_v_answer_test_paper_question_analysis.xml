@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_padding_005">
+
+    <ListView
+        android:id="@+id/lv_test_question_layout_v_atpq_analysis"
+        style="@style/NormalLv"
+        android:layout_below="@id/tv_line01_layout_course_detail"
+        android:layout_marginTop="1dp"
+        android:visibility="visible" />
+
+</LinearLayout>

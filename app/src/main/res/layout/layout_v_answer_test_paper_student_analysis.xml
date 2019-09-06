@@ -1,0 +1,131 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_wrapper_01_layout_v_atps_analysis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_padding_005">
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="序号"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="姓名"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="完成进度"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="完成耗时"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="错题数"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="客观题正确率"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="操作"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_stop_layout_v_atps_analysis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/light_grey"
+        android:padding="@dimen/dimen_padding_005">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/dimen_padding_005"
+            android:gravity="center"
+            android:text="已用时：00:01:06"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_006" />
+
+        <TextView
+            android:id="@+id/tv_stop_layout_v_atps_analysis"
+            style="@style/SingBgForRectangle"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/dimen_padding_005"
+            android:background="@drawable/selector_for_blue_rectangle01"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="停止答题"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_text_007" />
+
+    </RelativeLayout>
+
+
+    <ListView
+        android:id="@+id/lv_content_layout_v_atps_analysis"
+        style="@style/NormalLv"
+        android:layout_above="@id/rl_stop_layout_v_atps_analysis"
+        android:layout_below="@id/ll_wrapper_01_layout_v_atps_analysis"
+        android:padding="@dimen/dimen_padding_006"
+        android:visibility="visible" />
+
+
+</RelativeLayout>

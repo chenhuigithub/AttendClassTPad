@@ -333,7 +333,7 @@
             android:background="@color/color_heavy_content_bg_base"
             android:visibility="gone" />
 
-        <!-- fragment布局 -->
+        <!-- fragment滑动布局 -->
 
         <com.example.attendclasstpad.view.CustomViewpager
             android:id="@+id/vpager_content_layout_fg_test"

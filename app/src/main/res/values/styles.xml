@@ -57,6 +57,16 @@
         <item name="android:windowBackground">@drawable/bg</item>
     </style>
 
+    <!--实心小矩形-->
+    <style name="SingBgForRectangle" parent="android:Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/dimen_padding_004</item>
+        <item name="android:paddingBottom">@dimen/dimen_padding_004</item>
+        <item name="android:paddingLeft">@dimen/dimen_padding_008</item>
+        <item name="android:paddingRight">@dimen/dimen_padding_008</item>
+    </style>
+
     <!-- 一般列表样式(点击时无原有黄色背景效果等) -->
     <style name="NormalList">
         <item name="android:cacheColorHint">#00000000</item>
@@ -69,7 +79,7 @@
     <style name="NormalLv" parent="@style/NormalList">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:divider">@color/grey</item>
+        <item name="android:divider">@color/light_grey</item>
         <item name="android:dividerHeight">1dp</item>
         <item name="android:background">@android:color/white</item>
     </style>

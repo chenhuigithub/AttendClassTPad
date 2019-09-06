@@ -46,8 +46,16 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
-                android:background="@color/color_light_grey_for_edit"
+                android:background="@color/light_grey"
                 android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_01_layout_fg_test_choice"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_margin="@dimen/dimen_padding_006"
+                android:background="@drawable/test_analysis"
+                android:scaleType="fitXY" />
 
             <LinearLayout
                 android:id="@+id/ll_wrapper_see_answer_analysis_layout_fg_test_choice"

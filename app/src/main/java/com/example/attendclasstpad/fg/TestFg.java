@@ -6,10 +6,12 @@ import java.util.List;
 import com.example.attendclasstpad.adapter.TestPaperAdapter;
 import com.example.attendclasstpad.adapter.TestQuestionAdapter;
 import com.example.attendclasstpad.aty.AnswerStatisticsActivity;
+import com.example.attendclasstpad.aty.AnswerTestPaperReportAty;
 import com.example.attendclasstpad.aty.ChoiceTeachingMaterialAty;
 import com.example.attendclasstpad.R;
 import com.example.attendclasstpad.adapter.FragmentVPagerAdapter;
 import com.example.attendclasstpad.adapter.SpinnerImitateAdapter;
+import com.example.attendclasstpad.callback.ActivityFgInterface;
 import com.example.attendclasstpad.model.Test;
 import com.example.attendclasstpad.application.CustomApplication;
 import com.example.attendclasstpad.model.TestPaper;
@@ -17,8 +19,6 @@ import com.example.attendclasstpad.util.ConstantsUtils;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.util.VariableUtils;
 import com.example.attendclasstpad.view.BgDarkPopupWindow;
-import com.example.attendclasstpad.view.CustomListView;
-import com.example.attendclasstpad.view.CustomListView01;
 import com.example.attendclasstpad.view.CustomViewpager;
 
 import android.annotation.SuppressLint;
@@ -55,15 +55,15 @@ import android.widget.PopupWindow.OnDismissListener;
  * 测试
  */
 @SuppressLint("HandlerLeak")
-public class TestFg extends BaseNotPreLoadFg {
+public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICanKnowFgDoSthAboutMenu {
     private boolean isPrepared;// 标志位，标志已经初始化完成
     private boolean hasLoadOnce = false;// 是否已被加载过一次，第二次就不再去请求数据了
-    WindowManager.LayoutParams lp;
+    private WindowManager.LayoutParams lp;
 
     private View allFgView;// 总布局
     private TextView tvElect;// 选择题
     private TextView tvPictureAnswer;// 拍照答题
-    CustomViewpager vpagerTest;
+    private CustomViewpager vpagerTest;//滑动布局
     private int currIndex = 0;// 当前页卡编号
     private int offset = 0;// 动画图片偏移量
     private LinearLayout llCursor;// 滑动条
@@ -72,6 +72,7 @@ public class TestFg extends BaseNotPreLoadFg {
     private int position_one;
     private List<String> courseList;// 设置数据
     private List<Test> testList;// 题目数据
+    private List<TestPaper> paperList;//试卷数据
 
     private String catalogIDCurr = "";// 目录ID
     private String catalogNameCurr = "";// 目录名称
@@ -103,6 +104,8 @@ public class TestFg extends BaseNotPreLoadFg {
     private LinearLayout llAnswerStatistics;// 答题统计
     private ListView lvTestPaper;//试卷
     private ListView lvTestQuestion;//试题
+
+    ActivityFgInterface.ICanKnowFgDoSthAboutMenu iCan;
 
     // LinearLayout mlay;
 
@@ -158,6 +161,7 @@ public class TestFg extends BaseNotPreLoadFg {
         if (null == allFgView) {
             allFgView = inflater.inflate(R.layout.layout_fg_test, null);
 
+            paperList = new ArrayList<TestPaper>();
             testList = new ArrayList<Test>();
 
             llSetting = (LinearLayout) allFgView
@@ -201,11 +205,13 @@ public class TestFg extends BaseNotPreLoadFg {
 
             lvTestPaper = (ListView) allFgView
                     .findViewById(R.id.lv_test_paper_layout_fg_test);
-            lvTestPaper.setAdapter(new TestPaperAdapter(getActivity(), getTestPaperData()));
+
+            iCan = (ActivityFgInterface.ICanKnowFgDoSthAboutMenu) this;
+            lvTestPaper.setAdapter(new TestPaperAdapter(getActivity(), iCan, getTestPaperData()));
 
             lvTestQuestion = (ListView) allFgView
                     .findViewById(R.id.lv_test_question_layout_fg_test);
-            lvTestQuestion.setAdapter(new TestQuestionAdapter(getActivity(), getTestQuestionData()));
+            lvTestQuestion.setAdapter(new TestQuestionAdapter(getActivity(), getTestQuestionData(),0));
 
 
             switchTestShow(0);
@@ -313,8 +319,6 @@ public class TestFg extends BaseNotPreLoadFg {
      * @return list 试卷列表
      */
     private List<TestPaper> getTestPaperData() {
-        List<TestPaper> list = new ArrayList<TestPaper>();
-
         for (int i = 1; i <= 3; i++) {
             TestPaper paper = new TestPaper();
             paper.setID("key" + i);
@@ -322,9 +326,9 @@ public class TestFg extends BaseNotPreLoadFg {
             paper.setCreateTime("2019/6/8");
             paper.setTestNum("10");
             paper.setType(String.valueOf(i - 1));
-            list.add(paper);
+            paperList.add(paper);
         }
-        return list;
+        return paperList;
     }
 
     /**
@@ -333,8 +337,6 @@ public class TestFg extends BaseNotPreLoadFg {
      * @return list 试卷列表
      */
     private List<Test> getTestQuestionData() {
-        List<Test> list = new ArrayList<Test>();
-
         for (int i = 1; i <= 10; i++) {
             Test test = new Test();
             test.setId("key" + i);
@@ -346,9 +348,9 @@ public class TestFg extends BaseNotPreLoadFg {
 //            paper.setCreateTime("2019/6/8");
 //            paper.setTestNum("10");
 //            paper.setType(String.valueOf(i - 1));
-            list.add(test);
+            testList.add(test);
         }
-        return list;
+        return testList;
     }
 
     /**
@@ -507,7 +509,6 @@ public class TestFg extends BaseNotPreLoadFg {
 
         tvElect.setOnClickListener(new VPagerTabOnClickListener(0));
         tvPictureAnswer.setOnClickListener(new VPagerTabOnClickListener(1));
-
     }
 
     /**
@@ -532,6 +533,24 @@ public class TestFg extends BaseNotPreLoadFg {
                 fgList));
         vpagerTest.setCurrentItem(0);
         vpagerTest.setOnPageChangeListener(new CustomOnPageChangeListener());
+    }
+
+    @Override
+    public void doOnAfterClickMenu(int menuID, int pos) {
+        switch (menuID) {
+            case 0://查看报告
+                //收集数据
+                if (paperList.size() > pos) {
+                    TestPaper paper = paperList.get(pos);
+                    if (paper != null) {
+                        Intent intent = new Intent(getActivity(), AnswerTestPaperReportAty.class);
+                        startActivity(intent);
+                    }
+                }
+
+
+                break;
+        }
     }
 
     // //标题下划线滑动距离
@@ -623,8 +642,6 @@ public class TestFg extends BaseNotPreLoadFg {
             vpagerTest.setCurrentItem(index);
         }
     }
-
-    ;
 
     /**
      * 控件监听

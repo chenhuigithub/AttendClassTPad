@@ -87,6 +87,13 @@
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Android123" />
+
+        <!-- 答卷统计 -->
+        <activity
+            android:name="com.example.attendclasstpad.aty.AnswerTestPaperReportAty"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
     </application>
 
 </manifest>
