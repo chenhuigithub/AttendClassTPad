@@ -3,12 +3,12 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/dimen_padding_006">
+    android:padding="@dimen/dimen_padding_005">
 
     <TextView
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="1.4"
+        android:layout_weight="1.6"
         android:clickable="true"
         android:gravity="center"
         android:text="1"
@@ -18,37 +18,28 @@
     <TextView
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="1.4"
+        android:layout_weight="1.6"
         android:clickable="true"
         android:gravity="center"
-        android:text="燕青"
+        android:text="燕小乙"
         android:textColor="@color/color_text_content"
         android:textSize="@dimen/dimen_text_007" />
 
     <TextView
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="1.4"
+        android:layout_weight="1.6"
         android:clickable="true"
         android:gravity="center"
         android:text="50%"
         android:textColor="@color/color_text_content"
         android:textSize="@dimen/dimen_text_007" />
 
-    <TextView
-        android:layout_width="0px"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.4"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="03:00"
-        android:textColor="@color/color_text_content"
-        android:textSize="@dimen/dimen_text_007" />
 
     <TextView
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="1.4"
+        android:layout_weight="1.6"
         android:clickable="true"
         android:gravity="center"
         android:text="0"
@@ -58,7 +49,7 @@
     <TextView
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="1.4"
+        android:layout_weight="1.6"
         android:clickable="true"
         android:gravity="center"
         android:text="100%"
@@ -68,7 +59,7 @@
     <TextView
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="1.4"
+        android:layout_weight="1.6"
         android:clickable="true"
         android:gravity="center"
         android:text="查看"

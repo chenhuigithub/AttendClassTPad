@@ -56,6 +56,7 @@
     <color name="light_red2">#EB5F7C</color>
     <color name="orange">#FFBA68</color>
     <color name="orange01">#FE9602</color>
+    <color name="orange02">#FE710A</color>
     <color name="yellow01">#FDEECE</color>
 
     <!-- 橘红色 -->
@@ -83,5 +84,6 @@
     <color name="translucent2">#a0000000</color>
     <!-- 浅灰：editText边框线颜色 -->
     <color name="color_light_grey_for_edit">#d0d0d0</color>
+
 
 </resources>

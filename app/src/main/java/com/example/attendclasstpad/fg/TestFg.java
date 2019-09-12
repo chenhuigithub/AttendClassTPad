@@ -12,6 +12,7 @@ import com.example.attendclasstpad.R;
 import com.example.attendclasstpad.adapter.FragmentVPagerAdapter;
 import com.example.attendclasstpad.adapter.SpinnerImitateAdapter;
 import com.example.attendclasstpad.callback.ActivityFgInterface;
+import com.example.attendclasstpad.model.ICanGetKeyValue;
 import com.example.attendclasstpad.model.Test;
 import com.example.attendclasstpad.application.CustomApplication;
 import com.example.attendclasstpad.model.TestPaper;
@@ -73,6 +74,7 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
     private List<String> courseList;// 设置数据
     private List<Test> testList;// 题目数据
     private List<TestPaper> paperList;//试卷数据
+    private TestPaper paperFocus;//当前选中的试卷
 
     private String catalogIDCurr = "";// 目录ID
     private String catalogNameCurr = "";// 目录名称
@@ -101,11 +103,14 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
     private TextView tvHasChoicedNum;// 选中的题目个数
     private RelativeLayout rl01;//题目相关布局
     private RelativeLayout rl02;
+    private LinearLayout llSubmit;// 提交进度
     private LinearLayout llAnswerStatistics;// 答题统计
+    private LinearLayout llHasChoiceCount;// 选题情况，已选多少题
+    private TextView tvBeginAnswer;//开始答题/查看报告
     private ListView lvTestPaper;//试卷
     private ListView lvTestQuestion;//试题
 
-    ActivityFgInterface.ICanKnowFgDoSthAboutMenu iCan;
+    private ActivityFgInterface.ICanKnowFgDoSthAboutMenu iCan;
 
     // LinearLayout mlay;
 
@@ -164,8 +169,11 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
             paperList = new ArrayList<TestPaper>();
             testList = new ArrayList<Test>();
 
+            //设置
             llSetting = (LinearLayout) allFgView
                     .findViewById(R.id.ll_setting_layout_fg_test);
+            llSetting.setVisibility(View.GONE);
+
             ivArrow = (ImageView) allFgView
                     .findViewById(R.id.iv_setting_layout_fg_test);
 
@@ -187,10 +195,26 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
                     .findViewById(R.id.tv_has_choiced_num_layout_fg_test);
             tvHasChoicedNum.setText(String.valueOf(hasChoicedTestNum));
 
+            // 提交进度
+            llSubmit = (LinearLayout) allFgView
+                    .findViewById(R.id.ll_submit__wrapper_vpager_tab);
+            llSubmit.setVisibility(View.GONE);
+
             // 答题统计
             llAnswerStatistics = (LinearLayout) allFgView
                     .findViewById(R.id.ll_answer_statistics_layout_fg_test);
+            llAnswerStatistics.setVisibility(View.GONE);
             llAnswerStatistics.setOnClickListener(new Listeners());
+
+            // 选题情况，已选多少题
+            llHasChoiceCount = (LinearLayout) allFgView
+                    .findViewById(R.id.ll_has_choice_count_layout_fg_test);
+            llHasChoiceCount.setVisibility(View.GONE);
+
+            // 开始答题/查看报告
+            tvBeginAnswer = (TextView) allFgView
+                    .findViewById(R.id.tv_begin_answer_layout_fg_test);
+
 
             rl01 = (RelativeLayout) allFgView
                     .findViewById(R.id.ll_wrapper01_layout_fg_test);
@@ -211,15 +235,21 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
 
             lvTestQuestion = (ListView) allFgView
                     .findViewById(R.id.lv_test_question_layout_fg_test);
-            lvTestQuestion.setAdapter(new TestQuestionAdapter(getActivity(), getTestQuestionData(),0));
+            lvTestQuestion.setAdapter(new TestQuestionAdapter(getActivity(), getTestQuestionData(), 0));
 
 
-            switchTestShow(0);
+            if (paperList.size() > 0) {
+                paperFocus = paperList.get(0);
+
+                switchTestShow(0, paperFocus);
+            }
 
             lvTestPaper.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    switchTestShow(1);
+                    if (paperList.size() > 0) {
+                        switchTestShow(1, paperList.get(position));
+                    }
                 }
             });
 
@@ -356,9 +386,10 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
     /**
      * 切换试卷与试题页面的显示
      *
-     * @param a 区分标志（0：试卷，1：试题）
+     * @param a     区分标志（0：试卷，1：试题）
+     * @param pInfo 点击项的父级数据
      */
-    private void switchTestShow(int a) {
+    private void switchTestShow(int a, ICanGetKeyValue pInfo) {
         switch (a) {
             case 0://试卷
                 lvTestPaper.setVisibility(View.VISIBLE);
@@ -370,6 +401,33 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
                 lvTestPaper.setVisibility(View.GONE);
                 lvTestQuestion.setVisibility(View.VISIBLE);
                 rl02.setVisibility(View.VISIBLE);
+
+                if (pInfo instanceof TestPaper) {
+                    TestPaper paper = (TestPaper) pInfo;
+                    if (paper != null) {
+                        //状态
+                        String type = paper.getType();
+                        if ("0".equals(type)) {//未布置
+                            tvBeginAnswer.setText("开始答题");
+                            tvBeginAnswer.setBackgroundResource(R.drawable.selector_for_orange_corner_rectangle);
+                            tvBeginAnswer.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                }
+                            });
+                        } else {
+                            tvBeginAnswer.setText("查看报告");
+                            tvBeginAnswer.setBackgroundResource(R.drawable.selector_for_blue_corner_rectangle01);
+                            tvBeginAnswer.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    toSeeReport(paperFocus);
+                                }
+                            });
+                        }
+                    }
+                }
+
 
                 break;
         }
@@ -535,6 +593,18 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
         vpagerTest.setOnPageChangeListener(new CustomOnPageChangeListener());
     }
 
+    /**
+     * 去查看报告
+     *
+     * @param paper 试卷信息
+     */
+    private void toSeeReport(TestPaper paper) {
+        if (paper != null) {
+            Intent intent = new Intent(getActivity(), AnswerTestPaperReportAty.class);
+            startActivity(intent);
+        }
+    }
+
     @Override
     public void doOnAfterClickMenu(int menuID, int pos) {
         switch (menuID) {
@@ -542,12 +612,8 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
                 //收集数据
                 if (paperList.size() > pos) {
                     TestPaper paper = paperList.get(pos);
-                    if (paper != null) {
-                        Intent intent = new Intent(getActivity(), AnswerTestPaperReportAty.class);
-                        startActivity(intent);
-                    }
+                    toSeeReport(paper);
                 }
-
 
                 break;
         }
@@ -669,11 +735,13 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
                     startActivityForResult(intent02, ConstantsUtils.REQUEST_CODE01);
 
                     //重新显示试卷列表
-                    switchTestShow(0);
+                    if (paperList.size() > 0) {
+                        switchTestShow(0, paperList.get(0));
+                    }
 
                     break;
                 case R.id.ll_wrapper_back_upper_level_layout_fg_test://返回上一层级
-                    switchTestShow(0);
+                    switchTestShow(0, paperFocus);
 
                     break;
             }

@@ -3,7 +3,7 @@ package com.example.attendclasstpad.model;
 /**
  * 试卷
  */
-public class TestPaper {
+public class TestPaper extends ICanGetKeyValue {
     private String ID; //试卷ID
     private String name;//试卷名称
     private String createTime;//创建时间

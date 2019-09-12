@@ -67,6 +67,16 @@
         <item name="android:paddingRight">@dimen/dimen_padding_008</item>
     </style>
 
+    <!--实心小矩形-->
+    <style name="SingBgForRectangle02" parent="android:Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/dimen_padding_006</item>
+        <item name="android:paddingBottom">@dimen/dimen_padding_006</item>
+        <item name="android:paddingLeft">@dimen/dimen_padding_008</item>
+        <item name="android:paddingRight">@dimen/dimen_padding_008</item>
+    </style>
+
     <!-- 一般列表样式(点击时无原有黄色背景效果等) -->
     <style name="NormalList">
         <item name="android:cacheColorHint">#00000000</item>

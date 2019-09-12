@@ -7,16 +7,13 @@
 
     <TextView
         android:id="@+id/tv_see_report_layout_v_test_paper_item"
+        style="@style/SingBgForRectangle02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/selector_for_blue_rectangle01"
+        android:background="@drawable/selector_for_blue_corner_rectangle01"
         android:clickable="true"
-        android:paddingLeft="@dimen/dimen_padding_008"
-        android:paddingTop="@dimen/dimen_padding_006"
-        android:paddingRight="@dimen/dimen_padding_008"
-        android:paddingBottom="@dimen/dimen_padding_006"
         android:text="查看报告"
         android:textColor="@color/white"
         android:textSize="@dimen/dimen_text_006" />

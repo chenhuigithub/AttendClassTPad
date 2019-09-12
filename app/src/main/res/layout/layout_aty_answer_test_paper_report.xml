@@ -150,7 +150,6 @@
         android:id="@+id/fl_content_layout_aty_atp_report"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/ll_wrapper_left_menu_bar_layout_activity_main"
         android:background="@android:color/white" />
 
 </LinearLayout>
