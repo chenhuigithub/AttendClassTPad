@@ -9,6 +9,7 @@ import com.example.attendclasstpad.adapter.PeriodGridAdapter;
 import com.example.attendclasstpad.model.Course;
 import com.example.attendclasstpad.model.Lesson;
 import com.example.attendclasstpad.util.ConstantsUtils;
+import com.example.attendclasstpad.util.PreferencesUtils;
 import com.example.attendclasstpad.util.Utils;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.util.VariableUtils;
@@ -107,6 +108,8 @@ public class ChoiceTeachingMaterialAty extends Activity {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 VariableUtils.periodID = periods[position];
+                //存入首选项
+                PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsUtils.PERIOD_ID, VariableUtils.periodID);
 
                 // pGdvAdapter.setCurrentPosition(position);
                 pGdvAdapter.setCurrentID(VariableUtils.periodID);
@@ -134,6 +137,8 @@ public class ChoiceTeachingMaterialAty extends Activity {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 VariableUtils.subjectID = subjects[position];
+                //存入首选项
+                PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsUtils.SUBJECT_ID, VariableUtils.subjectID);
 
                 sGdvAdapter.setCurrentID(VariableUtils.subjectID);
                 sGdvAdapter.notifyDataSetChanged();
@@ -164,6 +169,9 @@ public class ChoiceTeachingMaterialAty extends Activity {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 VariableUtils.editionID = editions[position];
+                //存入首选项
+                PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsUtils.EDITION_ID, VariableUtils.editionID);
+
 
                 // eGdvAdapter.setCurrentPosition(position);
                 eGdvAdapter.setCurrentID(VariableUtils.editionID);
@@ -196,6 +204,8 @@ public class ChoiceTeachingMaterialAty extends Activity {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 VariableUtils.modulesID = modules[position];
+                //存入首选项
+                PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsUtils.MODULE_ID, VariableUtils.modulesID);
 
                 // mGdvAdapter.setCurrentPosition(position);
                 mGdvAdapter.setCurrentID(VariableUtils.modulesID);
@@ -386,6 +396,11 @@ public class ChoiceTeachingMaterialAty extends Activity {
         VariableUtils.catalogName = name;
         catalogName = name;
         VariableUtils.catalogID = catalogID;
+
+        //存放信息，目录
+        PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsUtils.CATALOG_ID, VariableUtils.catalogID);
+        //存放信息：是否选择了教材，方便取用
+        PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsUtils.HAS_CHOICED_MATERIAL, true);
 
         setCatalogAdapter(unitIDCurr, catalogIDCurr);
 
