@@ -44,6 +44,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -51,6 +52,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.PopupWindow.OnDismissListener;
+import android.widget.Toast;
 
 /**
  * 测试
@@ -98,6 +100,8 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
 
     private SpinnerImitateAdapter mAdapter;
 
+    private TestPaperAdapter paperAdapter;
+
     private ImageView ivCursor01;// 滑动条
     private ImageView ivCursor02;// 滑动条
     private TextView tvHasChoicedNum;// 选中的题目个数
@@ -109,7 +113,9 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
     private TextView tvBeginAnswer;//开始答题/查看报告
     private ListView lvTestPaper;//试卷
     private ListView lvTestQuestion;//试题
-
+    private TextView tvDelete;//删除
+    private TextView tvCancel;//取消（退出选择状态）
+    private TextView tvChoiceAll;//全选
     private ActivityFgInterface.ICanKnowFgDoSthAboutMenu iCan;
 
     // LinearLayout mlay;
@@ -231,11 +237,24 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
                     .findViewById(R.id.lv_test_paper_layout_fg_test);
 
             iCan = (ActivityFgInterface.ICanKnowFgDoSthAboutMenu) this;
-            lvTestPaper.setAdapter(new TestPaperAdapter(getActivity(), iCan, getTestPaperData()));
+            paperAdapter = new TestPaperAdapter(getActivity(), iCan, getTestPaperData());
+            paperAdapter.setIfShowCbox(false);
+            lvTestPaper.setAdapter(paperAdapter);
 
             lvTestQuestion = (ListView) allFgView
                     .findViewById(R.id.lv_test_question_layout_fg_test);
             lvTestQuestion.setAdapter(new TestQuestionAdapter(getActivity(), getTestQuestionData(), 0));
+
+            tvDelete = (TextView) allFgView.findViewById(R.id.tv_delete_layout_fg_test);
+            tvDelete.setOnClickListener(new Listeners());
+
+            tvCancel = (TextView) allFgView.findViewById(R.id.tv_cancel_choice_layout_fg_test);
+            tvCancel.setVisibility(View.GONE);
+            tvCancel.setOnClickListener(new Listeners());
+
+            tvChoiceAll = (TextView) allFgView.findViewById(R.id.tv_choice_all_layout_fg_test);
+            tvChoiceAll.setVisibility(View.GONE);
+            tvChoiceAll.setOnClickListener(new Listeners());
 
 
             if (paperList.size() > 0) {
@@ -247,9 +266,58 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
             lvTestPaper.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (paperList.size() > 0) {
-                        switchTestShow(1, paperList.get(position));
+                    if (paperAdapter.getShowCbox()) {//选择状态
+                        TestPaper paper = paperList.get(position);
+                        if (paper.isChoiced()) {
+                            if (view.getTag() != null && 1 == (int) view.getTag()) {//长按状态
+                            } else {//非长按状态
+                                paper.setChoiced(false);
+                            }
+                        } else {
+                            paper.setChoiced(true);
+                        }
+
+                        //恢复正常状态
+                        view.setTag(0);
+
+                        if (paperAdapter != null) {
+                            paperAdapter.setIfShowCbox(true);
+                            paperAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        if (paperList.size() > 0) {
+                            switchTestShow(1, paperList.get(position));
+                        }
                     }
+                }
+            });
+
+            lvTestPaper.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    for (int i = 0; i < paperList.size(); i++) {
+                        TestPaper paper = paperList.get(i);
+                        if (paper != null) {
+                            if (i == position) {
+                                paper.setChoiced(true);
+                            } else {
+                                paper.setChoiced(false);
+                            }
+                        }
+                    }
+
+                    if (paperAdapter != null) {
+                        paperAdapter.setIfShowCbox(true);
+                        paperAdapter.notifyDataSetChanged();
+                    }
+
+                    //长按状态
+                    view.setTag(1);
+
+                    tvCancel.setVisibility(View.VISIBLE);
+                    tvChoiceAll.setVisibility(View.VISIBLE);
+
+                    return false;
                 }
             });
 
@@ -605,6 +673,25 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
         }
     }
 
+    /**
+     * 删除试卷
+     */
+    private void deletePaper() {
+        List<TestPaper> papers = new ArrayList<TestPaper>();
+        papers = paperList;
+
+        for (int i = 0; i < paperList.size(); i++) {
+            TestPaper paper = paperList.get(i);
+            if (paper != null) {
+                if (paper.isChoiced()) {
+                    papers.remove(i);
+                }
+            }
+        }
+
+        paperList = papers;
+    }
+
     @Override
     public void doOnAfterClickMenu(int menuID, int pos) {
         switch (menuID) {
@@ -742,6 +829,78 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
                     break;
                 case R.id.ll_wrapper_back_upper_level_layout_fg_test://返回上一层级
                     switchTestShow(0, paperFocus);
+
+                    break;
+
+                case R.id.tv_delete_layout_fg_test://删除
+                    boolean hasChoiced = false;
+                    for (TestPaper paper : paperList) {
+                        if (paper != null) {
+                            if (paper.isChoiced()) {
+                                hasChoiced = true;
+                            }
+                        }
+                    }
+
+                    if (hasChoiced) {//有选中删除的数据时
+                        deletePaper();
+
+                        if (paperAdapter != null) {
+                            paperAdapter.setIfShowCbox(false);
+                            paperAdapter.notifyDataSetChanged();
+                        }
+
+                        tvCancel.setVisibility(View.GONE);
+                        tvChoiceAll.setVisibility(View.GONE);
+                    } else {//没有要删除的数据时
+                        Toast.makeText(getActivity(), "长按内容删除", Toast.LENGTH_SHORT).show();
+                    }
+
+                    break;
+                case R.id.tv_cancel_choice_layout_fg_test://取消（选择状态）
+                    for (TestPaper paper : paperList) {
+                        if (paper != null) {
+                            paper.setChoiced(false);
+                        }
+                    }
+
+                    if (paperAdapter != null) {
+                        paperAdapter.setIfShowCbox(false);
+                        paperAdapter.notifyDataSetChanged();
+                    }
+
+                    tvCancel.setVisibility(View.GONE);
+                    tvChoiceAll.setVisibility(View.GONE);
+
+                    break;
+                case R.id.tv_choice_all_layout_fg_test://全选
+                    if ("全选".equals(tvChoiceAll.getText().toString().trim())) {
+                        for (TestPaper paper : paperList) {
+                            if (paper != null) {
+                                paper.setChoiced(true);
+                            }
+                        }
+                        //刷新显示
+                        if (paperAdapter != null) {
+                            paperAdapter.setIfShowCbox(true);
+                            paperAdapter.notifyDataSetChanged();
+                        }
+
+                        tvChoiceAll.setText("取消全选");
+                    } else {
+                        for (TestPaper paper : paperList) {
+                            if (paper != null) {
+                                paper.setChoiced(false);
+                            }
+                        }
+                        //刷新显示
+                        if (paperAdapter != null) {
+                            paperAdapter.setIfShowCbox(true);
+                            paperAdapter.notifyDataSetChanged();
+                        }
+
+                        tvChoiceAll.setText("全选");
+                    }
 
                     break;
             }

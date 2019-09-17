@@ -127,7 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#F9F9F9"
+            android:background="@color/light_grey"
             android:orientation="horizontal"
             android:visibility="visible">
 
@@ -318,6 +318,7 @@
             </LinearLayout>
         </RelativeLayout>
 
+
         <!-- 隔离线 -->
 
         <TextView
@@ -328,37 +329,88 @@
             android:background="@color/color_heavy_content_bg_base"
             android:visibility="gone" />
 
-        <!-- fragment滑动布局 -->
+        <RelativeLayout
+            android:id="@+id/rl_menu_layout_fg_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/light_grey"
+            android:padding="@dimen/dimen_padding_006">
 
-        <com.example.attendclasstpad.view.CustomViewpager
-            android:id="@+id/vpager_content_layout_fg_test"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_delete_layout_fg_test"
+                    style="@style/SingBgForRectangle02"
+                    android:layout_gravity="center"
+                    android:background="@drawable/selector_for_orange_corner_rectangle"
+                    android:text="刪除"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_007" />
+
+                <TextView
+                    android:id="@+id/tv_choice_all_layout_fg_test"
+                    style="@style/SingBgForRectangle02"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dimen_padding_005"
+                    android:background="@drawable/selector_for_blue_corner_rectangle01"
+                    android:text="全选"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_007" />
+
+                <TextView
+                    android:id="@+id/tv_cancel_choice_layout_fg_test"
+                    style="@style/SingBgForRectangle02"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dimen_padding_005"
+                    android:background="@drawable/selector_for_blue_corner_rectangle01"
+                    android:text="取消选择"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_007" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/rl_menu_layout_fg_test"
             android:layout_below="@id/tv_line01_layout_course_detail"
-            android:layout_gravity="center"
-            android:background="@color/white"
-            android:flipInterval="30"
-            android:padding="@dimen/dimen_padding_004"
-            android:persistentDrawingCache="animation"
-            android:visibility="gone" />
+            android:orientation="vertical">
+
+            <!-- fragment滑动布局 -->
+
+            <com.example.attendclasstpad.view.CustomViewpager
+                android:id="@+id/vpager_content_layout_fg_test"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:flipInterval="30"
+                android:padding="@dimen/dimen_padding_004"
+                android:persistentDrawingCache="animation"
+                android:visibility="gone" />
 
 
-        <ListView
-            android:id="@+id/lv_test_paper_layout_fg_test"
-            style="@style/NormalLv"
-            android:layout_below="@id/tv_line01_layout_course_detail"
-            android:layout_marginTop="1dp"
-            android:visibility="visible" />
+            <ListView
+                android:id="@+id/lv_test_paper_layout_fg_test"
+                style="@style/NormalLv"
+                android:layout_marginTop="1dp"
+                android:visibility="visible" />
 
 
-        <ListView
-            android:id="@+id/lv_test_question_layout_fg_test"
-            style="@style/NormalLv"
-            android:layout_below="@id/tv_line01_layout_course_detail"
-            android:layout_marginTop="1dp"
-            android:visibility="visible" />
+            <ListView
+                android:id="@+id/lv_test_question_layout_fg_test"
+                style="@style/NormalLv"
+                android:layout_marginTop="1dp"
+                android:visibility="visible" />
 
-
+        </LinearLayout>
     </RelativeLayout>
 
 

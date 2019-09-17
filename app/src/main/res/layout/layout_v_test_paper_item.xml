@@ -1,9 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_wrapper_all_layout_v_test_paper_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="false"
     android:focusable="false"
     android:padding="@dimen/dimen_padding_006">
+
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/cbox_layout_v_test_paper_item"
+        android:layout_width="@dimen/dimen_padding_007"
+        android:layout_height="@dimen/dimen_padding_007"
+        android:layout_centerVertical="true"
+        android:background="@drawable/selector_for_cbox"
+        android:button="@null" />
 
     <TextView
         android:id="@+id/tv_see_report_layout_v_test_paper_item"
@@ -18,11 +28,13 @@
         android:textColor="@color/white"
         android:textSize="@dimen/dimen_text_006" />
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/dimen_padding_005"
         android:layout_toLeftOf="@id/tv_see_report_layout_v_test_paper_item"
+        android:layout_toRightOf="@id/cbox_layout_v_test_paper_item"
         android:gravity="center_vertical"
         android:orientation="vertical">
 

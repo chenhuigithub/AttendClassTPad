@@ -10,6 +10,8 @@ public class TestPaper extends ICanGetKeyValue {
     private String testNum;//题目数量
     private String type;//试卷状态(0:未布置，1:正在做题，2:已做完)
 
+    private boolean isChoiced;//被选中
+
     public String getID() {
         return ID;
     }
@@ -48,5 +50,13 @@ public class TestPaper extends ICanGetKeyValue {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isChoiced() {
+        return isChoiced;
+    }
+
+    public void setChoiced(boolean choiced) {
+        isChoiced = choiced;
     }
 }

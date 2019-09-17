@@ -2,6 +2,8 @@ package com.example.attendclasstpad.adapter;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.attendclasstpad.R;
@@ -18,11 +20,30 @@ import java.util.List;
  */
 public class TestPaperAdapter extends BaseListAdapter<TestPaper> {
     private ActivityFgInterface.ICanKnowFgDoSthAboutMenu iCan;
+    private boolean showCbox;//是否选中
+
 
     public TestPaperAdapter(Context context, ActivityFgInterface.ICanKnowFgDoSthAboutMenu ican, List<TestPaper> dataList) {
         super(context, dataList);
 
         this.iCan = ican;
+    }
+
+    /**
+     * 是否显示复选框
+     *
+     * @param showCbox
+     */
+    public void setIfShowCbox(boolean showCbox) {
+        this.showCbox = showCbox;
+    }
+
+
+    /**
+     * 返回是否显示复选框的boolean值
+     */
+    public boolean getShowCbox() {
+        return showCbox;
     }
 
     @Override
@@ -32,9 +53,27 @@ public class TestPaperAdapter extends BaseListAdapter<TestPaper> {
 
     @Override
     protected void doAssignValueForView(final int position, View resultView, TestPaper dataObj) {
+        RelativeLayout rlAll = (RelativeLayout) resultView.findViewById(R.id.rl_wrapper_all_layout_v_test_paper_item);
+
         //试卷名称
         TextView tvName = (TextView) resultView.findViewById(R.id.tv_name_layout_test_paper_item);
         tvName.setText(dataObj.getName());
+
+        CheckBox cBox = (CheckBox) resultView.findViewById(R.id.cbox_layout_v_test_paper_item);
+        if (showCbox) {
+            cBox.setVisibility(View.VISIBLE);
+
+            if (dataObj.isChoiced()) {
+                cBox.setChecked(true);
+                rlAll.setBackgroundResource(R.color.light_grey);
+            } else {
+                cBox.setChecked(false);
+                rlAll.setBackgroundResource(R.color.white);
+            }
+        } else {
+            cBox.setVisibility(View.GONE);
+            rlAll.setBackgroundResource(R.color.white);
+        }
 
         //试卷状态
         TextView tvType = (TextView) resultView.findViewById(R.id.tv_type_layout_v_test_paper_item);
