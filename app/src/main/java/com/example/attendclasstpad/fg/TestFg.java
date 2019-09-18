@@ -44,7 +44,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -100,7 +99,8 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
 
     private SpinnerImitateAdapter mAdapter;
 
-    private TestPaperAdapter paperAdapter;
+    private TestPaperAdapter paperAdapter;//试卷适配器
+    private TestQuestionAdapter questionAdapter;//题目适配器
 
     private ImageView ivCursor01;// 滑动条
     private ImageView ivCursor02;// 滑动条
@@ -243,7 +243,8 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
 
             lvTestQuestion = (ListView) allFgView
                     .findViewById(R.id.lv_test_question_layout_fg_test);
-            lvTestQuestion.setAdapter(new TestQuestionAdapter(getActivity(), getTestQuestionData(), 0));
+            questionAdapter = new TestQuestionAdapter(getActivity(), getTestQuestionData(), 0);
+            lvTestQuestion.setAdapter(questionAdapter);
 
             tvDelete = (TextView) allFgView.findViewById(R.id.tv_delete_layout_fg_test);
             tvDelete.setOnClickListener(new Listeners());
@@ -256,70 +257,13 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
             tvChoiceAll.setVisibility(View.GONE);
             tvChoiceAll.setOnClickListener(new Listeners());
 
-
             if (paperList.size() > 0) {
                 paperFocus = paperList.get(0);
 
                 switchTestShow(0, paperFocus);
             }
 
-            lvTestPaper.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (paperAdapter.getShowCbox()) {//选择状态
-                        TestPaper paper = paperList.get(position);
-                        if (paper.isChoiced()) {
-                            if (view.getTag() != null && 1 == (int) view.getTag()) {//长按状态
-                            } else {//非长按状态
-                                paper.setChoiced(false);
-                            }
-                        } else {
-                            paper.setChoiced(true);
-                        }
-
-                        //恢复正常状态
-                        view.setTag(0);
-
-                        if (paperAdapter != null) {
-                            paperAdapter.setIfShowCbox(true);
-                            paperAdapter.notifyDataSetChanged();
-                        }
-                    } else {
-                        if (paperList.size() > 0) {
-                            switchTestShow(1, paperList.get(position));
-                        }
-                    }
-                }
-            });
-
-            lvTestPaper.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    for (int i = 0; i < paperList.size(); i++) {
-                        TestPaper paper = paperList.get(i);
-                        if (paper != null) {
-                            if (i == position) {
-                                paper.setChoiced(true);
-                            } else {
-                                paper.setChoiced(false);
-                            }
-                        }
-                    }
-
-                    if (paperAdapter != null) {
-                        paperAdapter.setIfShowCbox(true);
-                        paperAdapter.notifyDataSetChanged();
-                    }
-
-                    //长按状态
-                    view.setTag(1);
-
-                    tvCancel.setVisibility(View.VISIBLE);
-                    tvChoiceAll.setVisibility(View.VISIBLE);
-
-                    return false;
-                }
-            });
+            setLstvPaperListeners();
 
 
             // 科目的数据
@@ -409,6 +353,71 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
         lazyLoad();
 
         return allFgView;
+    }
+
+    /**
+     * 试卷列表点击事件
+     */
+    private void setLstvPaperListeners() {
+        lvTestPaper.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (paperAdapter.getShowCbox()) {//选择状态
+                    TestPaper paper = paperList.get(position);
+                    if (paper.isChoiced()) {
+                        if (view.getTag() != null && 1 == (int) view.getTag()) {//长按状态
+                        } else {//非长按状态
+                            paper.setChoiced(false);
+                        }
+                    } else {
+                        paper.setChoiced(true);
+                    }
+
+                    //恢复正常状态
+                    view.setTag(0);
+
+                    if (paperAdapter != null) {
+                        paperAdapter.setIfShowCbox(true);
+                        paperAdapter.notifyDataSetChanged();
+                    }
+                } else {
+                    if (paperList.size() > 0) {
+                        switchTestShow(1, paperList.get(position));
+                    }
+
+                    tvDelete.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        lvTestPaper.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                for (int i = 0; i < paperList.size(); i++) {
+                    TestPaper paper = paperList.get(i);
+                    if (paper != null) {
+                        if (i == position) {
+                            paper.setChoiced(true);
+                        } else {
+                            paper.setChoiced(false);
+                        }
+                    }
+                }
+
+                if (paperAdapter != null) {
+                    paperAdapter.setIfShowCbox(true);
+                    paperAdapter.notifyDataSetChanged();
+                }
+
+                //长按状态
+                view.setTag(1);
+
+                tvCancel.setVisibility(View.VISIBLE);
+                tvChoiceAll.setVisibility(View.VISIBLE);
+
+                return false;
+            }
+        });
     }
 
     /**
@@ -678,18 +687,19 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
      */
     private void deletePaper() {
         List<TestPaper> papers = new ArrayList<TestPaper>();
-        papers = paperList;
+        papers.addAll(paperList);
 
         for (int i = 0; i < paperList.size(); i++) {
             TestPaper paper = paperList.get(i);
             if (paper != null) {
                 if (paper.isChoiced()) {
-                    papers.remove(i);
+                    papers.remove(paper);
                 }
             }
         }
 
-        paperList = papers;
+        paperList.clear();
+        paperList.addAll(papers);
     }
 
     @Override
@@ -796,6 +806,7 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
         }
     }
 
+
     /**
      * 控件监听
      *
@@ -829,6 +840,7 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
                     break;
                 case R.id.ll_wrapper_back_upper_level_layout_fg_test://返回上一层级
                     switchTestShow(0, paperFocus);
+                    tvDelete.setVisibility(View.VISIBLE);
 
                     break;
 
@@ -938,6 +950,7 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
             return;
         }
     }
+
 
     @Override
     public void onPause() {

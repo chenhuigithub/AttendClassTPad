@@ -16,11 +16,22 @@ import java.util.List;
  * 试题列表适配器
  */
 public class TestQuestionAdapter extends BaseListAdapter<Test> {
-    int type = 0;//默认是答题状态（1为查看答案解析状态）
+    private int type = 0;//默认是答题状态（1为查看答案解析状态）
+
+    private boolean showCbox;//是否选中
 
     public TestQuestionAdapter(Context context, List<Test> dataList, int type) {
         super(context, dataList);
         this.type = type;
+    }
+
+    /**
+     * 是否显示复选框
+     *
+     * @param showCbox
+     */
+    public void setIfShowCbox(boolean showCbox) {
+        this.showCbox = showCbox;
     }
 
     @Override
