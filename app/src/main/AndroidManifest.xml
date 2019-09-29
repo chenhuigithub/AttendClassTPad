@@ -23,7 +23,6 @@
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
@@ -93,7 +92,25 @@
             android:name="com.example.attendclasstpad.aty.AnswerTestPaperReportAty"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
+            <!-- <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>-->
+        </activity>
+
+
+        <!-- 学生个人答卷情况 -->
+        <activity
+            android:name="com.example.attendclasstpad.aty.StudentAnswerPaperSituationAty"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.Android123">
+
+
+        </activity>
     </application>
 
 </manifest>

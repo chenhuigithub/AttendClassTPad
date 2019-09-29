@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_wrapper_all_layout_v_histogram_item01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_01_layout_histogram_item01"
+            android:layout_width="25dp"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/orange01"
+            android:padding="10dp"
+            android:textColor="@color/color_text_content"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_02_layout_histogram_item01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_01_layout_histogram_item01"
+            android:padding="8dp"
+            android:text="20"
+            android:textColor="@color/color_text_content"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+</LinearLayout>

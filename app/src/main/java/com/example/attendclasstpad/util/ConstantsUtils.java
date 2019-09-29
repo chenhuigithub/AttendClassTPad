@@ -87,4 +87,9 @@ public class ConstantsUtils {
      * 是否已选择了教材信息
      */
     public final static String HAS_CHOICED_MATERIAL = "HAS_CHOICED_MATERIAL";
+
+    /**
+     * 试卷信息
+     */
+    public final static String PAPER_INFO = "PAPER_INFO";
 }

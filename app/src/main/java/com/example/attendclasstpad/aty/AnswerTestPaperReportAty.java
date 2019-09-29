@@ -12,7 +12,11 @@ import android.widget.TextView;
 import com.example.attendclasstpad.R;
 import com.example.attendclasstpad.fg.AnswerTestPaperQuestionAnalysisFg;
 import com.example.attendclasstpad.fg.AnswerTestPaperStudentAnalysisFg;
+import com.example.attendclasstpad.model.TestPaper;
+import com.example.attendclasstpad.util.ConstantsUtils;
 import com.example.attendclasstpad.view.CustomViewpager;
+
+import java.io.Serializable;
 
 /**
  * 答卷（答题结果）报告
@@ -21,6 +25,8 @@ public class AnswerTestPaperReportAty extends FragmentActivity {
     private int currIndex = 0;// 当前页卡编号
     private int offset = 0;// 动画图片偏移量
     private int position_one;
+
+    private TestPaper paper;//试卷信息
 
     private FragmentManager manager;// Fragment工具
 
@@ -38,10 +44,15 @@ public class AnswerTestPaperReportAty extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_aty_answer_test_paper_report);
 
+        paper = new TestPaper();
         manager = getSupportFragmentManager();//  FragmentManager调用v4包内的
 
-        llBackUpperLevel = (LinearLayout) findViewById(R.id.ll_wrapper_back_upper_level_layout_aty_atp_report);
+        dealWithExtras();
 
+        llBackUpperLevel = (LinearLayout) findViewById(R.id.ll_wrapper_back_upper_level_layout_aty_atp_report);
+        //试卷名称
+        TextView tvPaperName = (TextView) findViewById(R.id.tv_paper_name_layout_answer_test_paper_report);
+        tvPaperName.setText(paper.getName());
 
         sAnalysis = new AnswerTestPaperStudentAnalysisFg();// 学生分析
         qAnalysis = new AnswerTestPaperQuestionAnalysisFg();// 试题分析
@@ -54,6 +65,20 @@ public class AnswerTestPaperReportAty extends FragmentActivity {
         tvStudentAnalysis.performClick();
     }
 
+    /**
+     * 处理接收过来的数据
+     */
+    private void dealWithExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) {
+            return;
+        }
+
+        Serializable ser = bundle.getSerializable(ConstantsUtils.PAPER_INFO);
+        if (ser != null) {
+            paper = (TestPaper) ser;
+        }
+    }
 
     /**
      * 初始化切换布局的头标

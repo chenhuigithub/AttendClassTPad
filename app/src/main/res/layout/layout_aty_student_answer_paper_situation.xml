@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_wrapper_01_layout_aty_saps"
+        android:layout_width="match_parent"
+        android:background="@color/light_grey"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl_wrapper_close_layout_aty_saps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:padding="@dimen/dimen_padding_005">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_height_006"
+                android:layout_height="@dimen/dimen_height_006"
+                android:background="@drawable/error"
+                android:scaleType="fitXY" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tv_paper_name_paper_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_padding_005"
+            android:layout_toLeftOf="@id/rl_wrapper_close_layout_aty_saps"
+            android:padding="@dimen/dimen_padding_005"
+            android:text="沁园春·长沙 测试卷1"
+            android:textColor="@color/color_text_content" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/v_line01_layout_aty_saps"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/rl_wrapper_01_layout_aty_saps"
+        android:background="@color/light_grey01"></View>
+
+    <LinearLayout
+        android:id="@+id/ll_wrapper_02_layout_aty_saps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/v_line01_layout_aty_saps"
+        android:layout_marginLeft="@dimen/dimen_padding_008"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_padding_005">
+
+        <ImageView
+            android:layout_width="31dp"
+            android:layout_height="@dimen/dimen_height_007"
+            android:background="@drawable/user_logo"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_padding_005"
+            android:layout_toLeftOf="@id/rl_wrapper_close_layout_aty_saps"
+            android:padding="@dimen/dimen_padding_005"
+            android:text="燕小乙"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_008" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_wrapper_03_layout_aty_saps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/ll_wrapper_02_layout_aty_saps"
+        android:layout_gravity="right|center"
+        android:layout_marginRight="@dimen/dimen_padding_008"
+        android:layout_toRightOf="@id/ll_wrapper_02_layout_aty_saps"
+        android:clickable="true"
+        android:gravity="right|center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_padding_005">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_padding_005"
+            android:layout_toLeftOf="@id/rl_wrapper_close_layout_aty_saps"
+            android:text="答题数："
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_008" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_padding_005"
+            android:layout_toLeftOf="@id/rl_wrapper_close_layout_aty_saps"
+            android:padding="@dimen/dimen_padding_005"
+            android:text="6"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dimen_text_008" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_padding_005"
+            android:layout_toLeftOf="@id/rl_wrapper_close_layout_aty_saps"
+            android:text="错题数："
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_008" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_padding_005"
+            android:layout_toLeftOf="@id/rl_wrapper_close_layout_aty_saps"
+            android:padding="@dimen/dimen_padding_005"
+            android:text="2"
+            android:textColor="@color/red"
+            android:textSize="@dimen/dimen_text_008" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_padding_005"
+            android:layout_toLeftOf="@id/rl_wrapper_close_layout_aty_saps"
+            android:text="正确率："
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_008" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_padding_005"
+            android:layout_toLeftOf="@id/rl_wrapper_close_layout_aty_saps"
+            android:padding="@dimen/dimen_padding_005"
+            android:text="66.87%"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dimen_text_008" />
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/lv_test_question_layout_saps"
+        style="@style/NormalLv"
+        android:layout_below="@id/ll_wrapper_02_layout_aty_saps"
+        android:layout_marginTop="@dimen/dimen_padding_002"
+        android:visibility="visible" />
+
+</RelativeLayout>

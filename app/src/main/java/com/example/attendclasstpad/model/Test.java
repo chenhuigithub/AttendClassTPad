@@ -1,11 +1,13 @@
 package com.example.attendclasstpad.model;
 
+import java.io.Serializable;
+
 /**
  * 题目模型类
  *
  * @author chenhui 2019.04.04
  */
-public class Test {
+public class Test implements Serializable {
     private String id;// 唯一ID
     private String title;// 题目标题
     private String content;// 题目内容

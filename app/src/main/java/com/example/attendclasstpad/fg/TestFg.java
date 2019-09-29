@@ -1,5 +1,6 @@
 package com.example.attendclasstpad.fg;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,10 +63,6 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
     private boolean hasLoadOnce = false;// 是否已被加载过一次，第二次就不再去请求数据了
     private WindowManager.LayoutParams lp;
 
-    private View allFgView;// 总布局
-    private TextView tvElect;// 选择题
-    private TextView tvPictureAnswer;// 拍照答题
-    private CustomViewpager vpagerTest;//滑动布局
     private int currIndex = 0;// 当前页卡编号
     private int offset = 0;// 动画图片偏移量
     private LinearLayout llCursor;// 滑动条
@@ -73,26 +70,30 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
     private int bottomLineWidth;
     private int position_one;
     private List<String> courseList;// 设置数据
-    private List<Test> testList;// 题目数据
+    private List<Test> questionList;// 题目数据
     private List<TestPaper> paperList;//试卷数据
     private TestPaper paperFocus;//当前选中的试卷
 
     private String catalogIDCurr = "";// 目录ID
     private String catalogNameCurr = "";// 目录名称
 
+    private List<String> conditionList;// 筛选条件列表
+    private String tabNameIsFocus = "";// tab是否被选中
+
+    private int hasChoicedTestNum = 0;// 已选中的题目数
+    private Animation arrowRotateAnim;// 箭头的旋转动画
+    private Animation arrowRotateAnim02;// 箭头的旋转动画
+
+    private View allFgView;// 总布局
+    private TextView tvElect;// 选择题
+    private TextView tvPictureAnswer;// 拍照答题
+    private CustomViewpager vpagerTest;//滑动布局
     private TextView tvTitleName;// 标题栏文字
     private TextView tvSwitch;// 切换
     private BgDarkPopupWindow window;// 弹框
     private LinearLayout llSetting;// 设置
     private ImageView ivArrow;// tab箭头
-
-    private List<String> conditionList;// 筛选条件列表
-
-    private String tabNameIsFocus = "";// tab是否被选中
     private ListView lstv;
-    private int hasChoicedTestNum = 0;// 已选中的题目数
-    private Animation arrowRotateAnim;// 箭头的旋转动画
-    private Animation arrowRotateAnim02;// 箭头的旋转动画
 
     private TextView tvClicked;// 当前点击的tab文字
     // private ImageView imgvArrowUp;
@@ -133,7 +134,7 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
 
                     Object obj = msg.obj;
                     if (obj != null) {
-                        testList = (List<Test>) obj;
+                        questionList = (List<Test>) obj;
                     }
 
                     break;
@@ -143,16 +144,16 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
 
                     Object obj1 = msg.obj;
                     if (obj1 != null) {
-                        testList = (List<Test>) obj1;
+                        questionList = (List<Test>) obj1;
                     }
 
                     break;
                 case ConstantsUtils.CHOICE_ALL_TEST:// 选中全部题目
                     Object obj2 = msg.obj;
                     if (obj2 != null) {
-                        testList = (List<Test>) obj2;
+                        questionList = (List<Test>) obj2;
                     }
-                    hasChoicedTestNum = testList.size();
+                    hasChoicedTestNum = questionList.size();
 
                     tvHasChoicedNum.setText(String.valueOf(hasChoicedTestNum));
 
@@ -173,7 +174,7 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
             allFgView = inflater.inflate(R.layout.layout_fg_test, null);
 
             paperList = new ArrayList<TestPaper>();
-            testList = new ArrayList<Test>();
+            questionList = new ArrayList<Test>();
 
             //设置
             llSetting = (LinearLayout) allFgView
@@ -243,7 +244,7 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
 
             lvTestQuestion = (ListView) allFgView
                     .findViewById(R.id.lv_test_question_layout_fg_test);
-            questionAdapter = new TestQuestionAdapter(getActivity(), getTestQuestionData(), 0);
+            questionAdapter = new TestQuestionAdapter(getActivity(), paperList.get(0).getQuestionList(), 0);
             lvTestQuestion.setAdapter(questionAdapter);
 
             tvDelete = (TextView) allFgView.findViewById(R.id.tv_delete_layout_fg_test);
@@ -265,12 +266,11 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
 
             setLstvPaperListeners();
 
-
             // 科目的数据
             String[] names1 = getResources().getStringArray(R.array.arrays_set);
             courseList = new ArrayList<String>();
             conditionList = new ArrayList<String>();
-            testList = new ArrayList<Test>();
+            questionList = new ArrayList<Test>();
 
             for (int i = 0; i < names1.length; i++) {
                 courseList.add(names1[i]);
@@ -362,19 +362,23 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
         lvTestPaper.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                paperFocus = paperList.get(position);
                 if (paperAdapter.getShowCbox()) {//选择状态
-                    TestPaper paper = paperList.get(position);
-                    if (paper.isChoiced()) {
+                    if (paperFocus != null && paperFocus.isChoiced()) {
                         if (view.getTag() != null && 1 == (int) view.getTag()) {//长按状态
                         } else {//非长按状态
-                            paper.setChoiced(false);
+                            paperFocus.setChoiced(false);
                         }
                     } else {
-                        paper.setChoiced(true);
+                        paperFocus.setChoiced(true);
                     }
 
                     //恢复正常状态
                     view.setTag(0);
+
+                    if (paperFocus != null) {
+                        questionList = paperFocus.getQuestionList();
+                    }
 
                     if (paperAdapter != null) {
                         paperAdapter.setIfShowCbox(true);
@@ -433,6 +437,8 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
             paper.setCreateTime("2019/6/8");
             paper.setTestNum("10");
             paper.setType(String.valueOf(i - 1));
+            paper.setQuestionList(getTestQuestionData());
+
             paperList.add(paper);
         }
         return paperList;
@@ -449,15 +455,15 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
             test.setId("key" + i);
             test.setContent(i + ".以下历史事件中，与关羽无关的是（）：\n Ａ：单刀赴会　Ｂ：水淹七军　Ｃ：大意失荆州　Ｄ：七擒七纵 \n 2：“东风不与周郎便，铜雀春深锁二乔”。这首诗的作者生活的年代与诗中所描述的历史事件发生的年代大约相隔了（）：\n Ａ：４００年　Ｂ：５００年　 Ｃ：６００年　Ｄ：８００年");
             test.setAnalysis("七擒孟获，又称南中平定战，是建兴三年蜀汉丞相诸葛亮对南中发动平定南中的战争。当时朱褒、雍闿、高定等人叛变，南中豪强孟获亦有参与，最后诸葛亮亲率大军南下，平定南中。");
-            testList.add(test);
+            questionList.add(test);
 
 //            paper.setName("1.沁园春·长沙 测试卷" + i);
 //            paper.setCreateTime("2019/6/8");
 //            paper.setTestNum("10");
 //            paper.setType(String.valueOf(i - 1));
-            testList.add(test);
+            questionList.add(test);
         }
-        return testList;
+        return questionList;
     }
 
     /**
@@ -678,6 +684,7 @@ public class TestFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICan
     private void toSeeReport(TestPaper paper) {
         if (paper != null) {
             Intent intent = new Intent(getActivity(), AnswerTestPaperReportAty.class);
+            intent.putExtra(ConstantsUtils.PAPER_INFO, (Serializable) paper);
             startActivity(intent);
         }
     }

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:clickable="false"
+    android:orientation="horizontal"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/tv_yname_layout_v_histogram_test_analysis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_padding_006"
+        android:padding="@dimen/dimen_padding_006"
+        android:text="人数"
+        android:textColor="@color/color_text_content"
+        android:textSize="@dimen/dimen_text_006" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_option_layout_v_histogram_answer_analysis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/v_xline_layout_v_histogram_answer_analysis"
+        android:layout_alignRight="@id/v_xline_layout_v_histogram_answer_analysis"
+        android:layout_marginTop="@dimen/dimen_padding_005"
+        android:layout_toRightOf="@+id/v_yline_layout_v_histogram_answer_analysis"
+        android:clickable="false"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/dimen_padding_006"
+        android:paddingBottom="@dimen/dimen_padding_006"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_a_layout_v_histogram_answer_analysis"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="A"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <TextView
+            android:id="@+id/tv_b_layout_v_histogram_answer_analysis"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="B"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <TextView
+            android:id="@+id/tv_c_layout_v_histogram_answer_analysis"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="C"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <TextView
+            android:id="@+id/tv_d_layout_v_histogram_answer_analysis"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="D"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <TextView
+            android:id="@+id/tv_unselected_layout_v_histogram_answer_analysis"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="未选"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/dimen_text_007" />
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/v_yline_layout_v_histogram_answer_analysis"
+        android:layout_width="2dp"
+        android:layout_height="200dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/tv_yname_layout_v_histogram_test_analysis"
+        android:background="@android:color/black" />
+
+
+    <!--柱状图内容-->
+    <LinearLayout
+        android:id="@+id/ll_wrapper_01_layout_v_histogram_answer_analysis"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@id/v_yline_layout_v_histogram_answer_analysis"
+        android:layout_toRightOf="@id/v_yline_layout_v_histogram_answer_analysis"
+        android:background="@color/light_grey"
+        android:clickable="false"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <!--A-->
+        <LinearLayout
+            android:id="@+id/ll_wrapper_a_layout_v_histogram_answer_analysis"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dimen_padding_006">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8"
+                android:textColor="@color/color_text_content"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="25dp"
+                android:layout_height="160dp"
+                android:background="@color/orange01"
+                android:textColor="@color/color_text_content" />
+        </LinearLayout>
+
+        <!--B-->
+        <LinearLayout
+            android:id="@+id/ll_wrapper_b_layout_v_histogram_answer_analysis"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dimen_padding_006">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6"
+                android:textColor="@color/color_text_content"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="25dp"
+                android:layout_height="120dp"
+                android:background="@color/orange01"
+                android:textColor="@color/color_text_content"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!--C-->
+        <LinearLayout
+            android:id="@+id/ll_wrapper_c_layout_v_histogram_answer_analysis"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dimen_padding_006">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:textColor="@color/color_text_content"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="25dp"
+                android:layout_height="40dp"
+                android:background="@color/orange01"
+                android:textColor="@color/color_text_content"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!--D-->
+        <LinearLayout
+            android:id="@+id/ll_wrapper_d_layout_v_histogram_answer_analysis"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dimen_padding_006">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:textColor="@color/color_text_content"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="25dp"
+                android:layout_height="80dp"
+                android:background="@color/blue"
+                android:textColor="@color/color_text_content"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!--未选-->
+        <LinearLayout
+            android:id="@+id/ll_wrapper_unselected_layout_v_histogram_answer_analysis"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dimen_padding_006">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/color_text_content"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="25dp"
+                android:layout_height="0dp"
+                android:background="@color/orange01"
+                android:textColor="@color/color_text_content"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/v_xline_layout_v_histogram_answer_analysis"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/ll_wrapper_01_layout_v_histogram_answer_analysis"
+        android:layout_alignLeft="@id/ll_wrapper_01_layout_v_histogram_answer_analysis"
+        android:layout_alignRight="@id/ll_wrapper_01_layout_v_histogram_answer_analysis"
+        android:layout_marginTop="@dimen/dimen_padding_001"
+        android:background="@android:color/black" />
+
+    <TextView
+        android:id="@+id/tv_xname_layout_v_histogram_answer_analysis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/v_yline_layout_v_histogram_answer_analysis"
+        android:padding="@dimen/dimen_padding_006"
+        android:text="选项"
+        android:textColor="@color/color_text_content"
+        android:textSize="@dimen/dimen_text_006" />
+
+    <TextView
+        android:id="@+id/tv_student_name_layout_v_histogram_answer_analysis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_option_layout_v_histogram_answer_analysis"
+        android:padding="@dimen/dimen_padding_006"
+        android:text="学员：..."
+        android:textColor="@color/color_text_content"
+        android:textSize="@dimen/dimen_text_007"
+        android:visibility="visible" />
+
+
+</RelativeLayout>
