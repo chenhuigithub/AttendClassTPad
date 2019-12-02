@@ -1,10 +1,17 @@
 package com.example.attendclasstpad.callback;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.Picture;
 import android.view.View;
 import android.widget.AdapterView;
+
+import com.example.attendclasstpad.model.Classes;
+import com.example.attendclasstpad.model.KeyValue;
+import com.example.attendclasstpad.model.TestData;
 
 /**
  * 回调接口的定义类
@@ -49,6 +56,116 @@ public class InterfacesCallback {
          * 获知信息
          */
         public void getInfo(String str);
+    }
+
+    /**
+     * 交互接口：传递KeyValue信息
+     *
+     * @author zhaochenhui_2017.05.24
+     */
+    public interface ICanKnowSth3 {
+        /**
+         * 获知信息
+         */
+        public void doSth(KeyValue kv);
+    }
+
+    /**
+     * 交互接口：传递题目信息
+     *
+     * @author zhaochenhui_2017.05.24
+     */
+    public interface ICanKnowSth4 {
+        /**
+         * 获知信息
+         */
+        public void doSth(TestData test);
+    }
+
+
+    /**
+     * 交互接口：传递题目信息
+     *
+     * @author zhaochenhui_2017.05.24
+     */
+    public interface ICanKnowSth5 {
+        /**
+         * 获知信息
+         */
+        public void doSth(ArrayList<TestData> list);
+    }
+
+    /**
+     * 交互接口：传递图片信息
+     *
+     * @author zhaochenhui_2019.10.30
+     */
+    public interface ICanKnowSth6 {
+        /**
+         * 获知信息
+         */
+        public void doSth(Picture pic);
+    }
+
+    /**
+     * 交互接口：传递图片信息
+     *
+     * @author zhaochenhui_2019.10.30
+     */
+    public interface ICanKnowSth7 {
+        /**
+         * 获知信息
+         */
+        public void doSth(ArrayList<Picture> list);
+    }
+
+    /**
+     * 交互接口：传递图片信息
+     *
+     * @author zhaochenhui_2019.10.30
+     */
+    public interface ICanKnowSth8 {
+        /**
+         * 获知信息
+         */
+        public void doSth(ArrayList<String> list);
+    }
+
+    /**
+     * 交互接口：传递图片信息
+     *
+     * @author zhaochenhui_2019.10.30
+     */
+//    public interface ICanKnowSth9 {
+//        /**
+//         * 获知信息
+//         */
+//        public void doSth(ArrayList<DataInfo> list);
+//    }
+
+    /**
+     * 交互接口：传递图片信息
+     *
+     * @author zhaochenhui_2019.10.30
+     */
+    public interface ICanKnowSth10 {
+        /**
+         * 获知信息
+         */
+        public void doSth(String key, HashMap<Object, Object> map);
+    }
+
+
+    /**
+     * 传递Class格式信息
+     *
+     * @author zhaochenhui_2017.05.24
+     */
+    public interface ICanKnowSth11 {
+        /**
+         * 获知信息
+         */
+        public void getInfo(Classes classes);
     }
 
     /**

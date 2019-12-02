@@ -5,12 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -19,18 +24,25 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.attendclasstpad.R;
+import com.example.attendclasstpad.callback.InterfacesCallback;
 import com.example.attendclasstpad.fg.AttendClassDetailFg;
 import com.example.attendclasstpad.fg.ClassesFg;
 import com.example.attendclasstpad.fg.TestFg;
 import com.example.attendclasstpad.callback.ActivityFgInterface.JumpCallback;
+import com.example.attendclasstpad.model.Classes;
 import com.example.attendclasstpad.util.ActivityUtils;
+import com.example.attendclasstpad.util.ConstantsForPreferencesUtils;
 import com.example.attendclasstpad.util.ConstantsUtils;
+import com.example.attendclasstpad.util.PicFormatUtils;
 import com.example.attendclasstpad.util.PreferencesUtils;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.util.VariableUtils;
+import com.example.attendclasstpad.util.ViewUtils;
+import com.example.attendclasstpad.view.CustomRoundImageView;
 
 /**
  * 主界面
@@ -49,8 +61,11 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
     String subjectIDCurr = "";
     String editionIDCurr = "";
     String moduleIDCurr = "";
+    private Classes classes;//班级
+    private boolean hasLogined = false;//是否已登录，默认为未登录
 
     private static ClassesFg mClassesFg = null;
+    private InterfacesCallback.ICanKnowSth11 callbackForClass;//班级 回调
 
     private FragmentManager manager;// Fragment工具
     private ClassesFg cFg; // 班级
@@ -59,6 +74,8 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
 
     private BroadcastReceiver receiver;// 广播
     private LocalBroadcastManager broadcastManager;// 广播接收
+    private Handler uiHandler;// 主线程
+    private PicFormatUtils pUtils;// 图片工具
 
     private LinearLayout llClasses;// 班级
     private LinearLayout llAttendClass;// 上课
@@ -67,6 +84,12 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
     private LinearLayout llRightTriangle02;// 上课按钮右三角
     private LinearLayout llRightTriangle03;// 测试按钮右三角
     private LinearLayout llUnlocked;// 全体解锁
+
+    ViewUtils vUtils;
+
+    private Button btnLogin;// 登录
+    private CustomRoundImageView ivUserLogo;//用户头像
+    private TextView tvName;// 登录名
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,26 +100,37 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         setContentView(R.layout.activity_main);
-        llRightTriangle01 = (LinearLayout) findViewById(R.id.ll_right_triangle01_layout_activity_main);
-        llRightTriangle02 = (LinearLayout) findViewById(R.id.ll_right_triangle02_layout_activity_main);
-        llRightTriangle03 = (LinearLayout) findViewById(R.id.ll_right_triangle03_layout_activity_main);
-        View in01 = (View) findViewById(R.id.in_layout_activity_main);
-        // 登录
-        Button btnLogin = (Button) in01
-                .findViewById(R.id.btn_login_layout_fg_menu_login);
-        btnLogin.setOnClickListener(new Listeners());
+
+        pUtils = new PicFormatUtils();
+        res = getResources();
+        vUtils = new ViewUtils(this);
+        classes = new Classes();
 
         // 加入栈
         ActivityUtils utils = new ActivityUtils();
         utils.addActivity(this);
 
-        res = getResources();
 
+        llRightTriangle01 = (LinearLayout) findViewById(R.id.ll_right_triangle01_layout_activity_main);
+        llRightTriangle02 = (LinearLayout) findViewById(R.id.ll_right_triangle02_layout_activity_main);
+        llRightTriangle03 = (LinearLayout) findViewById(R.id.ll_right_triangle03_layout_activity_main);
+        View in01 = (View) findViewById(R.id.in_layout_activity_main);
+        //登录
+        btnLogin = (Button) in01.findViewById(R.id.btn_login_layout_fg_menu_login);
+        //用户头像
+        ivUserLogo = (CustomRoundImageView) in01.findViewById(R.id.iv_user_logo_layout_fg_menu_login);
+        //登录名
+        tvName = (TextView) in01
+                .findViewById(R.id.tv_user_name_layout_fg_menu_login);
+        btnLogin.setOnClickListener(new Listeners());
+
+        initHandler();
         initBottomBar();
 
         cFg = new ClassesFg();
-        mClassesFg = cFg;
+        callbackForClass = (InterfacesCallback.ICanKnowSth11) cFg;
 
+        mClassesFg = cFg;
 //        aFg = new AttendClassDetailFg();
         tFg = new TestFg();
 
@@ -120,6 +154,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(ConstantsUtils.ACQUIRE_MATERIAL_INFO);// 获取教材信息
+        filter.addAction(ConstantsUtils.REFRESH_USER_INFO);//刷新用户信息
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -144,8 +179,41 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                     if (!ValidateFormatUtils.isEmpty(subjectID)) {
                         MainActivity.this.subjectIDCurr = subjectID;
                     }
-                }
+                } else if (ConstantsUtils.REFRESH_USER_INFO.equals(action)) {//刷新用户信息
+                    Bundle bundle = intent.getExtras();
+                    if (bundle == null) {
+                        return;
+                    }
 
+                    Boolean hasLogined1 = bundle.getBoolean(ConstantsUtils.HAS_LOGINED);//是否登录的标志
+                    if (hasLogined1 != null) {
+                        hasLogined = hasLogined1;
+
+                        if (hasLogined) {//已登录
+                            String loginName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.LOGIN_NAME);
+                            // 设置头像
+                            String headPicUrl = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.USER_HEAD_PIC_URL);
+                            setLogined(loginName, headPicUrl);
+
+                            String cName = bundle.getString(ConstantsUtils.CLASS_NAME);
+                            if (!TextUtils.isEmpty(cName)) {
+                                classes.setName(cName);
+                            }
+
+                            String cID = bundle.getString(ConstantsUtils.CLASS_NAME);
+                            if (!TextUtils.isEmpty(cID)) {
+                                classes.setId(cID);
+                            }
+                        } else {//未登录或退出登录
+                            setLogout();
+                        }
+                    }
+
+
+                    if (callbackForClass != null) {
+                        callbackForClass.getInfo(classes);
+                    }
+                }
             }
         };
         broadcastManager.registerReceiver(receiver, filter);
@@ -198,7 +266,6 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                 // 隐藏掉解锁按钮
                 llUnlocked.setVisibility(View.INVISIBLE);
 
-
                 boolean hasChoicedMaterial = PreferencesUtils.acquireBooleanInfoFromPreferences(MainActivity.this, ConstantsUtils.HAS_CHOICED_MATERIAL);
                 if (hasChoicedMaterial) {
                     aFg = new AttendClassDetailFg(VariableUtils.catalogID,
@@ -211,7 +278,8 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                     intent.putExtra(ConstantsUtils.CATALOG_ID, catalogID);
                     intent.putExtra(ConstantsUtils.CATALOG_NAME, catalogName);
                     intent.putExtra(ChoiceTeachingMaterialAty.CATALOG_POS, 0);
-                    startActivityForResult(intent, ConstantsUtils.REQUEST_CODE01);
+//                    startActivityForResult(intent, ConstantsUtils.REQUEST_CODE01);
+                    startActivity(intent);
                 }
             }
         });
@@ -302,25 +370,64 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
     }
 
     /**
-     * 监听
+     * 设置登录状态下的布局
      *
-     * @author chenhui
+     * @param loginName
      */
-    private class Listeners implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btn_login_layout_fg_menu_login:// 退出登录
-                    Intent intent = new Intent(MainActivity.this,
-                            LoginActivity.class);
-                    startActivity(intent);
-
-                    finish();
-
-                    break;
-            }
+    private void setLogined(String loginName, String headPicUrl) {
+        if (!TextUtils.isEmpty(loginName)) {
+            tvName.setText(loginName);
         }
+        btnLogin.setText("退出登录");
+
+        vUtils.showLoadingDialog("");
+        pUtils.getBitmap(headPicUrl, uiHandler);
     }
+
+    /**
+     * 设置未登录状态下的布局
+     */
+    private void setLogout() {
+        tvName.setText("老师您好");
+        btnLogin.setText("点击登录");
+        ivUserLogo.setImageDrawable(res.getDrawable(R.drawable.user_logo));
+
+        classes.setId("");
+        classes.setName("");
+    }
+
+    /**
+     * 初始化线程
+     */
+    private void initHandler() {
+        uiHandler = new Handler(getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case PicFormatUtils.SIGN_FOR_BITMAP:
+                        // 接收老师头像并显示
+                        Object obj = msg.obj;
+                        if (obj != null && obj instanceof Bitmap) {
+                            Bitmap picBm = (Bitmap) obj;
+                            Drawable draw = pUtils.getDrawable(picBm);
+                            if (draw != null) {
+                                ivUserLogo.setImageDrawable(draw);
+                            } else {
+                                ivUserLogo.setImageDrawable(getResources()
+                                        .getDrawable(R.drawable.ic_launcher_background));
+                            }
+                        }
+                        ivUserLogo.setClickable(true);
+
+                        vUtils.dismissDialog();
+
+                        break;
+                }
+            }
+        };
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -347,7 +454,6 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
         }
     }
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -361,5 +467,24 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 监听
+     *
+     * @author chenhui
+     */
+    private class Listeners implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_login_layout_fg_menu_login://登录/退出登录
+                    Intent intent = new Intent(MainActivity.this,
+                            LoginActivity.class);
+                    startActivity(intent);
+
+                    break;
+            }
+        }
     }
 }

@@ -92,4 +92,56 @@ public class ConstantsUtils {
      * 试卷信息
      */
     public final static String PAPER_INFO = "PAPER_INFO";
+
+    /**
+     * 类型、状态
+     */
+    public static final String TYPE = "type";
+
+    /**
+     * 刷新显示用户信息
+     */
+    public static final String REFRESH_USER_INFO = "REFRESH_USER_INFO";
+
+    /**
+     * INTENT_01
+     */
+    public static final int INTENT_01 = 11;
+
+    /**
+     * 登录名
+     */
+    public final static String LOGIN_NAME = "LOGIN_NAME";
+
+    /**
+     * 登录密码
+     */
+    public final static String LOGIN_PSD = "LOGIN_PSD";
+
+    /**
+     * 头像网络路径
+     */
+    public final static String USER_HEAD_PIC_URL = "USER_HEAD_PIC_URL";
+
+    /**
+     * 班级名称
+     */
+    public final static String CLASS_NAME = "CLASS_NAME";
+
+    /**
+     * 班级ID
+     */
+    public final static String CLASS_ID = "CLASS_ID";
+
+    /**
+     * 标志
+     */
+    public final static String SIGN = "SIGN";
+
+
+    /**
+     * 是否已登录
+     */
+    public final static String HAS_LOGINED = "HAS_LOGINED";
+
 }

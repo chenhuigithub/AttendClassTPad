@@ -9,12 +9,14 @@
     android:orientation="vertical"
     android:padding="10dp" >
 
-    <ImageView
+    <com.example.attendclasstpad.view.CustomRoundImageView
         android:id="@+id/iv_user_logo_layout_fg_menu_login"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:background="@drawable/user_logo"
-        android:scaleType="fitXY" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/user_logo" >
+    </com.example.attendclasstpad.view.CustomRoundImageView>
 
     <TextView
         android:id="@+id/tv_user_name_layout_fg_menu_login"
@@ -35,7 +37,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp"
-        android:text="退出登录"
+        android:text="立即登录"
         android:textColor="@color/white"
         android:textSize="@dimen/dimen_text_006" />
 

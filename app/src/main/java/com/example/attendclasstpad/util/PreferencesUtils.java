@@ -3,6 +3,9 @@ package com.example.attendclasstpad.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * 首选项工具类
@@ -11,7 +14,7 @@ public class PreferencesUtils {
     /**
      * 首选项文件名称
      */
-    public static final String preferencesFiledName = "Say365New";
+    public static final String preferencesFiledName = "AttendClassTPad";
 
     /**
      * 存储信息到首选项
@@ -66,5 +69,12 @@ public class PreferencesUtils {
         SharedPreferences preferences = (context.getApplicationContext()).getSharedPreferences(preferencesFiledName, Context.MODE_PRIVATE);
         boolean value = preferences.getBoolean(key, false);
         return value;
+    }
+
+    public static void saveBase64ToPreferences(Context context, String key, Bitmap bm) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 50, bos);
+        String base64 = new String(android.util.Base64.encodeToString(bos.toByteArray(), android.util.Base64.DEFAULT));
+        saveInfoToPreferences(context, key, base64);
     }
 }

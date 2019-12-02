@@ -8,11 +8,13 @@
     android:padding="@dimen/dimen_padding_003">
 
     <ImageView
+        android:id="@+id/iv_logo_layout_adapter_item_for_class_name"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:background="@drawable/class_logo" />
 
     <TextView
+        android:id="@+id/tv_name_layout_adapter_item_for_class_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

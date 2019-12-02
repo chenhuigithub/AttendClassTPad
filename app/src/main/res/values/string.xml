@@ -1,6 +1,25 @@
 <resources>
     <string name="app_name">教师授课</string>
     <string name="action_settings">Settings</string>
+
+
+    <!-- 网络连接提示 -->
+    <string name="check_network_connections">请检查网络</string>
+    <string name="remove_curr">移除当前页</string>
+    <string name="add_curr">加入当前页</string>
+    <string name="remove_all">移除全部</string>
+    <string name="add_all">加入全部</string>
+    <string name="download_finish">下载完成</string>
+    <string name="downloading">正在下载</string>
+    <string name="download_fail">下载失败</string>
     <string name="choice_all">全选</string>
     <string name="cancel">取消</string>
+    <string name="cancel_choice_all">取消全选</string>
+    <string name="group_omics">组学案</string>
+    <string name="group_test">组试题</string>
+    <string name="group_courseware">组课件</string>
+    <string name="matching_resource">配套资源</string>
+    <string name="extend_resource">扩展资源</string>
+    <string name="see_analysis">查看解析</string>
+    <string name="retract_analysis">收起解析</string>
 </resources>

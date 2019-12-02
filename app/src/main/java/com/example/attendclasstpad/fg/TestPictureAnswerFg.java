@@ -23,7 +23,6 @@ public class TestPictureAnswerFg extends BaseNotPreLoadFg {
         if (null == allFgView) {
             allFgView = View.inflate(getActivity(),
                     R.layout.layout_fg_test_picture_answer, null);
-
         }
 
         // 因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
