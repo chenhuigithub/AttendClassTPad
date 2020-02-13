@@ -3,6 +3,7 @@ package com.example.attendclasstpad.adapter;
 import java.util.List;
 
 import com.example.attendclasstpad.R;
+import com.example.attendclasstpad.model.Catalog;
 import com.example.attendclasstpad.model.Lesson;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
 
@@ -16,7 +17,7 @@ import android.widget.TextView;
  *
  * @author chenhui
  */
-public class CatalogGdvAdapter extends BaseListAdapter<Lesson> {
+public class CatalogGdvAdapter extends BaseListAdapter<Catalog> {
     protected int currentPosition = -1;// 上次选中的位置，首次为空，默认为-1
 
     private String calatogCurr = "沁园春-长沙";// 当前目录名称
@@ -37,7 +38,7 @@ public class CatalogGdvAdapter extends BaseListAdapter<Lesson> {
      * @param unitPos       单元ID
      * @param catalogIDCurr 初始化时默认选中的目录ID
      */
-    public CatalogGdvAdapter(Context context, List<Lesson> dataList,
+    public CatalogGdvAdapter(Context context, List<Catalog> dataList,
                              int unitPos, String unitIDCurr, String catalogIDCurr) {
         super(context, dataList);
 
@@ -66,16 +67,16 @@ public class CatalogGdvAdapter extends BaseListAdapter<Lesson> {
 
     @Override
     protected void doAssignValueForView(int position, View resultView,
-                                        Lesson dataObj) {
+                                        Catalog dataObj) {
         // 目录
         TextView tvCatalogName = (TextView) resultView
                 .findViewById(R.id.tv_name_layout_adapter_item_for_course);
-        tvCatalogName.setText(dataObj.getName());
+        tvCatalogName.setText("\n" + dataObj.getName() + "\n");
 
         tvCatalogName.setTag(dataObj);
 
         // 目录ID
-        String catalogID = dataObj.getKey();
+        String catalogID = dataObj.getId();
         // if (ValidateFormatUtils.isEmpty(catalogIDCurr) && currentPosition !=
         // -1
         // && unitPos == 0 && currentPosition == position) {

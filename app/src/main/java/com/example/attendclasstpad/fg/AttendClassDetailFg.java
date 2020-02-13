@@ -10,13 +10,24 @@ import com.example.attendclasstpad.adapter.ColorAdapter;
 import com.example.attendclasstpad.adapter.CustomPagerAdapter03;
 import com.example.attendclasstpad.adapter.GalleryAdapter;
 import com.example.attendclasstpad.adapter.FilesListAdapter;
+import com.example.attendclasstpad.model.Bean;
+import com.example.attendclasstpad.model.DataID01;
+import com.example.attendclasstpad.model.File01;
 import com.example.attendclasstpad.model.FileContent;
-import com.example.attendclasstpad.model.Files;
+import com.example.attendclasstpad.util.ConstantsForPreferencesUtils;
+import com.example.attendclasstpad.util.ConstantsForServerUtils;
 import com.example.attendclasstpad.util.ConstantsUtils;
 import com.example.attendclasstpad.util.DrawUtils;
+import com.example.attendclasstpad.util.PreferencesUtils;
+import com.example.attendclasstpad.util.ServerRequestUtils;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
+import com.example.attendclasstpad.util.VariableUtils;
+import com.example.attendclasstpad.util.ViewUtils;
 import com.example.attendclasstpad.view.BgDarkPopupWindow;
 import com.example.attendclasstpad.view.CustomSurfaceView;
+import com.example.pullrefreshlistview.PullRefreshListView;
+import com.example.pullrefreshlistview.util.PullDownView;
+import com.google.gson.Gson;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,9 +35,11 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -42,6 +55,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.PopupWindow.OnDismissListener;
+import android.widget.Toast;
+
+import org.json.JSONArray;
 
 /**
  * 上课详情
@@ -62,6 +78,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
 
     private boolean isPrepared;// 标志位，标志已经初始化完成
     private boolean hasLoadOnce;// 是否已被加载过一次，第二次就不再去请求数据了
+
     // private List<PaintSize> paintSizeList;// 画笔粗细
     // private Handler handler;
     // private FragmentManager manager;// 声明成全局性的
@@ -83,11 +100,10 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
     private String catalogNameCurr = "";// 目录名称
     private String materialName = "";// 教材名称
     private int catalogPos;// 目录位置
+    private String classID = "";//班级ID
+    private int currentPageNum = 1;// 授课列表当前页页码，默认是首页
 
-    String periodID = "";
-    String subjectID = "";
-    String editionID = "";
-    String moduleID = "";
+    private String chapterID = "";//章节ID
 
     private boolean isPageSelected = false;// 是否允许走viewPager滑动监听中的onPageSelected方法
     private boolean isScroll = false;// 是否正在滑动，默认未滑动
@@ -104,6 +120,14 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
             R.id.ll_white_board_layout_v_draw_menu,
             R.id.ll_full_screen_layout_v_draw_menu,
             R.id.ll_exit_full_screen_layout_v_draw_menu};
+
+    private List<File01> fileList;//资源文件
+    private ArrayList<String> idFileChoicedList;//被选中的资源文件ID集合
+    private ArrayList<String> idList;//ID集合
+
+    private Handler uiHandler;// ui主线程
+    private ViewUtils vUtils;// 布局工具
+    private ServerRequestUtils sUtils;// 服务器请求工具
 
     private FilesListAdapter filesAdapter;// 文件目录适配器
     private GalleryAdapter glAdapter;
@@ -141,6 +165,12 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
     private FrameLayout flFocusPaint;
 
     private ViewPager vpager;// 滑动布局
+    //    private PullRefreshListView lstvFiles;//授课列表
+    private ListView lstvFiles;//授课列表
+    private LinearLayout llNoFile;//没有授课
+
+    //    PullDown vPullDown;
+    private PullDownView vPullDown;//授课列表下拉刷新、上拉加载更多
 
     public AttendClassDetailFg() {
     }
@@ -158,14 +188,18 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
             allFgView = inflater.inflate(
                     R.layout.layout_fg_attend_class_detail, null);
 
+            uiHandler = new Handler(getActivity().getMainLooper());
+            vUtils = new ViewUtils(getActivity());
+            sUtils = new ServerRequestUtils(getActivity());
+            fileList = new ArrayList<File01>();
+            idFileChoicedList = new ArrayList<String>();
+            idList = new ArrayList<String>();
+
             llTitle = (LinearLayout) allFgView
                     .findViewById(R.id.ll_title_layout_fg_attend_class_detail);
 
             tvTitleName = (TextView) allFgView
                     .findViewById(R.id.tv_title_name_layout_fg_attend_class_detail);
-            if (!ValidateFormatUtils.isEmpty(catalogNameCurr)) {
-                tvTitleName.setText(catalogNameCurr);
-            }
 
             initBoard();
 
@@ -173,6 +207,11 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                     .findViewById(R.id.ll_draw_menu_layout_fg_attend_class_detail);
             View inDrawMenu = (View) allFgView
                     .findViewById(R.id.in_draw_menu_layout_fg_attend_class_detail);
+
+            //本地上传(授课文件)
+            TextView tvFileLoad = (TextView) allFgView
+                    .findViewById(R.id.tv_file_upload_layout_fg_attend_class_detail);
+            tvFileLoad.setOnClickListener(new Listeners());
 
             int menuLength = 0;
             if (inDrawMenu instanceof ViewGroup) {
@@ -188,40 +227,21 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
 
             initGallery(allFgView);
 
-            // 文件列表
-            ListView lsvFiles = (ListView) allFgView
-                    .findViewById(R.id.lsv_files_catalog_layout_fg_attend_class_detail);
+            vPullDown = (PullDownView) allFgView
+                    .findViewById(R.id.v_files_catalog_layout_fg_attend_class_detail);
+            initPullDownLstv(vPullDown);
+            lstvFiles = vPullDown.getListView();
+            // 授课列表
+//            lstvFiles = (PullRefreshListView) allFgView
+//                    .findViewById(R.id.lsv_files_catalog_layout_fg_attend_class_detail);
 
-            // 右侧文件
-            List<Files> files = new ArrayList<Files>();
+            initPullDownLstv(vPullDown);
 
-            Files file01 = new Files();
-            file01.setName("数据分析表");
-            file01.setSize("1.17M");
-            file01.setLogoRes(fileLogoRes[0]);
+            //没有授课数据
+            llNoFile = (LinearLayout) allFgView
+                    .findViewById(R.id.ll_no_data_layout_fg_attend_class_detail);
 
-            Files file02 = new Files();
-            file02.setName("数据分析表");
-            file02.setSize("1.08M");
-            file02.setLogoRes(fileLogoRes[1]);
-
-            Files file03 = new Files();
-            file03.setName("数据分析表");
-            file03.setSize("1.5M");
-            file03.setLogoRes(fileLogoRes[2]);
-
-            Files file04 = new Files();
-            file04.setName("数据分析表");
-            file04.setSize("1.45M");
-            file04.setLogoRes(fileLogoRes[2]);
-
-            files.add(file01);
-            files.add(file02);
-            files.add(file03);
-            files.add(file04);
-
-            filesAdapter = new FilesListAdapter(getActivity(), files);
-            lsvFiles.setAdapter(filesAdapter);
+//            setLstvFilesListeners();
 
             initPagerViews();
         }
@@ -254,6 +274,203 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
     }
 
     /**
+     * 获取假设授课数据
+     *
+     * @return
+     */
+    private List<File01> getFileData() {
+        // 右侧文件
+        List<File01> fileList = new ArrayList<File01>();
+        File01 file01 = new File01();
+        file01.setDataName("数据分析表");
+        file01.setSize("1.17M");
+        File01 file02 = new File01();
+        file02.setDataName("数据分析表");
+        file02.setSize("1.08M");
+        File01 file03 = new File01();
+        file03.setDataName("数据分析表");
+        file03.setSize("1.5M");
+        File01 file04 = new File01();
+        file04.setDataName("数据分析表");
+        file04.setSize("1.45M");
+        fileList.add(file01);
+        fileList.add(file02);
+        fileList.add(file03);
+        fileList.add(file04);
+
+        return fileList;
+    }
+
+    /**
+     * 授课列表适配器
+     */
+    private void setLstvFileAdapter(boolean isShowChoiceMenu) {
+        if (filesAdapter == null) {
+            filesAdapter = new FilesListAdapter(getActivity(), fileList);
+            lstvFiles.setAdapter(filesAdapter);
+        } else {
+            filesAdapter.notifyDataSetChanged();
+        }
+    }
+
+//    private void setLstvFilesListeners() {
+//        lstvFiles.setOnRefreshListener(new PullRefreshListView.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                // 重置页码
+//                currentPageNum = 1;
+//                // 请求数据
+//                requestFileListFromServer();
+//            }
+//
+//            @Override
+//            public void onLoadMore() {
+//                currentPageNum = currentPageNum + 1;
+//                requestFileListFromServer();
+//            }
+//        });
+//    }
+
+    /**
+     * 初始化上拉刷新下拉加载
+     *
+     * @param vPullDown
+     */
+    private void initPullDownLstv(PullDownView vPullDown) {
+        vPullDown.setOnPullDownListener(new PullDownView.OnPullDownListener() {
+            @Override
+            public void onRefresh() {
+                // 重置页码
+                currentPageNum = 1;
+                // 请求数据
+                requestFileListFromServer();
+            }
+
+            @Override
+            public void onMore() {
+                currentPageNum = currentPageNum + 1;
+                requestFileListFromServer();
+            }
+        });
+    }
+
+    /**
+     * 从服务器获取授课文件列表
+     */
+    private void requestFileListFromServer() {
+        DataID01 dataID01 = new DataID01();
+
+        if (!TextUtils.isEmpty(VariableUtils.catalogID)) {
+            chapterID = VariableUtils.catalogID;
+        } else {
+            chapterID = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CHAPTER_ID_CHOICED);
+        }
+        dataID01.setChid(chapterID);//章节ID
+
+        dataID01.setCid(classID);//班级ID
+
+        Bean bean = new Bean();
+        bean.setData(dataID01);
+        bean.setIndex(String.valueOf(currentPageNum));
+        bean.setSize(ConstantsForServerUtils.PAGE_SIZE_DEFAULT_VALUE);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(bean);
+
+        sUtils.request("getLectureList", json, "", ServerRequestUtils.REQUEST_LONG_TIME, new ServerRequestUtils.OnServerRequestListener2() {
+            @Override
+            public void onFailure(final String msg) {
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (currentPageNum == 1) {// 首页数据
+                            llNoFile.setVisibility(View.VISIBLE);
+                            lstvFiles.setVisibility(View.GONE);
+                        }
+                        vUtils.dismissDialog();
+                        if (!TextUtils.isEmpty(msg)) {
+                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "资源获取失败，请重试", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(String msg, JSONArray data, String count) {
+                // 重置数据
+                if (currentPageNum == 1 && fileList.size() > 0) {
+                    fileList.clear();
+                }
+
+                List<File01> list = com.alibaba.fastjson.JSON.parseArray(data.toString(), File01.class);
+                //假数据
+                //List<File01> list = getFileData();
+                if (list != null) {
+                    if (list.size() == 0) {
+                        uiHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (currentPageNum == 1) {// 首页数据
+                                    llNoFile.setVisibility(View.VISIBLE);
+                                    lstvFiles.setVisibility(View.GONE);
+
+                                    // 刷新显示没有更多数据
+                                    vPullDown.notifyDidNoMore();
+                                    vPullDown.setVisibility(View.GONE);
+                                } else {
+                                    // 刷新显示没有更多数据
+                                    vPullDown.notifyDidNoMore();
+                                    // lstvFiles.loadMoreComplete();
+                                    Toast.makeText(getActivity(), "没有更多数据啦", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    } else {
+                        fileList.addAll(list);
+
+                        uiHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                llNoFile.setVisibility(View.GONE);
+                                lstvFiles.setVisibility(View.VISIBLE);
+                                vPullDown.setVisibility(View.VISIBLE);
+
+                                setLstvFileAdapter(false);
+                                vPullDown.notifyDidLoad();
+
+                                if (currentPageNum == 1) {
+                                    lstvFiles.setSelection(0);
+                                    // 隐藏刷新模块
+                                    vPullDown.notifyDidRefresh();
+//                                lstvFiles.refreshComplete();
+                                } else {
+                                    final int lastVisiblePostion = lstvFiles
+                                            .getLastVisiblePosition();
+                                    lstvFiles.setSelection(lastVisiblePostion);
+
+                                    // 隐藏加载更多模块
+                                    vPullDown.notifyDidMore();
+//                                lstvFiles.loadMoreComplete();
+                                }
+                            }
+                        });
+                    }
+                }
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        vUtils.dismissDialog();
+                    }
+                });
+
+                hasLoadOnce = true;
+            }
+        });
+    }
+
+    /**
      * 设置右侧viewPager适配器
      *
      * @param position 某个位置
@@ -278,7 +495,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
             picVpagerAdapter.notifyDataSetChanged();
         }
 
-        // // 设置到某个位置
+        //  设置到某个位置
         vpager.setCurrentItem(position);
     }
 
@@ -516,6 +733,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                 sfvBoard.resetPathList();
 
                 sfvBoard.setVisibility(View.GONE);
+                sfvBoard.surfaceDestroyed(sfvBoard.getHolder());
 
                 dismissWindow();
             }
@@ -684,7 +902,6 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
 
                     showSpinWindow(R.layout.layout_v_draw_paint_selector_popup002,
                             500, 100, 0, 0);
-
                     flFocusPaint.performClick();
 
                     break;
@@ -749,14 +966,14 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                     doSthAfterChangePaintSize(View.VISIBLE, View.INVISIBLE,
                             View.INVISIBLE);
 
-                    paintSizeCur = 8;
-                    paint(paintSizeCur);
+                    flFocusPaint = flSmallPaint;
 
                     if (ConstantsUtils.GRAFFITI == drawStyle) {
                         setPaintSizeMenu(colorCur);
                     }
 
-                    flFocusPaint = flSmallPaint;
+                    paintSizeCur = 8;
+                    paint(paintSizeCur);
 
                     break;
 
@@ -807,6 +1024,11 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                     // intent02.putExtra(ConstantsUtils.MODULE_ID, moduleID);
                     intent02.putExtra(ChoiceTeachingMaterialAty.CATALOG_POS, -1);
                     startActivityForResult(intent02, ConstantsUtils.REQUEST_CODE01);
+
+                    break;
+
+                case R.id.tv_file_upload_layout_fg_attend_class_detail://本地上传（授课文件）
+                    Toast.makeText(getActivity(), getResources().getText(R.string.no_function),Toast.LENGTH_SHORT).show();
 
                     break;
             }
@@ -898,8 +1120,24 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
 
     @Override
     protected void lazyLoad() {
-        if (!isPrepared || !isVisible || hasLoadOnce) {
-            return;
+//        if (!isPrepared || !isVisible || hasLoadOnce) {
+//            return;
+//        }
+
+        boolean hasChoiced = PreferencesUtils.acquireBooleanInfoFromPreferences(getActivity(), ConstantsUtils.HAS_CHOICED_MATERIAL);
+        if (hasChoiced) {
+
         }
+        catalogNameCurr = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CHAPTER_NAME_CHOICED);
+        if (tvTitleName != null && !TextUtils.isEmpty(catalogNameCurr)) {
+            tvTitleName.setText(catalogNameCurr);
+        }
+
+        String classID = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_ID_CHOICED);
+        if (!TextUtils.isEmpty(classID)) {
+            this.classID = classID;
+        }
+
+        requestFileListFromServer();
     }
 }

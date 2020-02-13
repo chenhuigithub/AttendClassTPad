@@ -2,19 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEF2F5"
-    android:orientation="vertical" >
+    android:background="#EEF2F5">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none" >
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#EEF2F5"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -22,10 +21,10 @@
                 android:background="@color/white"
                 android:gravity="left"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
                 android:paddingLeft="30dp"
+                android:paddingTop="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="10dp" >
+                android:paddingBottom="10dp">
 
                 <ImageView
                     android:id="@+id/iv_logo_layout_fg_classes"
@@ -46,17 +45,21 @@
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
+                <!-- 切换教材 -->
+
                 <TextView
+                    android:id="@+id/tv_switch_material_layout_fg_classes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/tv_name_layout_fg_classes"
-                    android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/tv_name_layout_fg_classes"
-                    android:singleLine="true"
-                    android:text="（邀请码：0012346）"
-                    android:textColor="@color/color_text_content"
+                    android:background="@color/white"
+                    android:padding="5dp"
+                    android:text="切换"
+                    android:textColor="@color/red02"
                     android:textSize="14sp" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -65,8 +68,8 @@
                 android:gravity="left"
                 android:orientation="horizontal"
                 android:paddingLeft="30dp"
-                android:paddingRight="10dp"
-                android:paddingTop="15dp" >
+                android:paddingTop="15dp"
+                android:paddingRight="10dp">
 
                 <ImageView
                     android:layout_width="8dp"
@@ -95,10 +98,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
                 android:background="@color/white"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <com.example.attendclasstpad.view.CustomListView
                     android:id="@+id/gridview"
@@ -116,7 +119,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp" >
+                android:layout_marginTop="15dp">
 
                 <ImageView
                     android:id="@+id/iv_out_line_layout_fg_classes"
@@ -163,10 +166,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
                 android:background="@color/white"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <com.example.attendclasstpad.view.CustomListView
                     android:id="@+id/gridview_out"

@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical" >
+    android:gravity="center|left"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_name_layout_adapter_item_for_course"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:paddingBottom="@dimen/dimen_padding_005"
         android:paddingLeft="@dimen/dimen_padding_007"
         android:paddingRight="@dimen/dimen_padding_007"
-        android:paddingTop="@dimen/dimen_padding_005"
         android:text="1.沁园春-长沙"
-        android:textColor="@color/color_text_content"
+        android:textColor="@color/color_text_title01"
         android:textSize="@dimen/dimen_text_007" />
 
 </LinearLayout>

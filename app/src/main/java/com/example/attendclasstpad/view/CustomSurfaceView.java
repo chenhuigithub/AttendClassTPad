@@ -45,7 +45,7 @@ public class CustomSurfaceView extends SurfaceView implements
     // Canvas对象
     private Canvas mCanvas;
     // 控制子线程是否运行
-    private boolean startDraw;
+    private boolean startDraw = true;
     // Path实例
     private Path mPath = new Path();
     // Paint实例
@@ -62,13 +62,14 @@ public class CustomSurfaceView extends SurfaceView implements
 
     private static int width;
     private static int height;
+    private boolean isFirstShow = true;
 
     // 记录Path路径的对象
     public CustomSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mPaint = new Paint();
-        thread = new Thread(this);
+//        thread = new Thread(this);
         savePathList = new ArrayList<DrawPath>();
         redoPathList = new ArrayList<DrawPath>();
 
@@ -118,7 +119,23 @@ public class CustomSurfaceView extends SurfaceView implements
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         startDraw = true;
+
+        thread = new Thread(this);
         thread.start();
+
+//        if (isFirstShow) {
+//            thread.start();
+//        } else {
+//            if (thread ==Thread.currentThread())  {
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                }
+//            }
+//            thread.run();
+//        }
+
+//        isFirstShow = false;
     }
 
     /*
@@ -127,6 +144,7 @@ public class CustomSurfaceView extends SurfaceView implements
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
+        System.out.println("surfaceChanged");
     }
 
     /*
@@ -135,6 +153,8 @@ public class CustomSurfaceView extends SurfaceView implements
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         startDraw = false;
+
+        thread = null;
     }
 
     private void draw() {
@@ -165,6 +185,9 @@ public class CustomSurfaceView extends SurfaceView implements
 
             if (mPath != null) {
                 // 实时的显示
+                mCanvas.drawPath(mPath, mPaint);
+            } else {
+                mPath = new Path();
                 mCanvas.drawPath(mPath, mPaint);
             }
 
@@ -216,6 +239,7 @@ public class CustomSurfaceView extends SurfaceView implements
                 // 将一条完整的路径保存下来(相当于入栈操作)
                 savePathList.add(drawPath);
                 mPath = null;// 重新置空
+//                mPath=new Path();
 
                 invalidate();
 

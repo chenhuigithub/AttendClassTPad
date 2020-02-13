@@ -9,213 +9,229 @@
     android:paddingRight="@dimen/dimen_padding_005"
     android:paddingBottom="@dimen/dimen_padding_005">
 
-    <TextView
-        android:id="@+id/tv_course_name_layout_fg_attend_class"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="一、散步"
-        android:textColor="@color/color_text_title01"
-        android:textSize="@dimen/dimen_text_008"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/tv_lbl01_layout_fg_attend_class"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_padding_006"
-        android:text="选择教材"
-        android:textColor="@color/color_text_content"
-        android:textSize="@dimen/dimen_text_005" />
-
-    <View
-        android:id="@+id/v_line01_layout_fg_attend_class"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="1.5dp"
-        android:layout_marginTop="@dimen/dimen_padding_003"
-        android:background="@color/color_content_bg_base" />
+        android:layout_height="match_parent">
 
-    <!-- 学段 -->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="@dimen/dimen_padding_003">
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_padding_005"
-            android:background="@color/color_content_bg_base"
-            android:padding="2dp"
-            android:text="学段"
-            android:textColor="@color/color_text_additional"
-            android:textSize="@dimen/dimen_text_005" />
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-        <GridView
-            android:id="@+id/gdv_period_layout_fg_attend_class"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_padding_006"
-            android:layout_marginTop="@dimen/dimen_padding_005"
-            android:cacheColorHint="#00000000"
-            android:columnWidth="60dp"
-            android:fadingEdge="none"
-            android:fadingEdgeLength="0dp"
-            android:gravity="center|left"
-            android:horizontalSpacing="@dimen/dimen_padding_005"
-            android:listSelector="#00000000"
-            android:numColumns="10"
-            android:scrollbars="none"
-            android:verticalSpacing="0dp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_course_name_layout_fg_attend_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="一、散步"
+                android:textColor="@color/color_text_title01"
+                android:textSize="@dimen/dimen_text_008"
+                android:visibility="gone" />
 
-    <!-- 学科 -->
+            <TextView
+                android:id="@+id/tv_lbl01_layout_fg_attend_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_padding_006"
+                android:text="选择教材"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_005" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="@dimen/dimen_padding_003">
+            <View
+                android:id="@+id/v_line01_layout_fg_attend_class"
+                android:layout_width="match_parent"
+                android:layout_height="1.5dp"
+                android:layout_marginTop="@dimen/dimen_padding_003"
+                android:background="@color/color_content_bg_base" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_padding_005"
-            android:background="@color/color_content_bg_base"
-            android:padding="2dp"
-            android:text="学科"
-            android:textColor="@color/color_text_additional"
-            android:textSize="@dimen/dimen_text_005" />
+            <!-- 学段 -->
 
-        <GridView
-            android:id="@+id/gdv_subject_layout_fg_attend_class"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_padding_006"
-            android:layout_marginTop="@dimen/dimen_padding_005"
-            android:cacheColorHint="#00000000"
-            android:columnWidth="20dp"
-            android:fadingEdge="none"
-            android:fadingEdgeLength="0dp"
-            android:gravity="center|left"
-            android:horizontalSpacing="@dimen/dimen_padding_005"
-            android:listSelector="#00000000"
-            android:numColumns="10"
-            android:scrollbars="none"
-            android:verticalSpacing="0dp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_padding_003">
 
-    <!-- 版本 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_padding_005"
+                    android:background="@color/color_content_bg_base"
+                    android:padding="2dp"
+                    android:text="学段"
+                    android:textColor="@color/color_text_additional"
+                    android:textSize="@dimen/dimen_text_005" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="@dimen/dimen_padding_003">
+                <GridView
+                    android:id="@+id/gdv_period_layout_fg_attend_class"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_006"
+                    android:layout_marginTop="@dimen/dimen_padding_005"
+                    android:cacheColorHint="#00000000"
+                    android:columnWidth="60dp"
+                    android:fadingEdge="none"
+                    android:fadingEdgeLength="0dp"
+                    android:gravity="center|left"
+                    android:horizontalSpacing="@dimen/dimen_padding_005"
+                    android:listSelector="#00000000"
+                    android:numColumns="10"
+                    android:scrollbars="none"
+                    android:verticalSpacing="0dp"
+                    android:visibility="visible" />
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_padding_006"
-            android:background="@color/color_content_bg_base"
-            android:padding="2dp"
-            android:text="版本"
-            android:textColor="@color/color_text_additional"
-            android:textSize="@dimen/dimen_text_005" />
+            <!-- 学科 -->
 
-        <GridView
-            android:id="@+id/gdv_edition_layout_fg_attend_class"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_padding_006"
-            android:layout_marginTop="@dimen/dimen_padding_005"
-            android:cacheColorHint="#00000000"
-            android:columnWidth="20dp"
-            android:fadingEdge="none"
-            android:fadingEdgeLength="0dp"
-            android:gravity="center|left"
-            android:horizontalSpacing="@dimen/dimen_padding_005"
-            android:listSelector="#00000000"
-            android:numColumns="10"
-            android:scrollbars="none"
-            android:verticalSpacing="0dp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_padding_003">
 
-    <!-- 模块 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_padding_005"
+                    android:background="@color/color_content_bg_base"
+                    android:padding="2dp"
+                    android:text="学科"
+                    android:textColor="@color/color_text_additional"
+                    android:textSize="@dimen/dimen_text_005" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="@dimen/dimen_padding_003">
+                <GridView
+                    android:id="@+id/gdv_subject_layout_fg_attend_class"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_006"
+                    android:layout_marginTop="@dimen/dimen_padding_005"
+                    android:cacheColorHint="#00000000"
+                    android:columnWidth="20dp"
+                    android:fadingEdge="none"
+                    android:fadingEdgeLength="0dp"
+                    android:gravity="center|left"
+                    android:horizontalSpacing="@dimen/dimen_padding_005"
+                    android:listSelector="#00000000"
+                    android:numColumns="10"
+                    android:scrollbars="none"
+                    android:verticalSpacing="0dp"
+                    android:visibility="visible" />
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_padding_005"
-            android:background="@color/color_content_bg_base"
-            android:padding="2dp"
-            android:text="模块"
-            android:textColor="@color/color_text_additional"
-            android:textSize="@dimen/dimen_text_005" />
+            <!-- 版本 -->
 
-        <GridView
-            android:id="@+id/gdv_module_layout_fg_attend_class"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_padding_006"
-            android:layout_marginTop="@dimen/dimen_padding_005"
-            android:cacheColorHint="#00000000"
-            android:columnWidth="20dp"
-            android:fadingEdge="none"
-            android:fadingEdgeLength="0dp"
-            android:gravity="center|left"
-            android:horizontalSpacing="@dimen/dimen_padding_005"
-            android:listSelector="#00000000"
-            android:numColumns="10"
-            android:scrollbars="none"
-            android:verticalSpacing="0dp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_padding_003">
 
-    <TextView
-        android:id="@+id/tv_lbl02_layout_fg_attend_class"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_padding_006"
-        android:text="课程目录"
-        android:textColor="@color/color_text_content"
-        android:textSize="@dimen/dimen_text_005" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_padding_006"
+                    android:background="@color/color_content_bg_base"
+                    android:padding="2dp"
+                    android:text="版本"
+                    android:textColor="@color/color_text_additional"
+                    android:textSize="@dimen/dimen_text_005" />
 
-    <View
-        android:id="@+id/v_line02_layout_fg_attend_class"
-        android:layout_width="match_parent"
-        android:layout_height="1.5dp"
-        android:layout_marginTop="@dimen/dimen_padding_003"
-        android:background="@color/color_content_bg_base" />
+                <GridView
+                    android:id="@+id/gdv_edition_layout_fg_attend_class"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_006"
+                    android:layout_marginTop="@dimen/dimen_padding_005"
+                    android:cacheColorHint="#00000000"
+                    android:columnWidth="20dp"
+                    android:fadingEdge="none"
+                    android:fadingEdgeLength="0dp"
+                    android:gravity="center|left"
+                    android:horizontalSpacing="@dimen/dimen_padding_005"
+                    android:listSelector="#00000000"
+                    android:numColumns="10"
+                    android:scrollbars="none"
+                    android:verticalSpacing="0dp"
+                    android:visibility="visible" />
+            </LinearLayout>
 
-    <!-- 课程目录 -->
+            <!-- 模块 -->
 
-    <ListView
-        android:id="@+id/lsv_catalog_layout_fg_attend_class"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_padding_004"
-        android:layout_marginTop="@dimen/dimen_padding_006"
-        android:cacheColorHint="#00000000"
-        android:divider="@color/white"
-        android:dividerHeight="0dp"
-        android:fadingEdge="none"
-        android:fadingEdgeLength="0dp"
-        android:focusable="false"
-        android:horizontalSpacing="10dp"
-        android:listSelector="#00000000"
-        android:scrollbars="none"
-        android:verticalSpacing="10dp"
-        android:visibility="visible" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_padding_003">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_padding_005"
+                    android:background="@color/color_content_bg_base"
+                    android:padding="2dp"
+                    android:text="模块"
+                    android:textColor="@color/color_text_additional"
+                    android:textSize="@dimen/dimen_text_005" />
+
+                <GridView
+                    android:id="@+id/gdv_module_layout_fg_attend_class"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_006"
+                    android:layout_marginTop="@dimen/dimen_padding_005"
+                    android:cacheColorHint="#00000000"
+                    android:columnWidth="20dp"
+                    android:fadingEdge="none"
+                    android:fadingEdgeLength="0dp"
+                    android:gravity="center|left"
+                    android:horizontalSpacing="@dimen/dimen_padding_005"
+                    android:listSelector="#00000000"
+                    android:numColumns="10"
+                    android:scrollbars="none"
+                    android:verticalSpacing="0dp"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_lbl02_layout_fg_attend_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_padding_006"
+                android:text="课程目录"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_005" />
+
+            <View
+                android:id="@+id/v_line02_layout_fg_attend_class"
+                android:layout_width="match_parent"
+                android:layout_height="1.5dp"
+                android:layout_marginTop="@dimen/dimen_padding_003"
+                android:background="@color/color_content_bg_base" />
+
+            <!-- 课程目录 -->
+            <com.example.attendclasstpad.view.CustomListView
+                android:id="@+id/lsv_catalog_layout_fg_attend_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_004"
+                android:layout_marginTop="@dimen/dimen_padding_006"
+                android:cacheColorHint="#00000000"
+                android:divider="@color/white"
+                android:dividerHeight="0dp"
+                android:fadingEdge="none"
+                android:fadingEdgeLength="0dp"
+                android:focusable="true"
+                android:horizontalSpacing="10dp"
+                android:listSelector="#00000000"
+                android:scrollbars="vertical"
+                android:verticalSpacing="10dp"
+                android:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>
