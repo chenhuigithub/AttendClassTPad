@@ -208,6 +208,11 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
             View inDrawMenu = (View) allFgView
                     .findViewById(R.id.in_draw_menu_layout_fg_attend_class_detail);
 
+            //本地上传(授课文件)
+            TextView tvFileLoad = (TextView) allFgView
+                    .findViewById(R.id.tv_file_upload_layout_fg_attend_class_detail);
+            tvFileLoad.setOnClickListener(new Listeners());
+
             int menuLength = 0;
             if (inDrawMenu instanceof ViewGroup) {
                 menuLength = ((ViewGroup) inDrawMenu).getChildCount();
@@ -269,33 +274,37 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
     }
 
     /**
+     * 获取假设授课数据
+     *
+     * @return
+     */
+    private List<File01> getFileData() {
+        // 右侧文件
+        List<File01> fileList = new ArrayList<File01>();
+        File01 file01 = new File01();
+        file01.setDataName("数据分析表");
+        file01.setSize("1.17M");
+        File01 file02 = new File01();
+        file02.setDataName("数据分析表");
+        file02.setSize("1.08M");
+        File01 file03 = new File01();
+        file03.setDataName("数据分析表");
+        file03.setSize("1.5M");
+        File01 file04 = new File01();
+        file04.setDataName("数据分析表");
+        file04.setSize("1.45M");
+        fileList.add(file01);
+        fileList.add(file02);
+        fileList.add(file03);
+        fileList.add(file04);
+
+        return fileList;
+    }
+
+    /**
      * 授课列表适配器
      */
     private void setLstvFileAdapter(boolean isShowChoiceMenu) {
-        // 右侧文件
-//        List<File01> fileList = new ArrayList<File01>();
-
-//        File01 file01 = new File01();
-//        file01.setDataName("数据分析表");
-//        file01.setSize("1.17M");
-
-//        File01 file02 = new File01();
-//        file02.setDataName("数据分析表");
-//        file02.setSize("1.08M");
-
-//        File01 file03 = new File01();
-//        file03.setDataName("数据分析表");
-//        file03.setSize("1.5M");
-
-//        File01 file04 = new File01();
-//        file04.setDataName("数据分析表");
-//        file04.setSize("1.45M");
-
-//        fileList.add(file01);
-//        fileList.add(file02);
-//        fileList.add(file03);
-//        fileList.add(file04);
-
         if (filesAdapter == null) {
             filesAdapter = new FilesListAdapter(getActivity(), fileList);
             lstvFiles.setAdapter(filesAdapter);
@@ -368,7 +377,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
         Gson gson = new Gson();
         String json = gson.toJson(bean);
 
-        sUtils.request("getLectureList", json, "", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener2() {
+        sUtils.request("getLectureList", json, "", ServerRequestUtils.REQUEST_LONG_TIME, new ServerRequestUtils.OnServerRequestListener2() {
             @Override
             public void onFailure(final String msg) {
                 uiHandler.post(new Runnable() {
@@ -396,6 +405,8 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                 }
 
                 List<File01> list = com.alibaba.fastjson.JSON.parseArray(data.toString(), File01.class);
+                //假数据
+                //List<File01> list = getFileData();
                 if (list != null) {
                     if (list.size() == 0) {
                         uiHandler.post(new Runnable() {
@@ -404,42 +415,47 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                                 if (currentPageNum == 1) {// 首页数据
                                     llNoFile.setVisibility(View.VISIBLE);
                                     lstvFiles.setVisibility(View.GONE);
+
+                                    // 刷新显示没有更多数据
+                                    vPullDown.notifyDidNoMore();
+                                    vPullDown.setVisibility(View.GONE);
                                 } else {
                                     // 刷新显示没有更多数据
                                     vPullDown.notifyDidNoMore();
                                     // lstvFiles.loadMoreComplete();
-                    Toast.makeText(getActivity(),"没有更多数据啦",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "没有更多数据啦", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                     } else {
-                    fileList.addAll(list);
+                        fileList.addAll(list);
 
-                    uiHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            llNoFile.setVisibility(View.GONE);
-                            lstvFiles.setVisibility(View.VISIBLE);
+                        uiHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                llNoFile.setVisibility(View.GONE);
+                                lstvFiles.setVisibility(View.VISIBLE);
+                                vPullDown.setVisibility(View.VISIBLE);
 
-                            setLstvFileAdapter(false);
-                            vPullDown.notifyDidLoad();
+                                setLstvFileAdapter(false);
+                                vPullDown.notifyDidLoad();
 
-                            if (currentPageNum == 1) {
-                                lstvFiles.setSelection(0);
-                                // 隐藏刷新模块
-                                vPullDown.notifyDidRefresh();
+                                if (currentPageNum == 1) {
+                                    lstvFiles.setSelection(0);
+                                    // 隐藏刷新模块
+                                    vPullDown.notifyDidRefresh();
 //                                lstvFiles.refreshComplete();
-                            } else {
-                                final int lastVisiblePostion = lstvFiles
-                                        .getLastVisiblePosition();
-                                lstvFiles.setSelection(lastVisiblePostion);
+                                } else {
+                                    final int lastVisiblePostion = lstvFiles
+                                            .getLastVisiblePosition();
+                                    lstvFiles.setSelection(lastVisiblePostion);
 
-                                // 隐藏加载更多模块
-                                vPullDown.notifyDidMore();
+                                    // 隐藏加载更多模块
+                                    vPullDown.notifyDidMore();
 //                                lstvFiles.loadMoreComplete();
+                                }
                             }
-                        }
-                    });
+                        });
                     }
                 }
                 uiHandler.post(new Runnable() {
@@ -717,6 +733,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                 sfvBoard.resetPathList();
 
                 sfvBoard.setVisibility(View.GONE);
+                sfvBoard.surfaceDestroyed(sfvBoard.getHolder());
 
                 dismissWindow();
             }
@@ -883,15 +900,8 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                     isRepaint = false;
                     drawStyle = ConstantsUtils.GRAFFITI;
 
-//                    initBoard();
-
                     showSpinWindow(R.layout.layout_v_draw_paint_selector_popup002,
                             500, 100, 0, 0);
-
-
-                    sfvBoard.setFocusable(true);
-                    sfvBoard.setVisibility(View.VISIBLE);
-
                     flFocusPaint.performClick();
 
                     break;
@@ -956,14 +966,14 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                     doSthAfterChangePaintSize(View.VISIBLE, View.INVISIBLE,
                             View.INVISIBLE);
 
-                    paintSizeCur = 8;
-                    paint(paintSizeCur);
+                    flFocusPaint = flSmallPaint;
 
                     if (ConstantsUtils.GRAFFITI == drawStyle) {
                         setPaintSizeMenu(colorCur);
                     }
 
-                    flFocusPaint = flSmallPaint;
+                    paintSizeCur = 8;
+                    paint(paintSizeCur);
 
                     break;
 
@@ -1014,6 +1024,11 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                     // intent02.putExtra(ConstantsUtils.MODULE_ID, moduleID);
                     intent02.putExtra(ChoiceTeachingMaterialAty.CATALOG_POS, -1);
                     startActivityForResult(intent02, ConstantsUtils.REQUEST_CODE01);
+
+                    break;
+
+                case R.id.tv_file_upload_layout_fg_attend_class_detail://本地上传（授课文件）
+                    Toast.makeText(getActivity(), getResources().getText(R.string.no_function),Toast.LENGTH_SHORT).show();
 
                     break;
             }
