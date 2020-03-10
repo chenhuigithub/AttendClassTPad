@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="15dip"
+    android:paddingBottom="15dip">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <ProgressBar
+            android:id="@+id/pull_refresh_header_pgs_refresh"
+            style="@android:style/Widget.ProgressBar.Small.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dip"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/pull_refresh_header_img_arrow"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/refresh_header_arrow" />
+
+        <TextView
+            android:id="@+id/pull_refresh_header_txt_pull_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="下拉刷新"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:id="@+id/pull_refresh_header_lot_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="加载中"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/pull_refresh_header_txt_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="更新于 00-00 00:00"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

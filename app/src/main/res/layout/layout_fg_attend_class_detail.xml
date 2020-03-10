@@ -47,15 +47,14 @@
         android:layout_height="0px"
         android:layout_weight="0.85"
         android:background="#EEF2F5"
-        android:gravity="top"
-        android:orientation="horizontal">
+        android:gravity="top">
 
         <LinearLayout
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dimen_padding_007"
             android:layout_marginTop="@dimen/dimen_padding_006"
-            android:layout_weight="0.75"
+            android:layout_weight="0.72"
             android:background="@color/white"
             android:gravity="top"
             android:orientation="vertical"
@@ -190,7 +189,7 @@
             android:layout_marginTop="@dimen/dimen_padding_006"
             android:layout_marginRight="@dimen/dimen_padding_006"
             android:layout_marginBottom="@dimen/dimen_padding_006"
-            android:layout_weight="0.25"
+            android:layout_weight="0.28"
             android:background="@color/white"
             android:gravity="top"
             android:orientation="vertical">
@@ -222,8 +221,9 @@
                     android:layout_toLeftOf="@id/iv_arrow_up_layout_fg_attend_class_detail"
                     android:background="@color/white"
                     android:text="收起"
+                    android:visibility="gone"
                     android:textColor="@color/color_text_additional"
-                    android:textSize="@dimen/dimen_text_007" />
+                    android:textSize="@dimen/dimen_text_006" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -237,23 +237,66 @@
             </RelativeLayout>
 
             <!-- （授课列表）文件目录 -->
-
-            <ListView
-                android:id="@+id/lsv_files_catalog_layout_fg_attend_class_detail"
+            <com.example.pullrefreshlistview.util.PullDownView
+                android:id="@+id/v_files_catalog_layout_fg_attend_class_detail"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="300dp"
                 android:layout_marginLeft="@dimen/dimen_padding_006"
                 android:layout_marginTop="@dimen/dimen_padding_006"
+                android:background="@android:color/white"
                 android:cacheColorHint="#00000000"
                 android:divider="@color/white"
                 android:dividerHeight="1dp"
-                android:fadingEdge="none"
-                android:fadingEdgeLength="0dp"
                 android:focusable="false"
-                android:horizontalSpacing="10dp"
-                android:listSelector="#00000000"
                 android:scrollbars="vertical"
-                android:verticalSpacing="10dp" />
+                android:visibility="visible" />
+
+            <!--<com.example.pullrefreshlistview.PullRefreshListView-->
+                <!--android:id="@+id/lsv_files_catalog_layout_fg_attend_class_detail"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="300dp"-->
+                <!--android:layout_marginLeft="@dimen/dimen_padding_006"-->
+                <!--android:layout_marginTop="@dimen/dimen_padding_006"-->
+                <!--android:cacheColorHint="#00000000"-->
+                <!--android:divider="@color/white"-->
+                <!--android:dividerHeight="1dp"-->
+                <!--android:focusable="false"-->
+                <!--android:scrollbars="vertical"-->
+                <!--android:visibility="visible" />-->
+
+            <LinearLayout
+                android:id="@+id/ll_no_data_layout_fg_attend_class_detail"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginLeft="@dimen/dimen_padding_006"
+                android:layout_marginTop="@dimen/dimen_padding_006"
+                android:gravity="center"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/iv_no_data_layout_fg_attend_class_detail"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:background="@drawable/no_data" />
+            </LinearLayout>
+
+
+            <!--<ListView-->
+            <!--android:id="@+id/lsv_files_catalog_layout_fg_attend_class_detail"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="250dp"-->
+            <!--android:layout_marginLeft="@dimen/dimen_padding_006"-->
+            <!--android:layout_marginTop="@dimen/dimen_padding_006"-->
+            <!--android:cacheColorHint="#00000000"-->
+            <!--android:divider="@color/white"-->
+            <!--android:dividerHeight="1dp"-->
+            <!--android:fadingEdge="none"-->
+            <!--android:fadingEdgeLength="0dp"-->
+            <!--android:focusable="false"-->
+            <!--android:horizontalSpacing="10dp"-->
+            <!--android:listSelector="#00000000"-->
+            <!--android:scrollbars="vertical"-->
+            <!--android:verticalSpacing="10dp" />-->
 
             <TextView
                 android:layout_width="match_parent"

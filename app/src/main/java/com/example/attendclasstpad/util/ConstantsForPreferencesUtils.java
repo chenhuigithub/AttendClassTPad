@@ -91,4 +91,45 @@ public class ConstantsForPreferencesUtils {
      * 授课选择教材 最后一步筛选的条件ID
      */
     public static final String ATTEND_CLASS_CHOICE_LAST_ID = "ATTEND_CLASS_CHOICE_LAST_ID";
+
+    /**
+     * 所选学段ID
+     */
+    public static final String PERIOD_ID_CHOICED = "PERIOD_ID_CHOICED";
+
+    /**
+     * 所选学科ID
+     */
+    public static final String SUBJECT_ID_CHOICED = "SUBJECT_ID_CHOICED";
+
+    /**
+     * 所选版本ID
+     */
+    public static final String EDITION_ID_CHOICED = "EDITION_ID_CHOICED";
+
+    /**
+     * 所选模块ID
+     */
+    public static final String MODULE_ID_CHOICED = "MODULE_ID_CHOICED";
+
+    /**
+     * 所选单元ID
+     */
+    public static final String UNIT_ID_CHOICED = "UNIT_ID_CHOICED";
+
+    /**
+     * 所选章节ID
+     */
+    public static final String CHAPTER_ID_CHOICED = "CHAPTER_ID_CHOICED";
+
+    /**
+     * 所选章节名称
+     */
+    public static final String CHAPTER_NAME_CHOICED = "CHAPTER_NAME_CHOICED";
+
+    /**
+     * 所选班级ID
+     */
+    public static final String CLASS_ID_CHOICED = "CLASS_ID_CHOICED";
+
 }

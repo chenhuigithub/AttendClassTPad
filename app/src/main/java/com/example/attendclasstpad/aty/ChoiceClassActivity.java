@@ -64,6 +64,8 @@ public class ChoiceClassActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
+                PreferencesUtils.saveInfoToPreferences(ChoiceClassActivity.this, ConstantsForPreferencesUtils.CLASS_ID_CHOICED, classList.get(position).getId());
+                
                 Intent intent = new Intent(ChoiceClassActivity.this,
                         MainActivity.class);
                 intent.setAction(ConstantsUtils.REFRESH_USER_INFO);
@@ -75,6 +77,7 @@ public class ChoiceClassActivity extends Activity {
                 if (classList.size() > 0 && classList.get(position) != null) {
                     intent.putExtra(ConstantsUtils.CLASS_ID, classList.get(position).getId());
                 }
+
 
                 intent.putExtra(ConstantsUtils.HAS_LOGINED, true);
                 // 发送广播

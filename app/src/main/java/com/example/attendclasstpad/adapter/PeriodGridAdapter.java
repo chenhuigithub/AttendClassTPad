@@ -3,6 +3,7 @@ package com.example.attendclasstpad.adapter;
 import java.util.List;
 
 import com.example.attendclasstpad.R;
+import com.example.attendclasstpad.model.KeyValue;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
 
 import android.content.Context;
@@ -21,8 +22,6 @@ public class PeriodGridAdapter extends BaseAdapter {
     public static interface IOnItemSelectListener {
         public void onItemClick(int pos);
     }
-
-    ;
 
     private Context context;
     private int currentPosition = -1;// 上次选中的位置，首次为空，默认为-1

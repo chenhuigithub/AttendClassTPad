@@ -16,25 +16,28 @@
         android:enabled="false"
         android:focusable="false"
         android:text="第一单元"
+        android:visibility="visible"
         android:textColor="@color/color_text_content"
-        android:textSize="@dimen/dimen_text_005" />
+        android:textSize="@dimen/dimen_text_006" />
 
 
-    <GridView
+    <com.example.attendclasstpad.view.CustomGridView
         android:id="@+id/gdv_catalog_layout_adapter_item_for_course"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dimen_padding_006"
         android:cacheColorHint="#00000000"
         android:columnWidth="20dp"
+        android:layout_marginTop="@dimen/dimen_padding_005"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:gravity="center|left"
         android:horizontalSpacing="@dimen/dimen_padding_005"
         android:listSelector="#00000000"
         android:numColumns="3"
-        android:scrollbars="none"
-        android:verticalSpacing="0dp" />
+        android:scrollbars="vertical"
+        android:verticalSpacing="5dp"
+        android:visibility="visible" />
 
 
 </LinearLayout>

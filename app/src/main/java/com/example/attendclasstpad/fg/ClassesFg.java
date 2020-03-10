@@ -4,54 +4,81 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.attendclasstpad.R;
 import com.example.attendclasstpad.adapter.ClassAdpter;
+import com.example.attendclasstpad.aty.ChoiceTeachingMaterialAty;
 import com.example.attendclasstpad.callback.InterfacesCallback;
 import com.example.attendclasstpad.model.ClassBean;
 import com.example.attendclasstpad.model.Classes;
+import com.example.attendclasstpad.util.ConstantsForPreferencesUtils;
+import com.example.attendclasstpad.util.ConstantsUtils;
+import com.example.attendclasstpad.util.PreferencesUtils;
+import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.view.CustomListView;
 
 /**
  * 班级
  */
-public class ClassesFg extends Fragment implements InterfacesCallback.ICanKnowSth11 {
-    private View view;// 总布局
+public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.ICanKnowSth11 {
+    private boolean isPrepared;// 标志位，标志已经初始化完成
+    private boolean hasLoadOnce = false;// 是否已被加载过一次，第二次就不再去请求数据了
+
     private List<ClassBean> onlineList = new ArrayList<ClassBean>();
     private List<ClassBean> offlineList = new ArrayList<ClassBean>();
+    private String catalogIDCurr = "";// 目录ID
+    private String catalogNameCurr = "";// 目录名称
 
-    Classes classes;
+    private Classes classes;
+    private boolean isOpenLock;
 
+    private View allFgView;// 总布局
     private CustomListView gridView, gridView_out;
     private TextView tvClassName;//班级名称
     private ClassAdpter onlineAdapter, offlineAdapter;
-    private boolean isOpenLock;
+    // 切换教材、目录
+    private TextView tvSwitchMaterial;
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_fg_classes, null);
+        if (allFgView == null) {
+            allFgView = inflater.inflate(R.layout.layout_fg_classes, null);
 
-        classes = new Classes();
+            classes = new Classes();
 
-        initView();
-        initData();
-        return view;
+            initView(allFgView);
+            initData();
+        }
+
+        // 因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
+        ViewGroup parent = (ViewGroup) allFgView.getParent();
+        if (parent != null) {
+            parent.removeView(allFgView);
+        }
+        // 标志当前页面可见
+        isPrepared = true;
+        lazyLoad();
+
+        return allFgView;
     }
 
     private void initData() {
@@ -94,8 +121,12 @@ public class ClassesFg extends Fragment implements InterfacesCallback.ICanKnowSt
         isOpenLock = !isOpenLock;
     }
 
-    private void initView() {
+    private void initView(View view) {
         tvClassName = (TextView) view.findViewById(R.id.tv_name_layout_fg_classes);
+        // 切换教材、目录
+        tvSwitchMaterial = (TextView) allFgView
+                .findViewById(R.id.tv_switch_material_layout_fg_classes);
+        tvSwitchMaterial.setOnClickListener(new Listeners());
 
         gridView = (CustomListView) view.findViewById(R.id.gridview);
         gridView_out = (CustomListView) view.findViewById(R.id.gridview_out);
@@ -126,6 +157,60 @@ public class ClassesFg extends Fragment implements InterfacesCallback.ICanKnowSt
             this.classes = classes;
 
             tvClassName.setText(classes.getName());
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ConstantsUtils.REQUEST_CODE01) {// 从选择教材界面回传数据
+            Bundle bundle = data.getExtras();
+            if (bundle == null) {
+                return;
+            }
+
+            // 目录ID
+            catalogIDCurr = bundle.getString(ConstantsUtils.CATALOG_ID);
+            // 目录名称
+            catalogNameCurr = bundle.getString(ConstantsUtils.CATALOG_NAME);
+            if (!ValidateFormatUtils.isEmpty(catalogNameCurr)) {
+                tvClassName.setText(catalogNameCurr);
+            }
+        }
+    }
+
+    @Override
+    protected void lazyLoad() {
+//        if (!isPrepared || !isVisible || hasLoadOnce) {
+//            return;
+//        }
+    }
+
+    /**
+     * 控件监听
+     *
+     * @author chenhui
+     */
+    private class Listeners implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.tv_switch_material_layout_fg_classes://切换教材
+                    boolean hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(getActivity(), ConstantsUtils.HAS_LOGINED);
+                    if (hasLogined) {
+                        // 跳转至选择教材目录界面
+                        Intent intent02 = new Intent(getActivity(),
+                                ChoiceTeachingMaterialAty.class);
+                        intent02.putExtra(ChoiceTeachingMaterialAty.CATALOG_POS, -1);
+                        startActivityForResult(intent02, ConstantsUtils.REQUEST_CODE01);
+                    } else {
+                        Toast.makeText(getActivity(), "请您先登录！", Toast.LENGTH_SHORT).show();
+                    }
+
+                    break;
+
+            }
+
         }
     }
 }

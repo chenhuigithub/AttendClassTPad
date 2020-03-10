@@ -117,6 +117,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
         View in01 = (View) findViewById(R.id.in_layout_activity_main);
         //登录
         btnLogin = (Button) in01.findViewById(R.id.btn_login_layout_fg_menu_login);
+
         //用户头像
         ivUserLogo = (CustomRoundImageView) in01.findViewById(R.id.iv_user_logo_layout_fg_menu_login);
         //登录名
@@ -139,6 +140,17 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
 
         initBroadcastReceiver();
         manager = getSupportFragmentManager();// FragmentManager调用v4包内的
+
+        boolean hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(this, ConstantsUtils.HAS_LOGINED);
+        if(hasLogined){
+            String loginName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.LOGIN_NAME);
+            // 设置头像
+            String headPicUrl = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.USER_HEAD_PIC_URL);
+
+            setLogined(loginName,headPicUrl);
+        }else {
+            setLogout();
+        }
 
         initMenuListeners();
 
@@ -206,6 +218,8 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                             }
                         } else {//未登录或退出登录
                             setLogout();
+
+                            PreferencesUtils.saveInfoToPreferences(MainActivity.this, ConstantsUtils.HAS_LOGINED, false);
                         }
                     }
 
@@ -275,10 +289,10 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                     // 跳转至选择教材目录界面
                     Intent intent = new Intent(MainActivity.this,
                             ChoiceTeachingMaterialAty.class);
-                    intent.putExtra(ConstantsUtils.CATALOG_ID, catalogID);
-                    intent.putExtra(ConstantsUtils.CATALOG_NAME, catalogName);
+//                    intent.putExtra(ConstantsUtils.CATALOG_ID, VariableUtils.catalogID);
+//                    intent.putExtra(ConstantsUtils.CATALOG_NAME, VariableUtils.catalogName);
                     intent.putExtra(ChoiceTeachingMaterialAty.CATALOG_POS, 0);
-//                    startActivityForResult(intent, ConstantsUtils.REQUEST_CODE01);
+//                  startActivityForResult(intent, ConstantsUtils.REQUEST_CODE01);
                     startActivity(intent);
                 }
             }
@@ -385,7 +399,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
     }
 
     /**
-     * 设置未登录状态下的布局
+     * 设置未登录状态
      */
     private void setLogout() {
         tvName.setText("老师您好");
@@ -443,10 +457,10 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
             materialName = bundle.getString(ConstantsUtils.CATALOG_NAME);
 
             // 目录ID
-            // catalogID = bundle.getString(ConstantsUtils.CATALOG_ID);
+            catalogID = bundle.getString(ConstantsUtils.CATALOG_ID);
 
             // 目录名称
-            // catalogName = bundle.getString(ConstantsUtils.CATALOG_NAME);
+            catalogName = bundle.getString(ConstantsUtils.CATALOG_NAME);
 
             aFg = new AttendClassDetailFg(VariableUtils.catalogID,
                     VariableUtils.catalogName);

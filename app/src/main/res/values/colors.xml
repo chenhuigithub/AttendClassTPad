@@ -58,6 +58,8 @@
     <color name="orange01">#FE9602</color>
     <color name="orange02">#FE710A</color>
     <color name="yellow01">#FDEECE</color>
+    <color name="clog">#09A983</color>
+    <color name="light_green03">#ECF8F0</color>
 
     <!-- 橘红色 -->
     <color name="orange_red">#E64301</color>

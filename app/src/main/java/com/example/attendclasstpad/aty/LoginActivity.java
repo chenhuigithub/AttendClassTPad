@@ -292,6 +292,10 @@ public class LoginActivity extends Activity {
                             public void run() {
                                 Toast.makeText(LoginActivity.this, "登录成功",
                                         Toast.LENGTH_SHORT).show();
+
+                                PreferencesUtils.saveInfoToPreferences(LoginActivity.this,
+                                        ConstantsUtils.HAS_LOGINED, true);
+
                                 if (data != null) {
                                     dealWithData(data);
                                 }
