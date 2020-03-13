@@ -35,14 +35,14 @@
             android:name="com.example.attendclasstpad.aty.LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+<!--             <intent-filter>-->
+<!--                 <action android:name="android.intent.action.MAIN" />-->
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+<!--                 <category android:name="android.intent.category.LAUNCHER" />-->
+<!--             </intent-filter>-->
         </activity>
 
         <!-- 选择上课班级 -->
@@ -50,7 +50,7 @@
             android:name="com.example.attendclasstpad.aty.ChoiceClassActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
         <!-- 主界面 -->
@@ -58,20 +58,22 @@
             android:name="com.example.attendclasstpad.aty.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <!-- 共享全屏 -->
         <activity
             android:name="com.example.attendclasstpad.aty.ShareFullScreenActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
             <!-- <intent-filter> -->
@@ -86,7 +88,7 @@
         <activity
             android:name="com.example.attendclasstpad.aty.WhiteBoardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
         <!-- 答题统计 -->
@@ -94,7 +96,7 @@
             android:name="com.example.attendclasstpad.aty.AnswerStatisticsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@style/ActivityInOutAnimation" />
 
         <!-- 选择教材 -->
@@ -102,14 +104,14 @@
             android:name="com.example.attendclasstpad.aty.ChoiceTeachingMaterialAty"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.Android123" />
 
         <!-- 答卷统计 -->
         <activity
             android:name="com.example.attendclasstpad.aty.AnswerTestPaperReportAty"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
             <!-- <intent-filter>
@@ -124,7 +126,7 @@
             android:name="com.example.attendclasstpad.aty.StudentAnswerPaperSituationAty"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.Android123">
 
 

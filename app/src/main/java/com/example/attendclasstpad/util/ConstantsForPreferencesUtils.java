@@ -36,6 +36,16 @@ public class ConstantsForPreferencesUtils {
     public static final String USER_HEAD_PIC_BASE64 = "USER_HEAD_PIC_BASE64";
 
     /**
+     * 班级名称
+     */
+    public final static String CLASS_NAME = "CLASS_NAME";
+
+    /**
+     * 班级ID
+     */
+    public final static String CLASS_ID = "CLASS_ID";
+
+    /**
      * 当前页码(分页页卡，第几个页卡)
      */
     public static final String CURRENT_PAGE_NUM = "Current_Page_Num";
@@ -131,5 +141,14 @@ public class ConstantsForPreferencesUtils {
      * 所选班级ID
      */
     public static final String CLASS_ID_CHOICED = "CLASS_ID_CHOICED";
+
+    /**
+     * 是否已登录
+     */
+    public static final String HAS_LOGINED = "HAS_LOGINED";
+    /**
+     * 是否首次登录
+     */
+    public static final String IS_FIRST_LOGINED = "IS_FIRST_LOGINED";
 
 }

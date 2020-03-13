@@ -110,7 +110,6 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
         ActivityUtils utils = new ActivityUtils();
         utils.addActivity(this);
 
-
         llRightTriangle01 = (LinearLayout) findViewById(R.id.ll_right_triangle01_layout_activity_main);
         llRightTriangle02 = (LinearLayout) findViewById(R.id.ll_right_triangle02_layout_activity_main);
         llRightTriangle03 = (LinearLayout) findViewById(R.id.ll_right_triangle03_layout_activity_main);
@@ -141,20 +140,44 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
         initBroadcastReceiver();
         manager = getSupportFragmentManager();// FragmentManager调用v4包内的
 
-        boolean hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(this, ConstantsUtils.HAS_LOGINED);
-        if(hasLogined){
-            String loginName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.LOGIN_NAME);
-            // 设置头像
-            String headPicUrl = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.USER_HEAD_PIC_URL);
+        checkIfHasLogined();
 
-            setLogined(loginName,headPicUrl);
-        }else {
-            setLogout();
-        }
+//        boolean hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(this, ConstantsUtils.HAS_LOGINED);
+//        if (hasLogined) {
+//            String loginName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.LOGIN_NAME);
+//            // 设置头像
+//            String headPicUrl = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.USER_HEAD_PIC_URL);
+//
+//            setLogined(loginName, headPicUrl);
+//        } else {
+//            setLogout();
+//        }
 
         initMenuListeners();
 
         llClasses.performClick();
+    }
+
+    /**
+     * 检查用户是否登录
+     */
+    private void checkIfHasLogined() {
+        hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(this, ConstantsForPreferencesUtils.HAS_LOGINED);
+        if (!hasLogined) {//若未登录先去登录
+            toLoginPage();
+        } else {
+            setLogined();
+        }
+    }
+
+    /**
+     * 跳转至登录界面
+     */
+    private void toLoginPage() {
+        Intent intent = new Intent(MainActivity.this,
+                LoginActivity.class);
+//        intent.putExtra(ConstantsUtils.IS_SWITCH_LOGIN, true);
+        startActivity(intent);
     }
 
     /**
@@ -202,20 +225,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                         hasLogined = hasLogined1;
 
                         if (hasLogined) {//已登录
-                            String loginName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.LOGIN_NAME);
-                            // 设置头像
-                            String headPicUrl = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.USER_HEAD_PIC_URL);
-                            setLogined(loginName, headPicUrl);
-
-                            String cName = bundle.getString(ConstantsUtils.CLASS_NAME);
-                            if (!TextUtils.isEmpty(cName)) {
-                                classes.setName(cName);
-                            }
-
-                            String cID = bundle.getString(ConstantsUtils.CLASS_NAME);
-                            if (!TextUtils.isEmpty(cID)) {
-                                classes.setId(cID);
-                            }
+                            setLogined();
                         } else {//未登录或退出登录
                             setLogout();
 
@@ -231,11 +241,29 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
             }
         };
         broadcastManager.registerReceiver(receiver, filter);
+    }
 
+    /**
+     * 设置登录后的状态
+     */
+    private void setLogined() {
+        String loginName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.LOGIN_NAME);
+        // 设置头像
+        String headPicUrl = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.USER_HEAD_PIC_URL);
+        setLogined(loginName, headPicUrl);
+
+        String cName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.CLASS_NAME);
+        if (!TextUtils.isEmpty(cName)) {
+            classes.setName(cName);
+        }
+
+        String cID = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.CLASS_ID);
+        if (!TextUtils.isEmpty(cID)) {
+            classes.setId(cID);
+        }
     }
 
     private void initView() {
-        // TODO Auto-generated method stub
         llUnlocked = (LinearLayout) findViewById(R.id.ll_unlocked_layout_activity_main);
         llUnlocked.setOnClickListener(new OnClickListener() {
 
@@ -492,10 +520,16 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.btn_login_layout_fg_menu_login://登录/退出登录
-                    Intent intent = new Intent(MainActivity.this,
-                            LoginActivity.class);
-                    startActivity(intent);
+                case R.id.btn_login_layout_fg_menu_login://退出登录
+//                    Intent intent = new Intent(MainActivity.this,
+//                            LoginActivity.class);
+//                    intent.putExtra(ConstantsUtils.IS_SWITCH_LOGIN, true);
+//                    startActivity(intent);
+
+                    //重置登录状态
+                    PreferencesUtils.saveInfoToPreferences(MainActivity.this, ConstantsForPreferencesUtils.HAS_LOGINED, false);
+
+                    toLoginPage();
 
                     break;
             }

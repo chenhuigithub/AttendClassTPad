@@ -144,4 +144,10 @@ public class ConstantsUtils {
      */
     public final static String HAS_LOGINED = "HAS_LOGINED";
 
+    /**
+     * 是否在切换登录
+     */
+    public final static String IS_SWITCH_LOGIN = "IS_SWITCH_LOGIN";
+
+
 }

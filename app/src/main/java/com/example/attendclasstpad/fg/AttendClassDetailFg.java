@@ -508,6 +508,9 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                 .findViewById(R.id.sfv_board_layout_fg_attend_class_detail);
         sfvBoard.setZOrderOnTop(true);
         sfvBoard.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+
+        sfvBoard.setVisibility(View.GONE);
+        sfvBoard.surfaceDestroyed(sfvBoard.getHolder());
     }
 
     private void initDrawMenu(View allFgView, View v, int ResID) {

@@ -62,6 +62,7 @@ public class LoginActivity extends Activity {
      */
     public static String MODIFY_LOGIN_INFO = "MODIFY_LOGIN_INFO";
     private String showType = "";// 展示状态
+    private boolean isSwitchLogin = true;// 是否为从主界面过来切换账户的状态
     private String loginName;// 登录名
     private String password;// 登录密码
 
@@ -185,6 +186,8 @@ public class LoginActivity extends Activity {
         if (MODIFY_LOGIN_INFO.equals(showType)) {
             edtName.setEnabled(false);
         }
+
+//        isSwitchLogin = bundle.getBoolean(ConstantsUtils.IS_SWITCH_LOGIN, false);
     }
 
     /**
@@ -333,7 +336,11 @@ public class LoginActivity extends Activity {
 
         // 登录名
         intent2.putExtra(ConstantsUtils.LOGIN_NAME, loginName);
+
+        //登录状态
         intent2.putExtra(ConstantsUtils.HAS_LOGINED, true);
+        PreferencesUtils.saveInfoToPreferences(LoginActivity.this, ConstantsForPreferencesUtils.HAS_LOGINED, true);
+
         // 昵称
         String nickName = ServerDataAnalyzeUtils.getValue(data,
                 ConstantsForServerUtils.DATANAME);
@@ -396,8 +403,7 @@ public class LoginActivity extends Activity {
                     .sendBroadcast(intent2);
         } else {
             Intent intent = new Intent(LoginActivity.this, ChoiceClassActivity.class);
-//            intent.putExtra(ConstantsUtils.LOGIN_NAME, loginName);
-//            intent.putExtra(ConstantsUtils.USER_HEAD_PIC_URL, headPicUrl);
+            intent.putExtra(ConstantsUtils.HAS_LOGINED, true);
             startActivity(intent);
 
             finish();
@@ -481,8 +487,10 @@ public class LoginActivity extends Activity {
             intent.putExtra(ConstantsUtils.HAS_LOGINED, false);
             LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
 
-//            setResult(RESULT_OK);
-            finish();
+//            boolean hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(LoginActivity.this, ConstantsForPreferencesUtils.HAS_LOGINED);
+//            if (hasLogined){
+//            }
+//                finish();
 
             return true;
         }

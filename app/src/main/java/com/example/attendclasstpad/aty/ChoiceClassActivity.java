@@ -41,6 +41,7 @@ public class ChoiceClassActivity extends Activity {
     private ViewUtils vUtils;// 布局工具
     private Handler uiHandler;// 主线程handler
     private ClassNameAdapter classAdapter;// 班级名称列表适配器
+    private boolean isFirstLogined = false;//是否首次登录
 
     private GridView gdvClass;
 
@@ -65,17 +66,19 @@ public class ChoiceClassActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 PreferencesUtils.saveInfoToPreferences(ChoiceClassActivity.this, ConstantsForPreferencesUtils.CLASS_ID_CHOICED, classList.get(position).getId());
-                
+
                 Intent intent = new Intent(ChoiceClassActivity.this,
                         MainActivity.class);
                 intent.setAction(ConstantsUtils.REFRESH_USER_INFO);
 
                 if (classList.size() > 0 && classList.get(position) != null) {
                     intent.putExtra(ConstantsUtils.CLASS_NAME, classList.get(position).getName());
+                    PreferencesUtils.saveInfoToPreferences(ChoiceClassActivity.this, ConstantsForPreferencesUtils.CLASS_NAME, classList.get(position).getName());
                 }
 
                 if (classList.size() > 0 && classList.get(position) != null) {
                     intent.putExtra(ConstantsUtils.CLASS_ID, classList.get(position).getId());
+                    PreferencesUtils.saveInfoToPreferences(ChoiceClassActivity.this, ConstantsForPreferencesUtils.CLASS_ID, classList.get(position).getId());
                 }
 
 
@@ -97,9 +100,7 @@ public class ChoiceClassActivity extends Activity {
             return;
         }
 
-//      loginName =bundle.getString(ConstantsUtils.LOGIN_NAME);
-//        if (!TextUtils.isEmpty(name)) {
-//        }
+        isFirstLogined = bundle.getBoolean(ConstantsForPreferencesUtils.IS_FIRST_LOGINED, false);
     }
 
     /**
@@ -191,9 +192,6 @@ public class ChoiceClassActivity extends Activity {
             intent.setAction(ConstantsUtils.REFRESH_USER_INFO);// 刷新用户信息
             intent.putExtra(ConstantsUtils.HAS_LOGINED, false);
             LocalBroadcastManager.getInstance(ChoiceClassActivity.this).sendBroadcast(intent);
-
-//            setResult(RESULT_OK);
-            finish();
 
             return true;
         }
