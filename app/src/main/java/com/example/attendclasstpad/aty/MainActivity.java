@@ -142,17 +142,6 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
 
         checkIfHasLogined();
 
-//        boolean hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(this, ConstantsUtils.HAS_LOGINED);
-//        if (hasLogined) {
-//            String loginName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.LOGIN_NAME);
-//            // 设置头像
-//            String headPicUrl = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.USER_HEAD_PIC_URL);
-//
-//            setLogined(loginName, headPicUrl);
-//        } else {
-//            setLogout();
-//        }
-
         initMenuListeners();
 
         llClasses.performClick();
@@ -448,6 +437,8 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case PicFormatUtils.SIGN_FOR_BITMAP:
+                        vUtils.dismissDialog();
+
                         // 接收老师头像并显示
                         Object obj = msg.obj;
                         if (obj != null && obj instanceof Bitmap) {
@@ -462,7 +453,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                         }
                         ivUserLogo.setClickable(true);
 
-                        vUtils.dismissDialog();
+
 
                         break;
                 }

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -44,6 +45,7 @@ public class ChoiceClassActivity extends Activity {
     private boolean isFirstLogined = false;//是否首次登录
 
     private GridView gdvClass;
+    private ImageView ivNoData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,10 @@ public class ChoiceClassActivity extends Activity {
         requestUtils = new ServerRequestUtils(this);
         vUtils = new ViewUtils(this);
         uiHandler = new Handler(getMainLooper());
+
+        ivNoData = (ImageView) findViewById(R.id.iv_no_data_layout_aty_choice_class);
+        ivNoData.setVisibility(View.GONE);
+        ivNoData.setOnClickListener(new Listeners());
 
         dealWithExtras();
 
@@ -109,15 +115,23 @@ public class ChoiceClassActivity extends Activity {
     private void acquireClassList() {
         requestUtils.request("getClassList", "", "加载班级数据中", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener2() {
             @Override
-            public void onFailure(String msg) {
-                if (!TextUtils.isEmpty(msg)) {
-                    Toast.makeText(ChoiceClassActivity.this, msg,
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ChoiceClassActivity.this, "获取班级列表失败",
-                            Toast.LENGTH_SHORT).show();
-                }
-                vUtils.dismissDialog();
+            public void onFailure(final String msg) {
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!TextUtils.isEmpty(msg)) {
+                            Toast.makeText(ChoiceClassActivity.this, msg + "加载失败，请点击图片重试",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ChoiceClassActivity.this, "获取班级列表失败，请点击图片重试",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        vUtils.dismissDialog();
+
+                        ivNoData.setVisibility(View.VISIBLE);
+                        gdvClass.setVisibility(View.GONE);
+                    }
+                });
             }
 
             @Override
@@ -149,6 +163,11 @@ public class ChoiceClassActivity extends Activity {
                     uiHandler.post(new Runnable() {
                         @Override
                         public void run() {
+                            ivNoData.setVisibility(View.GONE);
+                            gdvClass.setVisibility(View.VISIBLE);
+
+                            vUtils.dismissDialog();
+
                             setGdvClassAdapter(0);
                         }
                     });
@@ -196,5 +215,22 @@ public class ChoiceClassActivity extends Activity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private class Listeners implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.iv_no_data_layout_aty_choice_class://刷新班级列表
+                    if (classList != null && classList.size() > 0) {
+                        classList.clear();
+                    }
+
+                    vUtils.showLoadingDialog("");
+                    acquireClassList();
+
+                    break;
+            }
+        }
     }
 }

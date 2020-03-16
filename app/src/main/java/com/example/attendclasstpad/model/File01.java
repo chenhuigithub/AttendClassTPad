@@ -10,7 +10,7 @@ public class File01 {
     private String DataName;//名称
     private String size;//大小
     private String Source;//来源
-    private String DataTime;//日期（例如："2018-10-09 13:25"）
+    private String DataTime;//创建日期（例如："2018-10-09 13:25"）
     private String logoUrl;//文件类型图标路径
     private String Memo;//备注
     private boolean isChoiced = false;//是否被选中

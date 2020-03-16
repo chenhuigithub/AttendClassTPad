@@ -42,6 +42,12 @@ public class FilesListAdapter extends BaseListAdapter<File01> {
         tvSize.setText(dataObj.getSize());
         tvSize.setVisibility(View.GONE);
 
+        // 创建日期
+        TextView tvTime = (TextView) resultView
+                .findViewById(R.id.tv_time_layout_adapter_item_for_files);
+        tvTime.setText(dataObj.getDataTime());
+
+
         // 文件标志（头像图片）
         ImageView ivLogo = (ImageView) resultView
                 .findViewById(R.id.iv_logo_layout_adapter_item_for_files);

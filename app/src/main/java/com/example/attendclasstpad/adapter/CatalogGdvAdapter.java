@@ -92,20 +92,20 @@ public class CatalogGdvAdapter extends BaseListAdapter<Catalog> {
         // }
 
         if (ValidateFormatUtils.isEmpty(catalogIDCurr)) {
-            if (unitPos == 0 && position == 0) {
-                tvCatalogName.setBackgroundColor(res
-                        .getColor(R.color.light_blue06));
-            } else {
-                tvCatalogName.setBackgroundColor(res.getColor(R.color.white));
-            }
+//            if (unitPos == 0 && position == 0) {
+//                tvCatalogName.setBackgroundColor(res
+//                        .getColor(R.color.light_blue06));
+//            } else {
+//                tvCatalogName.setBackgroundColor(res.getColor(R.color.white));
+//            }
         } else {
-            if (!ValidateFormatUtils.isEmpty(catalogID)
-                    && catalogID.equals(catalogIDCurr)) {
-                tvCatalogName.setBackgroundColor(res
-                        .getColor(R.color.light_blue06));
-            } else {
-                tvCatalogName.setBackgroundColor(res.getColor(R.color.white));
-            }
+//            if (!ValidateFormatUtils.isEmpty(catalogID)
+//                    && catalogID.equals(catalogIDCurr)) {
+//                tvCatalogName.setBackgroundColor(res
+//                        .getColor(R.color.light_blue06));
+//            } else {
+//                tvCatalogName.setBackgroundColor(res.getColor(R.color.white));
+//            }
         }
 
     }

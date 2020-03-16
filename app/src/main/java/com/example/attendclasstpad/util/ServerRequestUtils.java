@@ -4,6 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.widget.Toast;
+
+import com.example.attendclasstpad.R;
+import com.example.attendclasstpad.aty.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -58,7 +62,7 @@ public class ServerRequestUtils {
     private int requestTime;// 请求时间
 
     private Context context;
-    private ViewUtils vUtils;
+//    private ViewUtils vUtils;
 
     public interface OnServerRequestListener {
         public void onFailure(String msg);
@@ -75,7 +79,7 @@ public class ServerRequestUtils {
     public ServerRequestUtils(Context context) {
         this.context = context;
 
-        vUtils = new ViewUtils(context);
+//        vUtils = new ViewUtils(context);
     }
 
     /**
@@ -186,48 +190,53 @@ public class ServerRequestUtils {
     public void request(String methodName, RequestBody formBody,
                         String dialogTip, final OnServerRequestListener listener,
                         final OnServerRequestListener2 listener2) {
-        // 显示加载框
-        // vUtils.showLoadingDialog(dialogTip);
 
-        // 获取头信息：token值
-        String token = PreferencesUtils.acquireInfoFromPreferences(context,
-                ConstantsForPreferencesUtils.TOKEN);
+        // 检测网络是否连接
+        if (!NetworkUtils.checkNetworkState(context)) {
+            Toast.makeText(context,
+                    R.string.check_network_connections, Toast.LENGTH_SHORT)
+                    .show();
+        } else {
+            // 获取头信息：token值
+            String token = PreferencesUtils.acquireInfoFromPreferences(context,
+                    ConstantsForPreferencesUtils.TOKEN);
 
-        OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(requestTime, TimeUnit.MILLISECONDS)
-                .readTimeout(requestTime, TimeUnit.MILLISECONDS).build();
-        Request request = new Request.Builder()
-                .url(UrlUtils.PREFIX_MOBILE + methodName)
-                .addHeader(ConstantsForServerUtils.AUTH_TOKEN, token)
-                .post(formBody).build();
-        Call call = mOkHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, final IOException ex) {
-                Handler uiHandler = new Handler(context.getMainLooper());
-                uiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 关闭加载框
-                        // vUtils.dismissDialog();
+            OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(requestTime, TimeUnit.MILLISECONDS)
+                    .readTimeout(requestTime, TimeUnit.MILLISECONDS).build();
+            Request request = new Request.Builder()
+                    .url(UrlUtils.PREFIX_MOBILE + methodName)
+                    .addHeader(ConstantsForServerUtils.AUTH_TOKEN, token)
+                    .post(formBody).build();
+            Call call = mOkHttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, final IOException ex) {
+                    Handler uiHandler = new Handler(context.getMainLooper());
+                    uiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 关闭加载框
+                            // vUtils.dismissDialog();
 
-                        if (listener != null) {
-                            listener.onFailure("请求服务器失败，原因：" + ex.toString());
-                        } else if (listener2 != null) {
-                            listener2.onFailure("请求服务器失败，原因：" + ex.toString());
+                            if (listener != null) {
+                                listener.onFailure("请求服务器失败，原因：" + ex.toString());
+                            } else if (listener2 != null) {
+                                listener2.onFailure("请求服务器失败，原因：" + ex.toString());
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
 
-            @Override
-            public void onResponse(Call call, Response response)
-                    throws IOException {
-                String result = response.body().string();
+                @Override
+                public void onResponse(Call call, Response response)
+                        throws IOException {
+                    String result = response.body().string();
 
-                response(result, listener, listener2);
-            }
-        });
+                    response(result, listener, listener2);
+                }
+            });
+        }
     }
 
     /**

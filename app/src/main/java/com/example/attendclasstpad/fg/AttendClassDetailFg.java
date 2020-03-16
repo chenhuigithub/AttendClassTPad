@@ -282,16 +282,16 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
         // 右侧文件
         List<File01> fileList = new ArrayList<File01>();
         File01 file01 = new File01();
-        file01.setDataName("数据分析表");
+        file01.setDataName("数据分析表.doc");
         file01.setSize("1.17M");
         File01 file02 = new File01();
-        file02.setDataName("数据分析表");
-        file02.setSize("1.08M");
+        file02.setDataName("数据分析表.pdf");
+        file02.setSize("5.08M");
         File01 file03 = new File01();
-        file03.setDataName("数据分析表");
-        file03.setSize("1.5M");
+        file03.setDataName("数据演示.ppt");
+        file03.setSize("3.5M");
         File01 file04 = new File01();
-        file04.setDataName("数据分析表");
+        file04.setDataName("数据分析表.txt");
         file04.setSize("1.45M");
         fileList.add(file01);
         fileList.add(file02);
