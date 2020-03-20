@@ -45,8 +45,6 @@
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
-                <!-- 切换教材 -->
-
                 <TextView
                     android:id="@+id/tv_switch_material_layout_fg_classes"
                     android:layout_width="wrap_content"

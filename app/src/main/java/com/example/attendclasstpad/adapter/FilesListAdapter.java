@@ -5,12 +5,15 @@ import java.util.List;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.attendclasstpad.R;
+import com.example.attendclasstpad.callback.InterfacesCallback;
 import com.example.attendclasstpad.model.File01;
 import com.example.attendclasstpad.model.Files;
+import com.example.attendclasstpad.util.ConstantsUtils;
 
 /**
  * 文件目录适配器
@@ -18,9 +21,15 @@ import com.example.attendclasstpad.model.Files;
  * @author zhaochenhui, 2018.05.21
  */
 public class FilesListAdapter extends BaseListAdapter<File01> {
+    private InterfacesCallback.ICanDoSth callback;
 
     public FilesListAdapter(Context context, List<File01> dataList) {
         super(context, dataList);
+    }
+
+    public FilesListAdapter(Context context, List<File01> dataList, InterfacesCallback.ICanDoSth callback) {
+        super(context, dataList);
+        this.callback = callback;
     }
 
     @Override
@@ -29,8 +38,19 @@ public class FilesListAdapter extends BaseListAdapter<File01> {
     }
 
     @Override
-    protected void doAssignValueForView(int position, View resultView,
-                                        File01 dataObj) {
+    protected void doAssignValueForView(final int position, View resultView,
+                                        final File01 dataObj) {
+        RelativeLayout rlAll = (RelativeLayout) resultView
+                .findViewById(R.id.rl_all_layout_adapter_item_for_files);
+        rlAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callback != null) {
+                    callback.doSth(ConstantsUtils.AFTER_CLICK_ALL, position, dataObj.getDataID());
+                }
+            }
+        });
+
         // 文件名称
         TextView tvName = (TextView) resultView
                 .findViewById(R.id.tv_name_layout_adapter_item_for_files);

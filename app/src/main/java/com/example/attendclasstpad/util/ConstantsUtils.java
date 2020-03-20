@@ -50,6 +50,16 @@ public class ConstantsUtils {
     public final static int REQUEST_CODE01 = 101;
 
     /**
+     * 102
+     */
+    public final static int REQUEST_CODE02 = 102;
+
+    /**
+     * 点击单项内容后
+     */
+    public final static int AFTER_CLICK_ALL = 1001;
+
+    /**
      * 目录ID
      */
     public final static String CATALOG_ID = "CATALOG_ID";
@@ -102,6 +112,10 @@ public class ConstantsUtils {
      * 刷新显示用户信息
      */
     public static final String REFRESH_USER_INFO = "REFRESH_USER_INFO";
+    /**
+     * 关闭整个应用
+     */
+    public static final String CLOSE_APP = "CLOSE_APP";
 
     /**
      * INTENT_01
@@ -148,6 +162,11 @@ public class ConstantsUtils {
      * 是否在切换登录
      */
     public final static String IS_SWITCH_LOGIN = "IS_SWITCH_LOGIN";
+
+    /**
+     * 位置
+     */
+    public final static String POSITION = "POSITION";
 
 
 }

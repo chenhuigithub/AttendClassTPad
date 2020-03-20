@@ -179,6 +179,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
         IntentFilter filter = new IntentFilter();
         filter.addAction(ConstantsUtils.ACQUIRE_MATERIAL_INFO);// 获取教材信息
         filter.addAction(ConstantsUtils.REFRESH_USER_INFO);//刷新用户信息
+        filter.addAction(ConstantsUtils.CLOSE_APP);//关闭应用
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -226,6 +227,8 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                     if (callbackForClass != null) {
                         callbackForClass.getInfo(classes);
                     }
+                } else if (ConstantsUtils.CLOSE_APP.equals(action)) {//关闭应用
+                    finish();
                 }
             }
         };
@@ -452,7 +455,6 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                             }
                         }
                         ivUserLogo.setClickable(true);
-
 
 
                         break;

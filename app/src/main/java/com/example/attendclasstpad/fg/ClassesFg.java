@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.attendclasstpad.R;
 import com.example.attendclasstpad.adapter.ClassAdpter;
+import com.example.attendclasstpad.aty.ChoiceClassActivity;
 import com.example.attendclasstpad.aty.ChoiceTeachingMaterialAty;
 import com.example.attendclasstpad.callback.InterfacesCallback;
 import com.example.attendclasstpad.model.ClassBean;
@@ -38,8 +38,8 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
 
     private List<ClassBean> onlineList = new ArrayList<ClassBean>();
     private List<ClassBean> offlineList = new ArrayList<ClassBean>();
-    private String catalogIDCurr = "";// 目录ID
-    private String catalogNameCurr = "";// 目录名称
+    private String classesIDCurr = "";// 班级ID
+    private String classesNameCurr = "";// 班级名称
 
     private Classes classes;
     private boolean isOpenLock;
@@ -64,6 +64,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
             allFgView = inflater.inflate(R.layout.layout_fg_classes, null);
 
             classes = new Classes();
+            classesIDCurr = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_ID);
 
             initView(allFgView);
             initData();
@@ -122,8 +123,15 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     }
 
     private void initView(View view) {
+        //班级名称
         tvClassName = (TextView) view.findViewById(R.id.tv_name_layout_fg_classes);
-        // 切换教材、目录
+        String name = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_NAME);
+        if (!TextUtils.isEmpty(name)) {
+            classesNameCurr = name;
+            tvClassName.setText(classesNameCurr);
+        }
+
+        // 切换班级
         tvSwitchMaterial = (TextView) allFgView
                 .findViewById(R.id.tv_switch_material_layout_fg_classes);
         tvSwitchMaterial.setOnClickListener(new Listeners());
@@ -163,18 +171,18 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ConstantsUtils.REQUEST_CODE01) {// 从选择教材界面回传数据
+        if (requestCode == ConstantsUtils.REQUEST_CODE02) {// 从选择教材界面回传数据
             Bundle bundle = data.getExtras();
             if (bundle == null) {
                 return;
             }
 
-            // 目录ID
-            catalogIDCurr = bundle.getString(ConstantsUtils.CATALOG_ID);
-            // 目录名称
-            catalogNameCurr = bundle.getString(ConstantsUtils.CATALOG_NAME);
-            if (!ValidateFormatUtils.isEmpty(catalogNameCurr)) {
-                tvClassName.setText(catalogNameCurr);
+            // 班级ID
+            classesIDCurr = bundle.getString(ConstantsUtils.CLASS_ID);
+            // 班级名称
+            classesNameCurr = bundle.getString(ConstantsUtils.CLASS_NAME);
+            if (!ValidateFormatUtils.isEmpty(classesNameCurr)) {
+                tvClassName.setText(classesNameCurr);
             }
         }
     }
@@ -195,17 +203,13 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.tv_switch_material_layout_fg_classes://切换教材
-                    boolean hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(getActivity(), ConstantsUtils.HAS_LOGINED);
-                    if (hasLogined) {
-                        // 跳转至选择教材目录界面
-                        Intent intent02 = new Intent(getActivity(),
-                                ChoiceTeachingMaterialAty.class);
-                        intent02.putExtra(ChoiceTeachingMaterialAty.CATALOG_POS, -1);
-                        startActivityForResult(intent02, ConstantsUtils.REQUEST_CODE01);
-                    } else {
-                        Toast.makeText(getActivity(), "请您先登录！", Toast.LENGTH_SHORT).show();
-                    }
+                case R.id.tv_switch_material_layout_fg_classes://切换
+                    // 跳转至选择班级界面
+                    Intent intent02 = new Intent(getActivity(),
+                            ChoiceClassActivity.class);
+                    classesIDCurr = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_ID);
+                    intent02.putExtra(ConstantsUtils.CLASS_ID, classesIDCurr);
+                    startActivity(intent02);
 
                     break;
 

@@ -484,13 +484,11 @@ public class LoginActivity extends Activity {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             Intent intent = new Intent();
             intent.setAction(ConstantsUtils.REFRESH_USER_INFO);// 刷新用户信息
+            intent.setAction(ConstantsUtils.CLOSE_APP);// 关闭应用
             intent.putExtra(ConstantsUtils.HAS_LOGINED, false);
             LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
 
-//            boolean hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(LoginActivity.this, ConstantsForPreferencesUtils.HAS_LOGINED);
-//            if (hasLogined){
-//            }
-//                finish();
+            finish();
 
             return true;
         }

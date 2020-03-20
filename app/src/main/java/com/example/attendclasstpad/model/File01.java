@@ -2,6 +2,8 @@ package com.example.attendclasstpad.model;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 资源文件
  */
@@ -12,6 +14,7 @@ public class File01 {
     private String Source;//来源
     private String DataTime;//创建日期（例如："2018-10-09 13:25"）
     private String logoUrl;//文件类型图标路径
+    private String format;//文件格式
     private String Memo;//备注
     private boolean isChoiced = false;//是否被选中
 
@@ -43,6 +46,7 @@ public class File01 {
         }
         return size;
     }
+
 
     public void setSize(String size) {
         this.size = size;
@@ -76,6 +80,19 @@ public class File01 {
 
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
+    }
+
+    @JSONField(name="DataType")
+    public String getFormat() {
+        if (TextUtils.isEmpty(format)) {
+            return "";
+        }
+        return format;
+    }
+
+    @JSONField(name="DataType")
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     public String getMemo() {

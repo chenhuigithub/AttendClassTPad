@@ -35,6 +35,20 @@ public class InterfacesCallback {
     }
 
     /**
+     * Adapter与Activity交互的接口：传递做什么事情等信息
+     */
+    public interface ICanDoSth {
+        /**
+         * 传递应该做什么事情
+         *
+         * @param i   事情类型
+         * @param pos 数据位置
+         * @param id  数据ID
+         */
+        public void doSth(int i, int pos, String id);
+    }
+
+    /**
      * Fragment与Activity交互的接口：传递intent信息
      *
      * @author zhaochenhui_2017.05.24

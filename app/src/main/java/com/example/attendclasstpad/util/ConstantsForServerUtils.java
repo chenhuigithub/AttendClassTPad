@@ -118,6 +118,11 @@ public class ConstantsForServerUtils {
     public static final String DATAPID = "DataPID";
 
     /**
+     * html格式
+     */
+    public static final String HTML = "html";
+
+    /**
      * 文档
      */
     public static final String WORD = "word";

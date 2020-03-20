@@ -37,12 +37,12 @@ import org.json.JSONObject;
  */
 public class ChoiceClassActivity extends Activity {
     private List<Classes> classList;// 班级列表
+    private String classesIDCurr = "";//当前选中的班级ID
 
     private ServerRequestUtils requestUtils;// 网络请求
     private ViewUtils vUtils;// 布局工具
     private Handler uiHandler;// 主线程handler
     private ClassNameAdapter classAdapter;// 班级名称列表适配器
-    private boolean isFirstLogined = false;//是否首次登录
 
     private GridView gdvClass;
     private ImageView ivNoData;
@@ -54,6 +54,7 @@ public class ChoiceClassActivity extends Activity {
 
         // 测试数据，chenhui 2018.06.13
         classList = new ArrayList<Classes>();
+        classesIDCurr = PreferencesUtils.acquireInfoFromPreferences(this, ConstantsForPreferencesUtils.CLASS_ID);
 
         // 初始化服务器请求操作
         requestUtils = new ServerRequestUtils(this);
@@ -71,6 +72,13 @@ public class ChoiceClassActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
+                Classes classes = classList.get(position);
+                if (classes != null) {
+                    classAdapter.setCurrentID(classes.getId());
+                    PreferencesUtils.saveInfoToPreferences(ChoiceClassActivity.this, ConstantsForPreferencesUtils.CLASS_ID, classes.getId());
+                    classAdapter.notifyDataSetChanged();
+                }
+
                 PreferencesUtils.saveInfoToPreferences(ChoiceClassActivity.this, ConstantsForPreferencesUtils.CLASS_ID_CHOICED, classList.get(position).getId());
 
                 Intent intent = new Intent(ChoiceClassActivity.this,
@@ -106,7 +114,11 @@ public class ChoiceClassActivity extends Activity {
             return;
         }
 
-        isFirstLogined = bundle.getBoolean(ConstantsForPreferencesUtils.IS_FIRST_LOGINED, false);
+        String id = bundle.getString(ConstantsUtils.CLASS_ID);
+        if (!TextUtils.isEmpty(id)) {
+            classesIDCurr = id;
+        }
+
     }
 
     /**
@@ -137,27 +149,39 @@ public class ChoiceClassActivity extends Activity {
             @Override
             public void onResponse(String msg, JSONArray data, String count) {
                 //暂无数据，用假数据代替，2019.11.20
-                data = new JSONArray();
-                try {
-                    JSONObject obj1 = new JSONObject();
-                    obj1.put("DataID", 1);
-                    obj1.put("DataName", "高一(1)班");
-
-                    JSONObject obj2 = new JSONObject();
-                    obj2.put("DataID", 2);
-                    obj2.put("DataName", "高一(2)班");
-
-                    data.put(obj1);
-                    data.put(obj2);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                data = new JSONArray();
+//                try {
+//                    JSONObject obj1 = new JSONObject();
+//                    obj1.put("DataID", 1);
+//                    obj1.put("DataName", "高一(1)班");
+//
+//                    JSONObject obj2 = new JSONObject();
+//                    obj2.put("DataID", 2);
+//                    obj2.put("DataName", "高一(2)班");
+//
+//                    data.put(obj1);
+//                    data.put(obj2);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
 
 
                 if (data != null) {
                     List<Classes> list = com.alibaba.fastjson.JSON.parseArray(data.toString(), Classes.class);
                     if (list != null) {
-                        classList.addAll(list);
+                        if (list.size() == 0) {
+                            uiHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(ChoiceClassActivity.this, "暂无可选择的班级，可返回切换账号试试", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            if (classList.size() > 0) {
+                                classList.clear();
+                            }
+                            classList.addAll(list);
+                        }
                     }
 
                     uiHandler.post(new Runnable() {
@@ -174,6 +198,8 @@ public class ChoiceClassActivity extends Activity {
 
                     //把班级jsonArray存入首选项文件
                     PreferencesUtils.saveInfoToPreferences(ChoiceClassActivity.this, ConstantsForPreferencesUtils.CLASS_LIST_JSONARR, data.toString());
+                } else {
+
                 }
             }
         });
@@ -198,6 +224,8 @@ public class ChoiceClassActivity extends Activity {
 
         if (classAdapter == null) {
             classAdapter = new ClassNameAdapter(this, classList);
+            classAdapter.setCurrentID(classesIDCurr);
+            classAdapter.notifyDataSetChanged();
             gdvClass.setAdapter(classAdapter);
         } else {
             classAdapter.notifyDataSetChanged();
@@ -211,6 +239,12 @@ public class ChoiceClassActivity extends Activity {
             intent.setAction(ConstantsUtils.REFRESH_USER_INFO);// 刷新用户信息
             intent.putExtra(ConstantsUtils.HAS_LOGINED, false);
             LocalBroadcastManager.getInstance(ChoiceClassActivity.this).sendBroadcast(intent);
+
+
+            Intent intent2 = new Intent(ChoiceClassActivity.this, LoginActivity.class);
+            startActivity(intent2);
+
+            finish();
 
             return true;
         }

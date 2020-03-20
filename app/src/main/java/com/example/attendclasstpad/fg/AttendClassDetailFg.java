@@ -10,6 +10,7 @@ import com.example.attendclasstpad.adapter.ColorAdapter;
 import com.example.attendclasstpad.adapter.CustomPagerAdapter03;
 import com.example.attendclasstpad.adapter.GalleryAdapter;
 import com.example.attendclasstpad.adapter.FilesListAdapter;
+import com.example.attendclasstpad.callback.InterfacesCallback;
 import com.example.attendclasstpad.model.Bean;
 import com.example.attendclasstpad.model.DataID01;
 import com.example.attendclasstpad.model.File01;
@@ -19,6 +20,7 @@ import com.example.attendclasstpad.util.ConstantsForServerUtils;
 import com.example.attendclasstpad.util.ConstantsUtils;
 import com.example.attendclasstpad.util.DrawUtils;
 import com.example.attendclasstpad.util.PreferencesUtils;
+import com.example.attendclasstpad.util.ServerDataAnalyzeUtils;
 import com.example.attendclasstpad.util.ServerRequestUtils;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.util.VariableUtils;
@@ -58,6 +60,7 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * 上课详情
@@ -65,7 +68,7 @@ import org.json.JSONArray;
  * @author zhaochenhui, 2018.05.18
  */
 @SuppressLint("ValidFragment")
-public class AttendClassDetailFg extends BaseNotPreLoadFg {
+public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesCallback.ICanDoSth {
     // 文件标志
     private static int[] fileLogoRes = {R.drawable.pdf, R.drawable.ppt,
             R.drawable.doc};
@@ -78,6 +81,8 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
 
     private boolean isPrepared;// 标志位，标志已经初始化完成
     private boolean hasLoadOnce;// 是否已被加载过一次，第二次就不再去请求数据了
+
+    private String fileType;// 资源文件类型（word/video/...）
 
     // private List<PaintSize> paintSizeList;// 画笔粗细
     // private Handler handler;
@@ -128,6 +133,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
     private Handler uiHandler;// ui主线程
     private ViewUtils vUtils;// 布局工具
     private ServerRequestUtils sUtils;// 服务器请求工具
+    private InterfacesCallback.ICanDoSth callback;//回调
 
     private FilesListAdapter filesAdapter;// 文件目录适配器
     private GalleryAdapter glAdapter;
@@ -165,7 +171,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
     private FrameLayout flFocusPaint;
 
     private ViewPager vpager;// 滑动布局
-    //    private PullRefreshListView lstvFiles;//授课列表
+    //    private PullRefreshListView prlstvFiles;//授课列表(刷新、加载的另一种实现形式)
     private ListView lstvFiles;//授课列表
     private LinearLayout llNoFile;//没有授课
 
@@ -232,7 +238,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
             initPullDownLstv(vPullDown);
             lstvFiles = vPullDown.getListView();
             // 授课列表
-//            lstvFiles = (PullRefreshListView) allFgView
+//            prlstvFiles = (PullRefreshListView) allFgView
 //                    .findViewById(R.id.lsv_files_catalog_layout_fg_attend_class_detail);
 
             initPullDownLstv(vPullDown);
@@ -241,7 +247,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
             llNoFile = (LinearLayout) allFgView
                     .findViewById(R.id.ll_no_data_layout_fg_attend_class_detail);
 
-//            setLstvFilesListeners();
+//            setPrlstvFilesListeners();
 
             initPagerViews();
         }
@@ -306,15 +312,16 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
      */
     private void setLstvFileAdapter(boolean isShowChoiceMenu) {
         if (filesAdapter == null) {
-            filesAdapter = new FilesListAdapter(getActivity(), fileList);
+            callback = (InterfacesCallback.ICanDoSth) this;
+            filesAdapter = new FilesListAdapter(getActivity(), fileList, callback);
             lstvFiles.setAdapter(filesAdapter);
         } else {
             filesAdapter.notifyDataSetChanged();
         }
     }
 
-//    private void setLstvFilesListeners() {
-//        lstvFiles.setOnRefreshListener(new PullRefreshListView.OnRefreshListener() {
+//    private void setPrlstvFilesListeners() {
+//        prlstvFiles.setOnRefreshListener(new PullRefreshListView.OnRefreshListener() {
 //            @Override
 //            public void onRefresh() {
 //                // 重置页码
@@ -405,6 +412,9 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                 }
 
                 List<File01> list = com.alibaba.fastjson.JSON.parseArray(data.toString(), File01.class);
+
+//                fileType = ServerDataAnalyzeUtils.getValue(dataObj, "DataType");// 类型（word/video/...）
+
                 //假数据
                 //List<File01> list = getFileData();
                 if (list != null) {
@@ -422,7 +432,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                                 } else {
                                     // 刷新显示没有更多数据
                                     vPullDown.notifyDidNoMore();
-                                    // lstvFiles.loadMoreComplete();
+                                    // prlstvFiles.loadMoreComplete();
                                     Toast.makeText(getActivity(), "没有更多数据啦", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -444,7 +454,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                                     lstvFiles.setSelection(0);
                                     // 隐藏刷新模块
                                     vPullDown.notifyDidRefresh();
-//                                lstvFiles.refreshComplete();
+//                                prlstvFiles.refreshComplete();
                                 } else {
                                     final int lastVisiblePostion = lstvFiles
                                             .getLastVisiblePosition();
@@ -452,7 +462,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
 
                                     // 隐藏加载更多模块
                                     vPullDown.notifyDidMore();
-//                                lstvFiles.loadMoreComplete();
+//                                prlstvFiles.loadMoreComplete();
                                 }
                             }
                         });
@@ -861,6 +871,80 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
     }
 
     /**
+     * 从服务器获取文件
+     */
+    private void acquireFileDetailFromServer(String fileType, String id) {
+        DataID01 data = new DataID01();
+        data.setDataid(id);
+        currentPageNum = 1;
+        data.setIndex(String.valueOf(currentPageNum));
+
+        Gson gson = new Gson();
+        String jsonStr = gson.toJson(data);
+
+        if (ConstantsForServerUtils.HTML.equals(fileType) || ConstantsForServerUtils.PPT.equals(fileType)) {//组学案、组试题、 课件ppt格式
+            requestFileDetailJsonArrFromServer(jsonStr, id);
+        } else if (ConstantsForServerUtils.WORD.equals(fileType) || ConstantsForServerUtils.TXT.equals(fileType) || ConstantsForServerUtils.IMAGES.equals(fileType)) {// 文字格式（学案、教案）、图片
+            requestFileDetailJsonObjFromServer(jsonStr, id);
+        } else if (ConstantsForServerUtils.VIDEO.equals(fileType)
+                || ConstantsForServerUtils.AUDIO.equals(fileType)) {// 音视频类
+            requestFileDetailJsonObjFromServer(jsonStr, id);
+        }
+//        else if (ConstantsForServerUtils.SWF.equals(fileType)) {// flash动画类,只有swf格式
+//        }
+        else {//其它未知格式
+            requestFileDetailJsonObjFromServer(jsonStr, id);
+        }
+
+    }
+
+    private void requestFileDetailJsonArrFromServer(String jsonStr, String id) {
+        sUtils.request("getLectureInfo", jsonStr, "", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener2() {
+            @Override
+            public void onFailure(String msg) {
+
+            }
+
+            @Override
+            public void onResponse(String msg, JSONArray data, String count) {
+
+            }
+        });
+    }
+
+    private void requestFileDetailJsonObjFromServer(String jsonStr, String id) {
+        sUtils.request("getLectureInfo", jsonStr, "", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener() {
+            @Override
+            public void onFailure(String msg) {
+
+            }
+
+            @Override
+            public void onResponse(String msg, JSONObject data, String count) {
+
+            }
+        });
+    }
+
+    @Override
+    public void doSth(int i, int pos, String id) {
+        switch (i) {
+            case ConstantsUtils.AFTER_CLICK_ALL://点击文件列表单项
+
+                if (fileList != null && fileList.size() > 0) {
+                    File01 file = fileList.get(pos);
+                    if (file != null) {
+                        fileType = file.getFormat();//文件格式
+                        acquireFileDetailFromServer(fileType, id);
+                    }
+                }
+
+
+                break;
+        }
+    }
+
+    /**
      * 控件监听
      *
      * @author chenhui
@@ -1031,7 +1115,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg {
                     break;
 
                 case R.id.tv_file_upload_layout_fg_attend_class_detail://本地上传（授课文件）
-                    Toast.makeText(getActivity(), getResources().getText(R.string.no_function),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getText(R.string.no_function), Toast.LENGTH_SHORT).show();
 
                     break;
             }
