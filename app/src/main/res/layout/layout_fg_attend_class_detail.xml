@@ -50,6 +50,7 @@
         android:gravity="top">
 
         <LinearLayout
+            android:id="@+id/ll_preview_layout_fg_attend_class_detail"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dimen_padding_007"
@@ -127,6 +128,7 @@
             <!-- 画廊：展示文件缩略图 -->
 
             <RelativeLayout
+                android:id="@+id/rl_wrapper01_layout_fg_attend_class_detail"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
                 android:layout_marginLeft="2dp"

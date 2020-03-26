@@ -1,37 +1,36 @@
 package com.example.attendclasstpad.adapter;
 
-import java.util.List;
-
-import com.bumptech.glide.Glide;
-import com.example.attendclasstpad.R;
-import com.example.attendclasstpad.model.Courseware;
-import com.example.attendclasstpad.model.FileContent;
-import com.example.attendclasstpad.util.UrlUtils;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import com.example.attendclasstpad.model.DataInfo;
+
+import java.util.List;
 
 /**
- * 自定义适配器-图片（课件）版
+ * 自定义ViewPager适配器-文字版
  *
- * @author chenhui 2018.08.14
+ * @author chenhui
  */
-public class CustomPagerAdapter03 extends PagerAdapter {
+public class CustomPagerAdapter04 extends PagerAdapter {
     private Context context;
     private LayoutInflater inflater;
-    private List<Courseware> list;
     private Resources res;
+
+    private List<DataInfo> list;
     private int mChildCount = 0;
 
-    public CustomPagerAdapter03(Context context, List<Courseware> list) {
-        this.context = context;
+    public CustomPagerAdapter04(Context context, List<DataInfo> list) {
         this.inflater = LayoutInflater.from(context);
         res = context.getResources();
+        this.context = context;
 
         this.list = list;
     }
@@ -78,30 +77,39 @@ public class CustomPagerAdapter03 extends PagerAdapter {
         container.removeView((View) object);
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
+    @SuppressWarnings("deprecation")
     public Object instantiateItem(View container, int position) {
         System.out.println("instantiateItem初始化: " + position);
         // container: 容器: ViewPager
         // position: 当前要显示条目的位置 0 -> 4
 
-        View view = inflater.inflate(R.layout.layout_v_courseware, null);
+        if (list.size() == 0) {
+            return new WebView(context);
+        }
 
-        ImageView iv = (ImageView) view
-                .findViewById(R.id.iv_file_show_layout_v_courseware);
-         String picHtml = UrlUtils.PREFIX + "/"
-         + list.get(position).getThumbPath();
-         Glide.with(context).load(picHtml)
-         .error(res.getDrawable(R.drawable.no_data)).into(iv);
+        if (position > list.size() - 1) {
+            return new WebView(context);
+        }
 
-//        Courseware file = list.get(position);
-//        if (file != null) {
-//            iv.setBackgroundResource(file.getIvRes());
-//        }
+        System.out.print("position======" + position);
+        DataInfo info = list.get(position);
+        String html = info.getBody();
+
+        WebView wb = new WebView(context);
+
+        wb.setWebViewClient(new WebViewClient());
+        wb.getSettings().setJavaScriptEnabled(true);
+        // wb.requestFocus();
+        wb.requestDisallowInterceptTouchEvent(false);
+
+        wb.loadDataWithBaseURL(null, (String) html, "text/html", "utf-8", null);
 
         // a. 把View对象添加到container中
-        ((ViewGroup) container).addView(view);
+        ((ViewGroup) container).addView(wb);
         // b. 把View对象返回给框架, 适配器
-        return view; // 必须重写, 否则报异常
+        return wb; // 必须重写, 否则报异常
     }
+
 }

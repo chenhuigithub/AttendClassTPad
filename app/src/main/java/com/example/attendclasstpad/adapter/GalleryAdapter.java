@@ -8,19 +8,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.attendclasstpad.R;
+import com.example.attendclasstpad.model.Courseware;
 import com.example.attendclasstpad.model.FileContent;
+import com.example.attendclasstpad.util.UrlUtils;
 
 /**
  * 画廊效果适配器:文件内容
  *
  * @author zhaochenhui, 2018.05.23
  */
-public class GalleryAdapter extends BaseListAdapter<FileContent> {
+public class GalleryAdapter extends BaseListAdapter<Courseware> {
     private int currentPos;// 当前选中的位置(全都未选中：-1，全部选中：-2)
     private Context context;
 
-    public GalleryAdapter(Context context, List<FileContent> dataList) {
+    public GalleryAdapter(Context context, List<Courseware> dataList) {
         super(context, dataList);
         this.context = context;
     }
@@ -46,7 +49,7 @@ public class GalleryAdapter extends BaseListAdapter<FileContent> {
 
     @Override
     protected void doAssignValueForView(int position, View resultView,
-                                        FileContent dataObj) {
+                                        Courseware dataObj) {
 
         LinearLayout ll01 = (LinearLayout) resultView
                 .findViewById(R.id.ll_01_layout_adapter_item_for_file_content);
@@ -57,7 +60,8 @@ public class GalleryAdapter extends BaseListAdapter<FileContent> {
                 .findViewById(R.id.iv_layout_adapter_item_for_file_content);
 
         tv.setText(dataObj.getPageNumber());
-        iv.setBackgroundResource(dataObj.getIvRes());
+//        iv.setBackgroundResource(dataObj.getIvRes());
+        Glide.with(context).load(UrlUtils.PREFIX_MOBILE + dataObj.getThumbPath()).error(R.drawable.no_data).into(iv);
         tv.setTextColor(context.getResources().getColor(
                 R.color.color_text_content));
 
