@@ -14,7 +14,7 @@ public class File01 {
     private String Source;//来源
     private String DataTime;//创建日期（例如："2018-10-09 13:25"）
     private String logoUrl;//文件类型图标路径
-    private String format;//文件格式
+    private String fileType;//文件格式
     private String Memo;//备注
     private boolean isChoiced = false;//是否被选中
 
@@ -82,17 +82,17 @@ public class File01 {
         this.logoUrl = logoUrl;
     }
 
-    @JSONField(name="DataType")
-    public String getFormat() {
-        if (TextUtils.isEmpty(format)) {
+    @JSONField(name = "DataType")
+    public String getFileType() {
+        if (TextUtils.isEmpty(fileType)) {
             return "";
         }
-        return format;
+        return fileType;
     }
 
-    @JSONField(name="DataType")
-    public void setFormat(String format) {
-        this.format = format;
+    @JSONField(name = "DataType")
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
     public String getMemo() {

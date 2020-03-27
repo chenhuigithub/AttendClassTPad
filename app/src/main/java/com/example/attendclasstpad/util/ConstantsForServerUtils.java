@@ -167,4 +167,9 @@ public class ConstantsForServerUtils {
      */
     public static final String DEVICE_TYPE_VALUE = "2";
 
+    /**
+     * DataInfo
+     */
+    public static final String DATAINFO = "DataInfo";
+
 }

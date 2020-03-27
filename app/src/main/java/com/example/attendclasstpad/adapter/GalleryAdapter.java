@@ -61,7 +61,7 @@ public class GalleryAdapter extends BaseListAdapter<Courseware> {
 
         tv.setText(dataObj.getPageNumber());
 //        iv.setBackgroundResource(dataObj.getIvRes());
-        Glide.with(context).load(UrlUtils.PREFIX_MOBILE + dataObj.getThumbPath()).error(R.drawable.no_data).into(iv);
+        Glide.with(context).load(UrlUtils.PREFIX + dataObj.getThumbPath()).error(R.drawable.no_data).into(iv);
         tv.setTextColor(context.getResources().getColor(
                 R.color.color_text_content));
 

@@ -112,7 +112,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
     private String materialName = "";// 教材名称
     private int catalogPos;// 目录位置
     private String classID = "";//班级ID
-    private int currentPageNum = 1;// 授课列表当前页页码，默认是首页
+    private int currentPageNumForFile = 1;// 授课列表当前页页码，默认是首页
     private int currentPageNumForPreview = 1;// 预览授课当前页页码，默认是首页
 
     private String chapterID = "";//章节ID
@@ -122,6 +122,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
     private int positionMax = -1;// viewPager滑动过的最大位置
     private int lastPosition;// viewPager上一个位置
     private int newPosition;// viewPager当前位置
+    private boolean needMultiPageRequestPreview = true;//授课预览是否需要多页请求,默认需要
 
     private File01 fileFocus;//正在预览的授课资源
 
@@ -369,14 +370,14 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             @Override
             public void onRefresh() {
                 // 重置页码
-                currentPageNum = 1;
+                currentPageNumForFile = 1;
                 // 请求数据
                 requestFileListFromServer();
             }
 
             @Override
             public void onMore() {
-                currentPageNum = currentPageNum + 1;
+                currentPageNumForFile = currentPageNumForFile + 1;
                 requestFileListFromServer();
             }
         });
@@ -399,7 +400,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
 
         Bean bean = new Bean();
         bean.setData(dataID01);
-        bean.setIndex(String.valueOf(currentPageNum));
+        bean.setIndex(String.valueOf(currentPageNumForFile));
         bean.setSize(ConstantsForServerUtils.PAGE_SIZE_DEFAULT_VALUE);
 
         Gson gson = new Gson();
@@ -411,7 +412,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (currentPageNum == 1) {// 首页数据
+                        if (currentPageNumForFile == 1) {// 首页数据
                             llNoFile.setVisibility(View.VISIBLE);
                             lstvFiles.setVisibility(View.GONE);
                         }
@@ -428,7 +429,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             @Override
             public void onResponse(String msg, JSONArray data, String count) {
                 // 重置数据
-                if (currentPageNum == 1 && fileList.size() > 0) {
+                if (currentPageNumForFile == 1 && fileList.size() > 0) {
                     fileList.clear();
                 }
 
@@ -444,7 +445,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                         uiHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if (currentPageNum == 1) {// 首页数据
+                                if (currentPageNumForFile == 1) {// 首页数据
                                     llNoFile.setVisibility(View.VISIBLE);
                                     lstvFiles.setVisibility(View.GONE);
 
@@ -472,7 +473,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                                 setLstvFileAdapter(false);
                                 vPullDown.notifyDidLoad();
 
-                                if (currentPageNum == 1) {
+                                if (currentPageNumForFile == 1) {
                                     lstvFiles.setSelection(0);
                                     // 隐藏刷新模块
                                     vPullDown.notifyDidRefresh();
@@ -497,6 +498,12 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                     }
                 });
 
+                fileFocus = fileList.get(0);
+                if (fileFocus != null) {
+                    requestFileDetailFromServer(fileType, fileFocus.getDataID());
+                }
+
+
                 hasLoadOnce = true;
             }
         });
@@ -513,7 +520,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
         vpager.setVisibility(View.VISIBLE);
 
 
-        if (rightPagerType.equals(ConstantsForServerUtils.IMAGES)) {// 图片类
+        if (fileType.equals(ConstantsForServerUtils.PPT) || fileType.equals(ConstantsForServerUtils.IMAGES)) {// 图片类
             setPicVPagerAdapter(position);
         } else {// 文字格式（学案、教案）等
             setWordVPagerAdapter(position);
@@ -859,25 +866,25 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
     }
 
     private void setGridViewAdapter(int pos) {
-        if (glAdapter == null) {
-            // 实例化ImageAdapter适配器
-            glAdapter = new GalleryAdapter(getActivity(), coursewareList);
-            // 将适配器的数据存储到Gallery组件中（设置Gallery组件的Adapter对象）
-            glFile.setAdapter(glAdapter);
-            glFile.setUnselectedAlpha(1f);
-        } else {
-            glAdapter.notifyDataSetChanged();
-        }
+//        if (glAdapter == null) {
+        // 实例化ImageAdapter适配器
+        glAdapter = new GalleryAdapter(getActivity(), coursewareList);
+        // 将适配器的数据存储到Gallery组件中（设置Gallery组件的Adapter对象）
+        glFile.setAdapter(glAdapter);
+        glFile.setUnselectedAlpha(1f);
+//        } else {
+//            glAdapter.notifyDataSetChanged();
+//        }
 
-        // if (pos == 0) {
-        // glFile.setSelection(pos + 2);
-        // }
-        // if (fileContents.size() > 2 && pos < 4) {
-        // // 设置第二个数据在中央位置
-        // glFile.setSelection(2);
-        // } else {
-        // glFile.setSelection(pos);
-        // }
+//         if (pos == 0) {
+        glFile.setSelection(pos);
+//         }
+//        if (coursewareList.size() > 2 && pos < 4) {
+//            // 设置第二个数据在中央位置
+//            glFile.setSelection(2);
+//        } else {
+//            glFile.setSelection(pos);
+//        }
 
         glAdapter.setCurrentPos(pos);
     }
@@ -960,21 +967,11 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
     }
 
     private void previewPPT() {
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                rlFile.setVisibility(View.VISIBLE);
-            }
-        });
+        rlFile.setVisibility(View.VISIBLE);
     }
 
     private void previewNotPPT() {
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                rlFile.setVisibility(View.GONE);
-            }
-        });
+        rlFile.setVisibility(View.GONE);
     }
 
     /**
@@ -987,26 +984,28 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
         Gson gson = new Gson();
         String jsonStr = gson.toJson(data);
 
-        if (ConstantsForServerUtils.WORD.equals(fileType) || ConstantsForServerUtils.HTML.equals(fileType) || ConstantsForServerUtils.PPT.equals(fileType)) {// 文字格式（学案、教案）、组学案、组试题、 课件ppt格式
-            requestFileDetailJsonArrFromServer(jsonStr, ID, String.valueOf(currentPageNumForPreview));
+        if (ConstantsForServerUtils.WORD.equals(fileType) || ConstantsForServerUtils.HTML.equals(fileType)) {// 文字格式（学案、教案）
+            requestFileDetailJsonArrFromServer("getLectureView", jsonStr, ID);
+        } else if (ConstantsForServerUtils.PPT.equals(fileType)) {//组学案、组试题、组课件ppt格式
+            requestFileDetailJsonArrFromServer("getLectureInfo", jsonStr, ID);
         } else if (ConstantsForServerUtils.TXT.equals(fileType) || ConstantsForServerUtils.IMAGES.equals(fileType) || ConstantsForServerUtils.VIDEO.equals(fileType)
                 || ConstantsForServerUtils.AUDIO.equals(fileType)) {//图片
-            requestFileDetailJsonObjFromServer(jsonStr, ID, String.valueOf(currentPageNumForPreview));
+            requestFileDetailJsonObjFromServer("getLectureView", jsonStr, ID);
         } else if (ConstantsForServerUtils.SWF.equals(fileType)) {// flash动画类,只有swf格式
         } else {//其它未知格式
-            requestFileDetailJsonArrFromServer(jsonStr, ID, String.valueOf(currentPageNumForPreview));
+            requestFileDetailJsonArrFromServer("getLectureView", jsonStr, ID);
         }
-
     }
 
-    private void requestFileDetailJsonArrFromServer(String jsonStr, String id, final String indexCurr) {
-        sUtils.request("getLectureView", jsonStr, "", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener2() {
+    private void requestFileDetailJsonArrFromServer(String methodName, String jsonStr, String id) {
+        sUtils.request(methodName, jsonStr, "", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener2() {
             @Override
-            public void onFailure(String msg) {
+            public void onFailure(final String msg) {
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         vUtils.dismissDialog();
+                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -1016,7 +1015,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                 rightInfoCount = count;
                 currentPageNumForPreview = currentPageNumForPreview + 1;
 
-                showRightInfo(data, indexCurr);
+                showRightInfo(data);
 
                 uiHandler.post(new Runnable() {
                     @Override
@@ -1028,20 +1027,23 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
         });
     }
 
-    private void requestFileDetailJsonObjFromServer(String jsonStr, String id, String indexCurr) {
-        sUtils.request("getLectureView", jsonStr, "", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener() {
+    private void requestFileDetailJsonObjFromServer(String methodName, String jsonStr, String id) {
+        sUtils.request(methodName, jsonStr, "", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener() {
             @Override
-            public void onFailure(String msg) {
+            public void onFailure(final String msg) {
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         vUtils.dismissDialog();
+                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
             public void onResponse(String msg, JSONObject data, String count) {
+                dealWithPreviewJsonObjData(data);
+
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -1052,17 +1054,44 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
         });
     }
 
-    private void showRightInfo(JSONArray dataArr, final String indexCurr) {
+
+    private void requestFileDetailJsonObjFromServer02(String methodName, String jsonStr, String id) {
+        sUtils.request(methodName, jsonStr, "", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener() {
+            @Override
+            public void onFailure(final String msg) {
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        vUtils.dismissDialog();
+                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(String msg, JSONObject data, String count) {
+                dealWithPreviewDataInfoData(data);
+
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        vUtils.dismissDialog();
+                    }
+                });
+            }
+        });
+    }
+
+    private void showRightInfo(JSONArray dataArr) {
         if (dataArr != null) {
             if (dataArr.length() == 0) {
-
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         //                ivNoData.setVisibility(View.VISIBLE);
 //                tvNum.setVisibility(View.GONE);
 
-                        Toast.makeText(getActivity(), "暂无右侧内容，切换栏目试试？",
+                        Toast.makeText(getActivity(), "暂无预览，切换别的文件试试",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -1079,22 +1108,41 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                     }
                 });
 
+                if (ConstantsForServerUtils.PPT.equals(fileType)) {// 课件ppt格式
+                    coursewareList = com.alibaba.fastjson.JSON.parseArray(dataArr.toString(), Courseware.class);
+                    rightInfoCount = String.valueOf(coursewareList.size());
+                    needMultiPageRequestPreview = false;
 
-                for (int i = 0; i < dataArr.length(); i++) {
-                    if (dataArr.isNull(i)) {
-                        continue;
-                    }
+                    uiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            previewPPT();
+                            setGridViewAdapter(newPosition);
+                            setVPagerAdapter(0);
+                        }
+                    });
 
-                    JSONObject jsonObj = null;
-                    try {
-                        jsonObj = dataArr.getJSONObject(i);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
-                    if (ConstantsForServerUtils.WORD.equals(fileType)) {// 文字格式（学案、教案）
+                }
+
+                if (ConstantsForServerUtils.WORD.equals(fileType)) {// 文字格式（学案、教案）
+                    for (int i = 0; i < dataArr.length(); i++) {
+                        if (dataArr.isNull(i)) {
+                            continue;
+                        }
+
+                        JSONObject jsonObj = null;
+                        try {
+                            jsonObj = dataArr.getJSONObject(i);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                         DataInfo info = com.alibaba.fastjson.JSON.parseObject(
                                 jsonObj.toString(), DataInfo.class);
+
+                        needMultiPageRequestPreview = true;
 
                         if (planList.size() == 0) {
                             planList.add(info);
@@ -1105,8 +1153,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                             planList.remove(planList.size() - 1);// 先去掉尾端的假数据
                             planList.add(planList.size(), info);// 在尾端加上新数据
 
-                            if (String.valueOf(planList.size()).equals(rightInfoCount)) {
-
+                            if (String.valueOf(planList.size()).equals(rightInfoCount)) {//最后一条数据的情况
                             } else {
                                 // 造一个假数据放到尾端，便于viewPager滑动监听
                                 planList.add(new DataInfo());
@@ -1117,63 +1164,70 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                         // 造一个假数据放到尾端，便于viewPager滑动监听
 //                        planList.add(new DataInfo());
 
-                        previewNotPPT();
-
-                    } else if (ConstantsForServerUtils.PPT.equals(fileType)) {// 课件ppt格式
-                        String path = ServerDataAnalyzeUtils.getValue(jsonObj,
-                                "DataPath");
-
-                        // 测试图片 2018.12.17
-                        // path="/upload/Sync/thumbnail/9ea54a7e-cb24-4987-9dad-7e5f141a1eb7/Slide1_768.jpg";
-
-                        Courseware info1 = new Courseware();
-                        info1.setBigPath(path);
-
-                        if (coursewareList.size() == 0) {
-                            coursewareList.add(info1);
-
-                        } else if (coursewareList.size() > 1) {
-                            coursewareList.remove(coursewareList.size() - 1);// 先去掉尾端的假数据
-                            coursewareList.add(coursewareList.size(), info1);
-                        }
-
-                        // 造一个假数据放到尾端，便于viewPager滑动监听
-                        coursewareList.add(new Courseware());
-
-                        previewPPT();
-                        setGridViewAdapter(newPosition);
+                        uiHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                previewNotPPT();
+                            }
+                        });
+//                    else if (ConstantsForServerUtils.PPT.equals(fileType)) {// 课件ppt格式
+//                        String path = ServerDataAnalyzeUtils.getValue(jsonObj,
+//                                "DataPath");
+//
+//                        // 测试图片 2018.12.17
+//                        // path="/upload/Sync/thumbnail/9ea54a7e-cb24-4987-9dad-7e5f141a1eb7/Slide1_768.jpg";
+//
+//                        Courseware info1 = new Courseware();
+//                        info1.setBigPath(path);
+//
+//                        if (coursewareList.size() == 0) {
+//                            coursewareList.add(info1);
+//
+//                        } else if (coursewareList.size() > 1) {
+//                            coursewareList.remove(coursewareList.size() - 1);// 先去掉尾端的假数据
+//                            coursewareList.add(coursewareList.size(), info1);
+//
+//                            if (String.valueOf(coursewareList.size()).equals(rightInfoCount)) {//最后一条数据的情况
+//                            } else {
+//                                // 造一个假数据放到尾端，便于viewPager滑动监听
+//                                coursewareList.add(new Courseware());
+//                            }
+//                        }
+//
+                        uiHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                previewNotPPT();
+                                setVPagerAdapter(0);
+                            }
+                        });
+//                    }
                     }
+
+                    hasLoadOnce = true;
                 }
-
-//                if (currentPageNumForPreview > lastPosition) {// 表明当前正向向右滑动
-//                    positionMax = currentPageNumForPreview;
-//                }
-
-//                lastPosition = currentPageNumForPreview;
-
-                hasLoadOnce = true;
             }
-            if (newPosition == 0
-                    && lastPosition == Integer.valueOf(fileList.size()) - 1) {
-                uiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 刷新右侧布局
-                        setVPagerAdapter(0);
-                    }
-                });
+//            if (newPosition == 0
+//                    && lastPosition == Integer.valueOf(fileList.size()) - 1) {
+//                uiHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        // 刷新右侧布局
+//                        setVPagerAdapter(0);
+//                    }
+//                });
 
-            } else {
-                final int count = Integer.valueOf(indexCurr) - 1;
-
-                uiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 刷新右侧布局
-                        setVPagerAdapter(count);
-                    }
-                });
-            }
+//            } else {
+//                final int count = Integer.valueOf(String.valueOf(currentPageNumForPreview)) - 1;
+//
+//                uiHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        // 刷新右侧布局
+//                        setVPagerAdapter(count);
+//                    }
+//                });
+//            }
         } else {
             uiHandler.post(new Runnable() {
                 @Override
@@ -1203,31 +1257,40 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
         });
     }
 
+    private void dealWithPreviewJsonObjData(JSONObject data) {
 
-    /**
-     * 处理授课文件详情
-     *
-     * @param dataObj   数据
-     * @param jsonKey   json中的key
-     * @param indexCurr 当前页页码
-     */
-    private void dealWithFileDetail(JSONObject dataObj, String jsonKey,
-                                    String indexCurr) {
-        isPageSelected = false;
-
-        newPosition = 0;
-        lastPosition = 0;
-        positionMax = -1;
-
-        fileType = ServerDataAnalyzeUtils.getValue(dataObj, "DataType");
-        final JSONArray dataArr = ServerDataAnalyzeUtils.getDataAsJSONArray(
-                dataObj, jsonKey);
-        // 重置数据
-        resetPlanList();
-        resetCoursewareList();
-
-        showRightInfo(dataArr, indexCurr);
     }
+
+    private void dealWithPreviewDataInfoData(JSONObject data) {
+        JSONArray dataInfoArr = ServerDataAnalyzeUtils.getDataAsJSONArray(data, ConstantsForServerUtils.DATAINFO);
+        showRightInfo(dataInfoArr);
+    }
+
+
+//    /**
+//     * 处理授课文件详情
+//     *
+//     * @param dataObj   数据
+//     * @param jsonKey   json中的key
+//     * @param indexCurr 当前页页码
+//     */
+//    private void dealWithFileDetail(JSONObject dataObj, String jsonKey,
+//                                    String indexCurr) {
+//        isPageSelected = false;
+//
+//        newPosition = 0;
+//        lastPosition = 0;
+//        positionMax = -1;
+//
+//        fileType = ServerDataAnalyzeUtils.getValue(dataObj, "DataType");
+//        final JSONArray dataArr = ServerDataAnalyzeUtils.getDataAsJSONArray(
+//                dataObj, jsonKey);
+//        // 重置数据
+//        resetPlanList();
+//        resetCoursewareList();
+//
+//        showRightInfo(dataArr);
+//    }
 
     /**
      * 重置右侧教案学案等文字类数据
@@ -1270,7 +1333,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                 if (fileList != null && fileList.size() > 0) {
                     fileFocus = fileList.get(pos);
                     if (fileFocus != null) {
-                        fileType = fileFocus.getFormat();//文件格式
+                        fileType = fileFocus.getFileType();//文件格式
                         currentPageNumForPreview = 1;
                         requestFileDetailFromServer(fileType, ID);
                     }
@@ -1500,35 +1563,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
 
             newPosition = arriveIndex % Integer.valueOf(rightInfoCount);
 
-//            // 特殊情况： 此时是从最后一页数据向右重新滑动到第一页
-//            if (newPosition == 0
-//                    && lastPosition == Integer.valueOf(rightInfoCount) - 1) {// 特殊情况：
-//                // 此时是从最后一页数据向右重新滑动到第一页
-//                if (ConstantsForServerUtils.WORD.equals(fileType)) {// 文字类：教案、学案
-//
-//                    DataInfo info = planList.get(0);
-//                    resetPlanList();
-//                    planList.add(info);
-//                    planList.add(new DataInfo());
-//
-//                } else if (ConstantsForServerUtils.PPT.equals(fileType)) {// 课件
-//                    resetCoursewareList();
-//                }
-//
-//                // 在数据变动了之后，先调用一下notifyDataSetChanged()，否则接下来进行网络请求，时间延迟了程序也许会崩溃
-//                setVPagerAdapter(0);
-//
-//                positionMax = -1;
-//
-//            } else
-//            {
-
-//                if (newPosition > lastPosition) {
-//                    positionMax = currentPageNumForPreview;
-//                }
-
-            if (isPageSelected && newPosition > positionMax) {// 表明当前正向向右滑动
-                vUtils.showLoadingDialog("");
+            if (isPageSelected && newPosition > positionMax) {// 正向向右滑动的情况
                 if (newPosition == 1) {
                     currentPageNumForPreview = newPosition + 1;
                 }
@@ -1536,19 +1571,20 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                 positionMax = newPosition;
 
                 if (fileFocus != null) {
-                    String ID = fileFocus.getDataID();
-                    requestFileDetailFromServer(fileType, ID);
+                    if (needMultiPageRequestPreview) {
+                        vUtils.showLoadingDialog("");
+
+                        String ID = fileFocus.getDataID();
+                        requestFileDetailFromServer(fileType, ID);
+                    }
                 }
-
-
             }
-//            }
+
 
             // 显示当前页页码与资源总页数
 //            tvNum.setText(newPosition + 1 + " / " + rightInfoCount);
 
-            lastPosition = newPosition;
-
+            setGridViewAdapter(newPosition);
         }
     }
 

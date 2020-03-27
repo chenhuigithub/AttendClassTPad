@@ -89,10 +89,10 @@ public class CustomPagerAdapter03 extends PagerAdapter {
 
         ImageView iv = (ImageView) view
                 .findViewById(R.id.iv_file_show_layout_v_courseware);
-         String picHtml = UrlUtils.PREFIX + "/"
-         + list.get(position).getThumbPath();
-         Glide.with(context).load(picHtml)
-         .error(res.getDrawable(R.drawable.no_data)).into(iv);
+        String picHtml = UrlUtils.PREFIX
+                + list.get(position).getThumbPath();
+        Glide.with(context).load(picHtml)
+                .error(res.getDrawable(R.drawable.no_data)).into(iv);
 
 //        Courseware file = list.get(position);
 //        if (file != null) {

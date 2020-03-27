@@ -72,7 +72,6 @@ public class ServerDataAnalyzeUtils {
      * 判断服务器是否成功返回数据
      *
      * @param jsonObj 数据
-     * @param key     标志key
      * @return
      */
     public static boolean isSuccessful(JSONObject jsonObj) {
