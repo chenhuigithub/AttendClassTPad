@@ -287,6 +287,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             //本地上传(授课文件)
             TextView tvFileLoad = (TextView) allFgView
                     .findViewById(R.id.tv_file_upload_layout_fg_attend_class_detail);
+            tvFileLoad.setVisibility(View.GONE);
             tvFileLoad.setOnClickListener(new Listeners());
 
             int menuLength = 0;
