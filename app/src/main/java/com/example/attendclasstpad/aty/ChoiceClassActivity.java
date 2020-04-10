@@ -10,9 +10,12 @@ import com.example.attendclasstpad.util.ConstantsForPreferencesUtils;
 import com.example.attendclasstpad.util.ConstantsUtils;
 import com.example.attendclasstpad.util.PreferencesUtils;
 import com.example.attendclasstpad.util.ServerRequestUtils;
+import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.util.ViewUtils;
+import com.example.attendclasstpad.view.CustomDialog;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,9 +43,10 @@ public class ChoiceClassActivity extends Activity {
     private String classesIDCurr = "";//当前选中的班级ID
 
     private ServerRequestUtils requestUtils;// 网络请求
-    private ViewUtils vUtils;// 布局工具
+    //    private ViewUtils vUtils;// 布局工具
     private Handler uiHandler;// 主线程handler
     private ClassNameAdapter classAdapter;// 班级名称列表适配器
+    private Dialog dialog;//加载框
 
     private GridView gdvClass;
     private ImageView ivNoData;
@@ -58,7 +62,7 @@ public class ChoiceClassActivity extends Activity {
 
         // 初始化服务器请求操作
         requestUtils = new ServerRequestUtils(this);
-        vUtils = new ViewUtils(this);
+//        vUtils = new ViewUtils(this);
         uiHandler = new Handler(getMainLooper());
 
         ivNoData = (ImageView) findViewById(R.id.iv_no_data_layout_aty_choice_class);
@@ -97,6 +101,9 @@ public class ChoiceClassActivity extends Activity {
 
 
                 intent.putExtra(ConstantsUtils.HAS_LOGINED, true);
+                //跳转至班级分页
+                intent.putExtra(ConstantsUtils.INTENT, ConstantsUtils.INTENT01);
+
                 // 发送广播
                 LocalBroadcastManager.getInstance(ChoiceClassActivity.this)
                         .sendBroadcast(intent);
@@ -138,7 +145,8 @@ public class ChoiceClassActivity extends Activity {
                             Toast.makeText(ChoiceClassActivity.this, "获取班级列表失败，请点击图片重试",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        vUtils.dismissDialog();
+//                        vUtils.dismissDialog();
+                        dismissDialog();
 
                         ivNoData.setVisibility(View.VISIBLE);
                         gdvClass.setVisibility(View.GONE);
@@ -190,7 +198,8 @@ public class ChoiceClassActivity extends Activity {
                             ivNoData.setVisibility(View.GONE);
                             gdvClass.setVisibility(View.VISIBLE);
 
-                            vUtils.dismissDialog();
+//                            vUtils.dismissDialog();
+                            dismissDialog();
 
                             setGdvClassAdapter(0);
                         }
@@ -232,6 +241,32 @@ public class ChoiceClassActivity extends Activity {
         }
     }
 
+    /**
+     * 加载框
+     *
+     * @param tip 提示信息
+     */
+    private void showLoadingDialog(String tip) {
+        // 设置dialog提示框
+        CustomDialog.Builder builder = new CustomDialog.Builder(this);
+        if (ValidateFormatUtils.isEmpty(tip)) {
+            tip = "正在加载...";
+        }
+        builder.setMessage(tip);
+        dialog = builder.createForLoading();
+        dialog.show();
+    }
+
+    /**
+     * 关闭加载框
+     */
+    public void dismissDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -260,7 +295,8 @@ public class ChoiceClassActivity extends Activity {
                         classList.clear();
                     }
 
-                    vUtils.showLoadingDialog("");
+//                    vUtils.showLoadingDialog("");
+                    showLoadingDialog("正在跳转");
                     acquireClassList();
 
                     break;

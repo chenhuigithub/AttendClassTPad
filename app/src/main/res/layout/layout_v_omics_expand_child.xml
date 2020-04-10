@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_wrapper_all_layout_v_omics_expand_child"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_for_green_stroke_rectangle"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="false"
+    android:padding="@dimen/dimen_padding_001">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <WebView
+                android:id="@+id/wb_question_layout_v_omics_expand_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_padding_005"
+                android:visibility="visible"
+                tools:ignore="WebViewLayout"></WebView>
+
+            <!-- 没有题文 -->
+
+            <TextView
+                android:id="@+id/tv_no_question_layout_v_omics_expand_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dp"
+                android:layout_marginBottom="20dp"
+                android:text="题文：无"
+                android:textColor="@color/color_text_content"
+                android:textSize="12sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- 右上角菜单栏 -->
+
+        <LinearLayout
+            android:id="@+id/ll_menu_layout_v_omics_expand_child"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:clickable="false"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tv_move_up_layout_v_omics_expand_child"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_for_green_rbl_stroke_rectangle"
+                android:clickable="true"
+                android:padding="5dp"
+                android:text="上移"
+                android:textColor="@color/clog"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_move_down_layout_v_omics_expand_child"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_for_green_rbl_stroke_rectangle"
+                android:clickable="true"
+                android:padding="5dp"
+                android:text="下移"
+                android:textColor="@color/clog"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_delete_layout_v_omics_expand_child"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_for_green_rbl_stroke_rectangle"
+                android:clickable="true"
+                android:onClick="doOnClickForPreview"
+                android:padding="5dp"
+                android:text="删除"
+                android:textColor="@color/clog"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </FrameLayout>
+</LinearLayout>

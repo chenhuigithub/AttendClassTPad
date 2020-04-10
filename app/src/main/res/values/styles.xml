@@ -122,4 +122,16 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <!-- 视频进度条 -->
+    <style name="Media_SeekBar" parent="android:Widget.SeekBar">
+        <item name="android:progressDrawable">@drawable/rounded_rectangle</item>
+        <item name="android:indeterminateDrawable">@drawable/rounded_rectangle</item>
+        <item name="android:minHeight">8dp</item>
+        <item name="android:maxHeight">8dp</item>
+        <item name="android:thumb">@drawable/selector_for_seekbar_progress_pic</item>
+        <item name="android:thumbOffset">10dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
 </resources>

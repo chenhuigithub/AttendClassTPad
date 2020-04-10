@@ -128,8 +128,22 @@
             android:label="@string/app_name"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.Android123">
+        </activity>
 
+        <activity
+            android:name="com.example.attendclasstpad.aty.PicViewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="fullSensor"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        </activity>
 
+        <activity
+            android:name="com.example.attendclasstpad.aty.PlayVideoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="fullSensor"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
     </application>
 

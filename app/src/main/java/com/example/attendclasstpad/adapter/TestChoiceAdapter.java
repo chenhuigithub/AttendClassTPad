@@ -104,7 +104,7 @@ public class TestChoiceAdapter extends PagerAdapter {
 
         TextView tvContent = (TextView) allView
                 .findViewById(R.id.tv_content_layout_fg_test_choice);
-        tvContent.setText(list.get(position).getContent());
+        tvContent.setText(list.get(position).getQuestionHtml());
 
         final CheckBox cboxChoice = (CheckBox) allView
                 .findViewById(R.id.cbox_choice_test_layout_fg_test_choice);

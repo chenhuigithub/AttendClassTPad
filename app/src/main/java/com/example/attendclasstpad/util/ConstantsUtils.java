@@ -54,6 +54,22 @@ public class ConstantsUtils {
      */
     public final static int REQUEST_CODE02 = 102;
 
+
+    /**
+     * 跳转至班级分页
+     */
+    public final static int INTENT01 = 10001;
+
+    /**
+     * 跳转至上课分页
+     */
+    public final static int INTENT02 = 10002;
+
+    /**
+     * 跳转至测试分页
+     */
+    public final static int INTENT03 = 10003;
+
     /**
      * 点击单项内容后
      */
@@ -152,6 +168,11 @@ public class ConstantsUtils {
      */
     public final static String SIGN = "SIGN";
 
+    /**
+     * 跳转
+     */
+    public final static String INTENT = "INTENT";
+
 
     /**
      * 是否已登录
@@ -168,5 +189,91 @@ public class ConstantsUtils {
      */
     public final static String POSITION = "POSITION";
 
+    /**
+     * 删除
+     */
+    public static final String DELETE = "DELETE";
+
+    /**
+     * 删除学案预览
+     */
+    public static final String DELETE_OMICS_PREVIEW = "DELETE_OMICS_PREVIEW";
+
+
+    /**
+     * 删除试题预览
+     */
+    public static final String DELETE_TEST_PREVIEW = "DELETE_TEST_PREVIEW";
+
+    /**
+     * ID
+     */
+    public static final String ID = "ID";
+
+    /**
+     * 上移
+     */
+    public static final String MOVE_UP = "MOVE_UP";
+    /**
+     * 下移
+     */
+    public static final String MOVE_DOWN = "MOVE_DOWN";
+
+    /**
+     * 查看解析
+     */
+    public static final String SEE_ANALYSIS = "SEE_ANALYSIS";
+
+    /**
+     * 路径
+     */
+    public static final String PATH = "PATH";
+
+    /**
+     * 视频列表
+     */
+    public static final String VIDEO_LIST = "VIDEO_LIST";
+    /**
+     * 视频
+     */
+    public static final String VIDEO = "VIDEO";
+
+
+    /**
+     * 配套资源
+     */
+    public static final String MR = "MR";
+
+    /**
+     * 扩展资源
+     */
+    public static final String ER = "ER";
+
+    /**
+     * 预览试题
+     */
+    public static final String PT = "PT";
+
+    /**
+     * 组试题
+     */
+    public static final String T = "T";
+
+    /**
+     * 组学案
+     */
+    public static final String O = "O";
+
+    /**
+     * 组课件
+     */
+    public static final String C = "C";
+
+    /**
+     * 授课列表
+     */
+    public static final String AC = "AC";
+
+    public static final String BUNDLE_FRAGMENTS_KEY = "android:support:fragments";
 
 }

@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Intent;
-import android.graphics.Picture;
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.example.attendclasstpad.model.Classes;
 import com.example.attendclasstpad.model.KeyValue;
+import com.example.attendclasstpad.model.Picture;
 import com.example.attendclasstpad.model.TestData;
 
 /**

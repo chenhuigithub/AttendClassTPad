@@ -12,7 +12,6 @@ import com.example.attendclasstpad.adapter.CourseCatalogLsvAdapter;
 import com.example.attendclasstpad.adapter.KeyValueAdapter;
 import com.example.attendclasstpad.model.Catalog;
 import com.example.attendclasstpad.model.KeyValue;
-import com.example.attendclasstpad.model.Lesson;
 import com.example.attendclasstpad.model.Model;
 import com.example.attendclasstpad.util.ConstantsForPreferencesUtils;
 import com.example.attendclasstpad.util.ConstantsForServerUtils;
@@ -48,7 +47,6 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -708,8 +706,8 @@ public class ChoiceTeachingMaterialAty extends Activity {
         PreferencesUtils.saveInfoToPreferences(this, ConstantsForPreferencesUtils.SUBJECT_ID_CHOICED, VariableUtils.subjectID);
         PreferencesUtils.saveInfoToPreferences(this, ConstantsForPreferencesUtils.EDITION_ID_CHOICED, VariableUtils.editionID);
         PreferencesUtils.saveInfoToPreferences(this, ConstantsForPreferencesUtils.MODULE_ID_CHOICED, VariableUtils.modulesID);
-        PreferencesUtils.saveInfoToPreferences(this, ConstantsForPreferencesUtils.CHAPTER_ID_CHOICED, VariableUtils.catalogID);
-        PreferencesUtils.saveInfoToPreferences(this, ConstantsForPreferencesUtils.CHAPTER_NAME_CHOICED, VariableUtils.catalogName);
+        PreferencesUtils.saveInfoToPreferences(this, ConstantsForPreferencesUtils.CATALOG_ID_CHOICED, VariableUtils.catalogID);
+        PreferencesUtils.saveInfoToPreferences(this, ConstantsForPreferencesUtils.CATALOG_NAME_CHOICED, VariableUtils.catalogName);
 
         //默认数据存入首选项，方便下次读取
         if (periodList.size() > 0 && subjectList.size() > 0 && editionList.size() > 0 && moduleList.size() > 0) {
@@ -910,9 +908,9 @@ public class ChoiceTeachingMaterialAty extends Activity {
             VariableUtils.catalogID = catalogID;
 
             //存放信息，目录ID
-            PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsForPreferencesUtils.CHAPTER_ID_CHOICED, VariableUtils.catalogID);
+            PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsForPreferencesUtils.CATALOG_ID_CHOICED, VariableUtils.catalogID);
             //存放信息，目录名称
-            PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsForPreferencesUtils.CHAPTER_NAME_CHOICED, VariableUtils.catalogName);
+            PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsForPreferencesUtils.CATALOG_NAME_CHOICED, VariableUtils.catalogName);
             //存放信息：是否选择了教材，方便取用
             PreferencesUtils.saveInfoToPreferences(ChoiceTeachingMaterialAty.this, ConstantsUtils.HAS_CHOICED_MATERIAL, true);
 

@@ -1,5 +1,6 @@
 package com.example.attendclasstpad.aty;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,11 +30,14 @@ import android.widget.Toast;
 
 import com.example.attendclasstpad.R;
 import com.example.attendclasstpad.callback.InterfacesCallback;
+import com.example.attendclasstpad.callback.OnListenerForPlayVideoSendOutInfo;
 import com.example.attendclasstpad.fg.AttendClassDetailFg;
 import com.example.attendclasstpad.fg.ClassesFg;
 import com.example.attendclasstpad.fg.TestFg;
 import com.example.attendclasstpad.callback.ActivityFgInterface.JumpCallback;
 import com.example.attendclasstpad.model.Classes;
+import com.example.attendclasstpad.model.VideoAndAudioInfoModel;
+import com.example.attendclasstpad.model.VideoAudio;
 import com.example.attendclasstpad.util.ActivityUtils;
 import com.example.attendclasstpad.util.ConstantsForPreferencesUtils;
 import com.example.attendclasstpad.util.ConstantsUtils;
@@ -41,15 +45,18 @@ import com.example.attendclasstpad.util.PicFormatUtils;
 import com.example.attendclasstpad.util.PreferencesUtils;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.util.VariableUtils;
-import com.example.attendclasstpad.util.ViewUtils;
+import com.example.attendclasstpad.view.CustomDialog;
 import com.example.attendclasstpad.view.CustomRoundImageView;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 主界面
  *
  * @author zhaochenhui 2018.05.11
  */
-public class MainActivity extends FragmentActivity implements JumpCallback {
+public class MainActivity extends FragmentActivity implements JumpCallback, InterfacesCallback.ICanKnowSth2, OnListenerForPlayVideoSendOutInfo {
     private long exitTime = 0;
     private Resources res;
 
@@ -63,6 +70,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
     String moduleIDCurr = "";
     private Classes classes;//班级
     private boolean hasLogined = false;//是否已登录，默认为未登录
+    private boolean canShowDialog = true;//是否可以显示dialog(dialog依赖于Activity)
 
     private static ClassesFg mClassesFg = null;
     private InterfacesCallback.ICanKnowSth11 callbackForClass;//班级 回调
@@ -76,6 +84,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
     private LocalBroadcastManager broadcastManager;// 广播接收
     private Handler uiHandler;// 主线程
     private PicFormatUtils pUtils;// 图片工具
+    private Dialog dialog;//加载框
 
     private LinearLayout llClasses;// 班级
     private LinearLayout llAttendClass;// 上课
@@ -85,7 +94,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
     private LinearLayout llRightTriangle03;// 测试按钮右三角
     private LinearLayout llUnlocked;// 全体解锁
 
-    ViewUtils vUtils;
+//    private ViewUtils vUtils;
 
     private Button btnLogin;// 登录
     private CustomRoundImageView ivUserLogo;//用户头像
@@ -93,6 +102,11 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (savedInstanceState != null && this.clearFragmentsTag()) {
+            //重建时清除 fragment的状态
+            savedInstanceState.remove(ConstantsUtils.BUNDLE_FRAGMENTS_KEY);
+        }
+
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -103,7 +117,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
 
         pUtils = new PicFormatUtils();
         res = getResources();
-        vUtils = new ViewUtils(this);
+//        vUtils = new ViewUtils(this);
         classes = new Classes();
 
         // 加入栈
@@ -131,7 +145,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
         callbackForClass = (InterfacesCallback.ICanKnowSth11) cFg;
 
         mClassesFg = cFg;
-//        aFg = new AttendClassDetailFg();
+        aFg = new AttendClassDetailFg();
         tFg = new TestFg();
 
         initView();
@@ -185,8 +199,26 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
+                Bundle bundle = intent.getExtras();
+                if (bundle != null) {
+                    switch (bundle.getInt(ConstantsUtils.INTENT)) {
+                        case ConstantsUtils.INTENT01://跳转至班级分页
+//                            cFg = new ClassesFg();
+//                            callbackForClass = (InterfacesCallback.ICanKnowSth11) cFg;
+//                            showFragment(cFg);
+
+                            break;
+                        case ConstantsUtils.INTENT02://跳转至上课分页
+//                            showFragment(aFg);
+
+                            break;
+                        case ConstantsUtils.INTENT03://跳转至测试分页
+//                            showFragment(tFg);
+
+                    }
+                }
+
                 if (ConstantsUtils.ACQUIRE_MATERIAL_INFO.equals(action)) {// 获取教材信息
-                    Bundle bundle = intent.getExtras();
                     if (bundle == null) {
                         return;
                     }
@@ -205,7 +237,6 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                         MainActivity.this.subjectIDCurr = subjectID;
                     }
                 } else if (ConstantsUtils.REFRESH_USER_INFO.equals(action)) {//刷新用户信息
-                    Bundle bundle = intent.getExtras();
                     if (bundle == null) {
                         return;
                     }
@@ -230,6 +261,8 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                 } else if (ConstantsUtils.CLOSE_APP.equals(action)) {//关闭应用
                     finish();
                 }
+
+
             }
         };
         broadcastManager.registerReceiver(receiver, filter);
@@ -300,21 +333,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                 // 隐藏掉解锁按钮
                 llUnlocked.setVisibility(View.INVISIBLE);
 
-                boolean hasChoicedMaterial = PreferencesUtils.acquireBooleanInfoFromPreferences(MainActivity.this, ConstantsUtils.HAS_CHOICED_MATERIAL);
-                if (hasChoicedMaterial) {
-                    aFg = new AttendClassDetailFg(VariableUtils.catalogID,
-                            VariableUtils.catalogName);
-                    showFragment(aFg);
-                } else {
-                    // 跳转至选择教材目录界面
-                    Intent intent = new Intent(MainActivity.this,
-                            ChoiceTeachingMaterialAty.class);
-//                    intent.putExtra(ConstantsUtils.CATALOG_ID, VariableUtils.catalogID);
-//                    intent.putExtra(ConstantsUtils.CATALOG_NAME, VariableUtils.catalogName);
-                    intent.putExtra(ChoiceTeachingMaterialAty.CATALOG_POS, 0);
-//                  startActivityForResult(intent, ConstantsUtils.REQUEST_CODE01);
-                    startActivity(intent);
-                }
+                showFragment(aFg);
             }
         });
         llTest.setOnClickListener(new OnClickListener() {
@@ -414,7 +433,9 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
         }
         btnLogin.setText("退出登录");
 
-        vUtils.showLoadingDialog("");
+//        vUtils.showLoadingDialog("");
+        showLoadingDialog("加载中");
+
         pUtils.getBitmap(headPicUrl, uiHandler);
     }
 
@@ -430,6 +451,48 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
         classes.setName("");
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null && this.clearFragmentsTag()) {
+            //销毁时不保存fragment的状态
+            outState.remove(ConstantsUtils.BUNDLE_FRAGMENTS_KEY);
+        }
+    }
+
+    protected boolean clearFragmentsTag() {
+        return true;
+    }
+
+
+    /**
+     * 加载框
+     *
+     * @param tip 提示信息
+     */
+    private void showLoadingDialog(String tip) {
+        // 设置dialog提示框
+        CustomDialog.Builder builder = new CustomDialog.Builder(this);
+        if (ValidateFormatUtils.isEmpty(tip)) {
+            tip = "正在加载...";
+        }
+        builder.setMessage(tip);
+        dialog = builder.createForLoading();
+        if (canShowDialog) {
+            dialog.show();
+        }
+    }
+
+    /**
+     * 关闭加载框
+     */
+    public void dismissDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+
     /**
      * 初始化线程
      */
@@ -440,7 +503,8 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case PicFormatUtils.SIGN_FOR_BITMAP:
-                        vUtils.dismissDialog();
+//                        vUtils.dismissDialog();
+                        dismissDialog();
 
                         // 接收老师头像并显示
                         Object obj = msg.obj;
@@ -483,9 +547,9 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
             // 目录名称
             catalogName = bundle.getString(ConstantsUtils.CATALOG_NAME);
 
-            aFg = new AttendClassDetailFg(VariableUtils.catalogID,
-                    VariableUtils.catalogName);
-            showFragment(aFg);
+//            aFg = new AttendClassDetailFg(VariableUtils.catalogID,
+//                    VariableUtils.catalogName);
+
         }
     }
 
@@ -504,6 +568,40 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public void getInfo(String str) {
+
+    }
+
+    @Override
+    public void ICanGetVideoInfoCurrentPlay(VideoAndAudioInfoModel info) {
+
+    }
+
+    @Override
+    public void doAfterClickBack() {
+
+    }
+
+    @Override
+    public void doSwitchFullScreen(List<VideoAudio> list, VideoAudio info) {
+        Intent intent = new Intent(MainActivity.this, PlayVideoActivity.class);
+        intent.putExtra(ConstantsUtils.VIDEO_LIST, (Serializable) list);
+        intent.putExtra(ConstantsUtils.VIDEO, (Serializable) info);
+        startActivity(intent);
+    }
+
+    @Override
+    public void doSwitchHalfScreen() {
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        canShowDialog = false;
+    }
+
     /**
      * 监听
      *
@@ -518,6 +616,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback {
 //                            LoginActivity.class);
 //                    intent.putExtra(ConstantsUtils.IS_SWITCH_LOGIN, true);
 //                    startActivity(intent);
+
 
                     //重置登录状态
                     PreferencesUtils.saveInfoToPreferences(MainActivity.this, ConstantsForPreferencesUtils.HAS_LOGINED, false);

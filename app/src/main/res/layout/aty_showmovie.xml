@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:clickable="false">
+
+    <RelativeLayout
+        android:id="@+id/rl_vedio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:clickable="false"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <!-- 视频 -->
+
+        <SurfaceView
+            android:id="@+id/sf_vedio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true" />
+
+        <!-- 音频背景 -->
+
+        <RelativeLayout
+            android:id="@+id/rl_wrapper_audio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@drawable/no_adv_carousel"
+            android:visibility="gone" />
+
+        <!-- 视频封面 -->
+
+        <ImageView
+            android:id="@+id/iv_vi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            android:visibility="gone" />
+
+        <!-- 功能栏 -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false">
+
+            <!-- 顶部功能栏 -->
+
+            <RelativeLayout
+                android:id="@+id/rl_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#80000000"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_back_layout_aty_showmovie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dimen_padding_005"
+                    android:paddingTop="@dimen/dimen_padding_005">
+
+                    <!-- 返回按钮 -->
+
+                    <Button
+                        android:id="@+id/btn_back_layout_aty_showmovie"
+                        android:layout_width="18dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/back_normal"
+                        android:clickable="false"
+                        android:gravity="center|top"
+                        android:padding="@dimen/dimen_padding_006"
+                        android:scaleType="fitXY" />
+
+                    <!-- 视频名称 -->
+
+                    <TextView
+                        android:id="@+id/tv_name_layout_aty_showmovie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_padding_003"
+                        android:text="测试名称"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dimen_text_007"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/ll_back_layout_aty_showmovie"
+                    android:layout_toRightOf="@id/ll_back_layout_aty_showmovie"
+                    android:clickable="false"
+                    android:gravity="center|right">
+
+                    <!-- 列表 -->
+
+                    <LinearLayout
+                        android:id="@+id/ll_wrapper_select_lesson_layout_aty_showmovie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:descendantFocusability="blocksDescendants"
+                        android:gravity="center"
+                        android:padding="@dimen/dimen_padding_003"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_select_lesson_layout_aty_showmovie"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:text="列表"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_text_007" />
+                    </LinearLayout>
+
+                    <!-- 反馈 -->
+
+                    <LinearLayout
+                        android:id="@+id/ll_report_layout_aty_showmovie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dimen_padding_003"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/imgv_collect_layout_aty_showmovie"
+                            android:layout_width="@dimen/dimen_padding_007"
+                            android:layout_height="@dimen/dimen_padding_007"
+                            android:background="@drawable/retroaction_map"
+                            android:clickable="false"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitXY" />
+
+                        <TextView
+                            android:id="@+id/tv_collect_layout_aty_showmovie"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_padding_002"
+                            android:text="反馈"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_text_005" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- 播放按钮 -->
+
+            <Button
+                android:id="@+id/btn_play_layout_aty_showmovie"
+                android:layout_width="@dimen/dimen_padding_013"
+                android:layout_height="@dimen/dimen_padding_013"
+                android:layout_centerInParent="true"
+                android:background="@drawable/play"
+                android:clickable="false"
+                android:scaleType="fitXY"
+                android:visibility="visible" />
+
+            <!-- 正在加载视频的旋转标志 -->
+
+            <ProgressBar
+                android:id="@+id/pbar_loading_layout_aty_showmovie"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="@dimen/dimen_padding_013"
+                android:layout_height="@dimen/dimen_padding_013"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+            <!-- 没有连接网络的情况下， 点击刷新 -->
+
+            <RelativeLayout
+                android:id="@+id/gesture_volume_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="#33000000"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/gesture_iv_player_volume"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/souhu_player_volume"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/geture_tv_volume_percentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/gesture_iv_player_volume"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="right"
+                    android:text="80%"
+                    android:textColor="#ffececec" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/gesture_progress_layout"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="#33000000"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/gesture_iv_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/souhu_player_backward" />
+
+                <TextView
+                    android:id="@+id/geture_tv_progress_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/gesture_iv_progress"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="right"
+                    android:text="00:15/14:29"
+                    android:textColor="#ffececec" />
+            </RelativeLayout>
+            <!-- 音量功能 -->
+
+            <RelativeLayout
+                android:id="@+id/rl_movie_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_movie_sound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/yyll" />
+
+                <TextView
+                    android:id="@+id/tv_movie_sound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_movie_sound"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:gravity="right"
+                    android:text="100%"
+                    android:textColor="#ffececec"
+                    android:textSize="@dimen/dimen_text_010" />
+            </RelativeLayout>
+
+            <!-- 底部栏：类型（视频/音频） -->
+
+            <TextView
+                android:id="@+id/tv_type_layout_aty_shwmovie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#80000000"
+                android:gravity="left|center"
+                android:padding="@dimen/dimen_padding_004"
+                android:text="视频课程"
+                android:textColor="@color/color_text_additional"
+                android:textSize="@dimen/dimen_text_006"
+                android:visibility="gone" />
+
+            <!-- 底部功能栏 -->
+
+            <RelativeLayout
+                android:id="@+id/rl_under"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#80000000"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/ll_play_download_laryout_aty_showmovie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:clickable="false"
+                    android:descendantFocusability="blocksDescendants"
+                    android:gravity="center"
+                    android:visibility="visible">
+
+                    <Button
+                        android:id="@+id/btn_playOrPause"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/playbtn"
+                        android:clickable="false"
+                        android:scaleType="fitXY" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_time_current"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/ll_play_download_laryout_aty_showmovie"
+                    android:text="00:00"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_007" />
+
+                <LinearLayout
+                    android:id="@+id/ll_qp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:descendantFocusability="blocksDescendants"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_qp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/qp"
+                        android:clickable="false" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_time_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@id/ll_qp"
+                    android:text="00:00"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_007" />
+
+                <SeekBar
+                    android:id="@+id/seek_control"
+                    style="@style/Media_SeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_padding_003"
+                    android:layout_toLeftOf="@id/tv_time_total"
+                    android:layout_toRightOf="@id/tv_time_current"
+                    android:focusable="true"
+                    android:max="1000"
+                    android:maxHeight="1dp"
+                    android:progressDrawable="@drawable/progress_color" />
+            </RelativeLayout>
+
+            <!-- 右侧侧边栏，展示剧集 -->
+
+            <LinearLayout
+                android:id="@+id/ll_moreMovie"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="#80000000"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_rightMore"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:descendantFocusability="blocksDescendants"
+                        android:gravity="center">
+
+                        <!-- 更多设置 -->
+                        <!-- <Button -->
+                        <!-- android:id="" -->
+                        <!-- android:layout_width="20dp" -->
+                        <!-- android:layout_height="5dp" -->
+                        <!-- android:background="@drawable/gdd" -->
+                        <!-- android:clickable="false" -->
+                        <!-- android:visibility="gone" /> -->
+
+
+                        <!-- 选集 -->
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:clickable="false"
+                            android:text=""
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_text_005"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="视频列表"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dimen_text_009" />
+                </RelativeLayout>
+
+                <ListView
+                    android:id="@+id/lstv_video_list_aty_showmovie"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:cacheColorHint="#00000000"
+                    android:fadingEdge="none"
+                    android:fadingEdgeLength="0dp"
+                    android:listSelector="#00000000"
+                    android:scrollbars="none" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

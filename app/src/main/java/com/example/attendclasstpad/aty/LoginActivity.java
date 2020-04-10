@@ -1,6 +1,7 @@
 package com.example.attendclasstpad.aty;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -38,7 +39,9 @@ import com.example.attendclasstpad.util.ServerRequestUtils;
 import com.example.attendclasstpad.util.SoftKeyboardStateHelper;
 import com.example.attendclasstpad.util.UpdateManager;
 import com.example.attendclasstpad.util.UrlUtils;
+import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.util.ViewUtils;
+import com.example.attendclasstpad.view.CustomDialog;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -69,10 +72,11 @@ public class LoginActivity extends Activity {
 
     private ServerRequestUtils requestUtils;
     private DeviceUtils deviceUtils;// 设备信息工具
-    private ViewUtils vUtils;// 布局工具
+    //    private ViewUtils vUtils;// 布局工具
     private Handler uiHandler;// 主线程handler
     private PicFormatUtils pUtils;// 图片工具
     // private NotificationUtils nUtils; // 通知栏工具
+    private Dialog dialog;//加载框
 
     private CheckBox cboxRememberPsd;// 记住密码
     private EditText edtName;// 登录名
@@ -90,7 +94,7 @@ public class LoginActivity extends Activity {
 
         uiHandler = new Handler(getMainLooper());
         requestUtils = new ServerRequestUtils(this);
-        vUtils = new ViewUtils(this);
+//        vUtils = new ViewUtils(this);
         deviceUtils = new DeviceUtils(this);
         pUtils = new PicFormatUtils();
         // 初始化通知栏的进度条
@@ -302,7 +306,8 @@ public class LoginActivity extends Activity {
                                 if (data != null) {
                                     dealWithData(data);
                                 }
-                                vUtils.dismissDialog();
+//                                vUtils.dismissDialog();
+                                dismissDialog();
                             }
                         });
                     }
@@ -319,7 +324,8 @@ public class LoginActivity extends Activity {
                                     Toast.makeText(LoginActivity.this, "登录失败",
                                             Toast.LENGTH_SHORT).show();
                                 }
-                                vUtils.dismissDialog();
+//                                vUtils.dismissDialog();
+                                dismissDialog();
                             }
                         });
                     }
@@ -466,6 +472,31 @@ public class LoginActivity extends Activity {
     }
 
 
+    /**
+     * 加载框
+     *
+     * @param tip 提示信息
+     */
+    private void showLoadingDialog(String tip) {
+        // 设置dialog提示框
+        CustomDialog.Builder builder = new CustomDialog.Builder(this);
+        if (ValidateFormatUtils.isEmpty(tip)) {
+            tip = "正在加载...";
+        }
+        builder.setMessage(tip);
+        dialog = builder.createForLoading();
+        dialog.show();
+    }
+
+    /**
+     * 关闭加载框
+     */
+    public void dismissDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -508,7 +539,8 @@ public class LoginActivity extends Activity {
             switch (id) {
                 case R.id.tv_login_layout_aty_login://登录
                     if (isCanLogin()) {
-                        vUtils.showLoadingDialog("");
+//                        vUtils.showLoadingDialog("");
+                        showLoadingDialog("正在登录");
 
                         loginToServer();
                     }

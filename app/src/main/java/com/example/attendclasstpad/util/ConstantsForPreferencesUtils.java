@@ -54,13 +54,13 @@ public class ConstantsForPreferencesUtils {
      */
     public static final String TOKEN = "token";
     /**
-     * 章节id
+     * 目录id
      */
-    public static final String CHAPTER_ID = "chapterId";
+    public static final String CATALOG_ID = "CATALOG_ID";
     /**
-     * 章节名称
+     * 目录名称
      */
-    public static final String CHAPTER_NAME = "chapterName";
+    public static final String CATALOG_NAME = "CATALOG_NAME";
 
     /**
      * 班级数据(jsonArray格式)
@@ -128,14 +128,14 @@ public class ConstantsForPreferencesUtils {
     public static final String UNIT_ID_CHOICED = "UNIT_ID_CHOICED";
 
     /**
-     * 所选章节ID
+     * 所选目录ID
      */
-    public static final String CHAPTER_ID_CHOICED = "CHAPTER_ID_CHOICED";
+    public static final String CATALOG_ID_CHOICED = "CATALOG_ID_CHOICED";
 
     /**
-     * 所选章节名称
+     * 所选目录名称
      */
-    public static final String CHAPTER_NAME_CHOICED = "CHAPTER_NAME_CHOICED";
+    public static final String CATALOG_NAME_CHOICED = "CATALOG_NAME_CHOICED";
 
     /**
      * 所选班级ID
