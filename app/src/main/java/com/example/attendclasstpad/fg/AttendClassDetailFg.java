@@ -6,7 +6,6 @@ import java.util.List;
 import com.example.attendclasstpad.adapter.CustomPagerAdapter04;
 import com.example.attendclasstpad.aty.ChoiceTeachingMaterialAty;
 import com.example.attendclasstpad.R;
-import com.example.attendclasstpad.aty.MainActivity;
 import com.example.attendclasstpad.aty.ShareFullScreenActivity;
 import com.example.attendclasstpad.adapter.ColorAdapter;
 import com.example.attendclasstpad.adapter.CustomPagerAdapter03;
@@ -538,8 +537,8 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                                     lstvFiles.setSelection(0);
 
 //                                    if (count.equals(fileList.size())) {
-                                        // 隐藏刷新模块
-                                        vPullDown.notifyDidRefresh();
+                                    // 隐藏刷新模块
+                                    vPullDown.notifyDidRefresh();
 //                                    }
 
 //                                prlstvFiles.refreshComplete();
@@ -1170,7 +1169,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             public void onResponse(String msg, JSONArray data, String count) {
                 rightInfoCount = count;
 
-                showRightInfo(data);
+                dealWithPreviewData(data);
             }
         });
     }
@@ -1200,7 +1199,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
         });
     }
 
-    private void showRightInfo(JSONArray dataArr) {
+    private void dealWithPreviewData(JSONArray dataArr) {
         if (dataArr != null) {
 //        if (true) {
 //            fileType = ConstantsForServerUtils.VIDEO;
@@ -1439,7 +1438,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
 
     private void dealWithPreviewDataInfoData(JSONObject data) {
         JSONArray dataInfoArr = ServerDataAnalyzeUtils.getDataAsJSONArray(data, ConstantsForServerUtils.DATAINFO);
-        showRightInfo(dataInfoArr);
+        dealWithPreviewData(dataInfoArr);
     }
 
 
@@ -1515,18 +1514,6 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             coursewareList.clear();
         }
     }
-
-
-//    /**
-//     * 重置右侧具体数据
-//     */
-//    private void resetRightInfoList() {
-//        // 右侧课件
-//        if (fileList.size() > 0) {
-//            fileList.clear();
-//        }
-//    }
-
 
     /**
      * 重置音视频数据
@@ -1822,17 +1809,13 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             // System.out.println("onPageSelected: " + arriveIndex);
 
             newPosition = arriveIndex % Integer.valueOf(rightInfoCount);
-
 //            if (isPageSelected && newPosition > positionMax) {// 正向向右滑动的情况
 //                if (newPosition == 1) {
 //                    currentPageNumForPreview = newPosition + 1;
 //                }
-
 //                positionMax = newPosition;
-
 //                if (fileFocus != null && needMultiPageRequestPreview) {
 //                    vUtils.showLoadingDialog("");
-//
 //                    String ID = fileFocus.getDataID();
 //                    requestFileDetailFromServer(fileType, ID);
 //                }
