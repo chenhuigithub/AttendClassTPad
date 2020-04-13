@@ -312,7 +312,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
 //            prlstvFiles = (PullRefreshListView) allFgView
 //                    .findViewById(R.id.lsv_files_catalog_layout_fg_attend_class_detail);
 
-            initPullDownLstv(vPullDown);
+//            vPullDown.enableAutoFetchMore(true, 1);
 
             //没有授课数据
             llNoFile = (LinearLayout) allFgView
@@ -488,7 +488,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             }
 
             @Override
-            public void onResponse(String msg, JSONArray data, String count) {
+            public void onResponse(String msg, JSONArray data, final String count) {
                 // 重置数据
                 if (currentPageNumForFile == 1 && fileList.size() > 0) {
                     fileList.clear();
@@ -530,14 +530,20 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                                 vPullDown.setVisibility(View.VISIBLE);
 
                                 setLstvFileAdapter(false);
+//                                vPullDown.enableAutoFetchMore(true, 1);
+
                                 vPullDown.notifyDidLoad();
 
                                 if (currentPageNumForFile == 1) {
                                     lstvFiles.setSelection(0);
-                                    // 隐藏刷新模块
-                                    vPullDown.notifyDidRefresh();
+
+//                                    if (count.equals(fileList.size())) {
+                                        // 隐藏刷新模块
+                                        vPullDown.notifyDidRefresh();
+//                                    }
+
 //                                prlstvFiles.refreshComplete();
-                                } else {
+                                } else {// 非首页数据，焦点定到文末
                                     final int lastVisiblePostion = lstvFiles
                                             .getLastVisiblePosition();
                                     lstvFiles.setSelection(lastVisiblePostion);
@@ -551,21 +557,12 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                     }
 
                     fileFocus = fileList.get(0);
-//                    fileType = fileFocus.getFileType();
                     if (fileFocus != null) {
                         requestFileDetailFromServer(fileFocus.getFileType(), fileFocus.getDataID());
                     }
 
                     hasLoadOnce = true;
                 }
-//                uiHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        vUtils.dismissDialog();
-//                    }
-//                });
-
-
             }
         });
     }
