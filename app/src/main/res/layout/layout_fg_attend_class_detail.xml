@@ -282,7 +282,7 @@
             <com.example.pullrefreshlistview.util.PullDownView
                 android:id="@+id/v_files_catalog_layout_fg_attend_class_detail"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dimen_padding_006"
                 android:layout_marginTop="@dimen/dimen_padding_006"
                 android:background="@android:color/white"
