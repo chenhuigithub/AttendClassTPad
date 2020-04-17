@@ -85,28 +85,28 @@ public class ChoiceClassActivity extends Activity {
 
                 PreferencesUtils.saveInfoToPreferences(ChoiceClassActivity.this, ConstantsForPreferencesUtils.CLASS_ID_CHOICED, classList.get(position).getId());
 
-                Intent intent = new Intent(ChoiceClassActivity.this,
+                Intent intentAction = new Intent(ChoiceClassActivity.this,
                         MainActivity.class);
-                intent.setAction(ConstantsUtils.REFRESH_USER_INFO);
+                intentAction.setAction(ConstantsUtils.REFRESH_USER_INFO);
 
                 if (classList.size() > 0 && classList.get(position) != null) {
-                    intent.putExtra(ConstantsUtils.CLASS_NAME, classList.get(position).getName());
+                    intentAction.putExtra(ConstantsUtils.CLASS_NAME, classList.get(position).getName());
                     PreferencesUtils.saveInfoToPreferences(ChoiceClassActivity.this, ConstantsForPreferencesUtils.CLASS_NAME, classList.get(position).getName());
                 }
 
                 if (classList.size() > 0 && classList.get(position) != null) {
-                    intent.putExtra(ConstantsUtils.CLASS_ID, classList.get(position).getId());
+                    intentAction.putExtra(ConstantsUtils.CLASS_ID, classList.get(position).getId());
                     PreferencesUtils.saveInfoToPreferences(ChoiceClassActivity.this, ConstantsForPreferencesUtils.CLASS_ID, classList.get(position).getId());
                 }
 
 
-                intent.putExtra(ConstantsUtils.HAS_LOGINED, true);
-                //跳转至班级分页
-                intent.putExtra(ConstantsUtils.INTENT, ConstantsUtils.INTENT01);
+                intentAction.putExtra(ConstantsUtils.HAS_LOGINED, true);
+                //回到主界面后，跳转至班级分页
+//                intent.putExtra(ConstantsUtils.INTENT, ConstantsUtils.INTENT01);
 
                 // 发送广播
                 LocalBroadcastManager.getInstance(ChoiceClassActivity.this)
-                        .sendBroadcast(intent);
+                        .sendBroadcast(intentAction);
 
                 finish();
             }
@@ -270,14 +270,14 @@ public class ChoiceClassActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            Intent intent = new Intent();
-            intent.setAction(ConstantsUtils.REFRESH_USER_INFO);// 刷新用户信息
-            intent.putExtra(ConstantsUtils.HAS_LOGINED, false);
-            LocalBroadcastManager.getInstance(ChoiceClassActivity.this).sendBroadcast(intent);
+            Intent intentAction = new Intent();
+            intentAction.setAction(ConstantsUtils.REFRESH_USER_INFO);// 刷新用户信息
+            intentAction.putExtra(ConstantsUtils.HAS_LOGINED, false);
+            LocalBroadcastManager.getInstance(ChoiceClassActivity.this).sendBroadcast(intentAction);
 
 
-            Intent intent2 = new Intent(ChoiceClassActivity.this, LoginActivity.class);
-            startActivity(intent2);
+            Intent intent = new Intent(ChoiceClassActivity.this, LoginActivity.class);
+            startActivity(intent);
 
             finish();
 

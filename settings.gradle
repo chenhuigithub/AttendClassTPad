@@ -1,1 +1,1 @@
-include ':app', ':library_pullRefreshListView', ':mylibrary', ':pullrefreshlistview', ':pulldownrefreshview'
+include ':app', ':pullrefreshlistview'

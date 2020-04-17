@@ -45,6 +45,7 @@ import com.example.attendclasstpad.util.PicFormatUtils;
 import com.example.attendclasstpad.util.PreferencesUtils;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.util.VariableUtils;
+import com.example.attendclasstpad.util.ViewUtils;
 import com.example.attendclasstpad.view.CustomDialog;
 import com.example.attendclasstpad.view.CustomRoundImageView;
 
@@ -70,7 +71,6 @@ public class MainActivity extends FragmentActivity implements JumpCallback, Inte
     String moduleIDCurr = "";
     private Classes classes;//班级
     private boolean hasLogined = false;//是否已登录，默认为未登录
-    private boolean canShowDialog = true;//是否可以显示dialog(dialog依赖于Activity)
 
     private static ClassesFg mClassesFg = null;
     private InterfacesCallback.ICanKnowSth11 callbackForClass;//班级 回调
@@ -84,7 +84,6 @@ public class MainActivity extends FragmentActivity implements JumpCallback, Inte
     private LocalBroadcastManager broadcastManager;// 广播接收
     private Handler uiHandler;// 主线程
     private PicFormatUtils pUtils;// 图片工具
-    private Dialog dialog;//加载框
 
     private LinearLayout llClasses;// 班级
     private LinearLayout llAttendClass;// 上课
@@ -94,7 +93,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback, Inte
     private LinearLayout llRightTriangle03;// 测试按钮右三角
     private LinearLayout llUnlocked;// 全体解锁
 
-//    private ViewUtils vUtils;
+    private ViewUtils vUtils;
 
     private Button btnLogin;// 登录
     private CustomRoundImageView ivUserLogo;//用户头像
@@ -117,7 +116,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback, Inte
 
         pUtils = new PicFormatUtils();
         res = getResources();
-//        vUtils = new ViewUtils(this);
+        vUtils = new ViewUtils(this);
         classes = new Classes();
 
         // 加入栈
@@ -433,8 +432,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback, Inte
         }
         btnLogin.setText("退出登录");
 
-//        vUtils.showLoadingDialog("");
-        showLoadingDialog("加载中");
+        vUtils.showLoadingDialog("");
 
         pUtils.getBitmap(headPicUrl, uiHandler);
     }
@@ -466,34 +464,6 @@ public class MainActivity extends FragmentActivity implements JumpCallback, Inte
 
 
     /**
-     * 加载框
-     *
-     * @param tip 提示信息
-     */
-    private void showLoadingDialog(String tip) {
-        // 设置dialog提示框
-        CustomDialog.Builder builder = new CustomDialog.Builder(this);
-        if (ValidateFormatUtils.isEmpty(tip)) {
-            tip = "正在加载...";
-        }
-        builder.setMessage(tip);
-        dialog = builder.createForLoading();
-        if (canShowDialog) {
-            dialog.show();
-        }
-    }
-
-    /**
-     * 关闭加载框
-     */
-    public void dismissDialog() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
-    }
-
-
-    /**
      * 初始化线程
      */
     private void initHandler() {
@@ -503,8 +473,7 @@ public class MainActivity extends FragmentActivity implements JumpCallback, Inte
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case PicFormatUtils.SIGN_FOR_BITMAP:
-//                        vUtils.dismissDialog();
-                        dismissDialog();
+                        vUtils.dismissDialog();
 
                         // 接收老师头像并显示
                         Object obj = msg.obj;
@@ -599,7 +568,20 @@ public class MainActivity extends FragmentActivity implements JumpCallback, Inte
     @Override
     protected void onPause() {
         super.onPause();
-        canShowDialog = false;
+
+        if (vUtils != null) {
+            vUtils.setCanShowDialog(true);
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (vUtils != null) {
+            vUtils.setCanShowDialog(true);
+        }
     }
 
     /**

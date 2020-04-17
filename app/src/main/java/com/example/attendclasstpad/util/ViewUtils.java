@@ -16,9 +16,24 @@ import com.example.attendclasstpad.view.CustomDialog;
 public class ViewUtils {
     private Context context;
     private Dialog dialog;
+    private boolean canShowDialog = true;//是否可以显示dialog(dialog依赖于Activity，在activity类中对此灵活控制)
+
 
     public ViewUtils(Context context) {
         this.context = context;
+    }
+
+    public boolean isCanShowDialog() {
+        return canShowDialog;
+    }
+
+    /**
+     * 设置是否可以显示dialog的值(dialog依赖于Activity，在activity类中onPause等对此灵活控制)
+     *
+     * @param canShowDialog 是否可以显示dialog
+     */
+    public void setCanShowDialog(boolean canShowDialog) {
+        this.canShowDialog = canShowDialog;
     }
 
 

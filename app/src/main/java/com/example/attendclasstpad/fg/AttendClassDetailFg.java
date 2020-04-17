@@ -1,5 +1,6 @@
 package com.example.attendclasstpad.fg;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -207,11 +208,11 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
     private ViewPager vpager;// 滑动布局
     //    private PullRefreshListView prlstvFiles;//授课列表(刷新、加载的另一种实现形式)
     private ListView lstvFiles;//授课列表
-    private LinearLayout llNoFile;//没有授课
+    private LinearLayout llNoFile;//没有授课文件
     private LinearLayout llWrapper01;//ppt、viewpager区域
     private LinearLayout llPreviewContent;//预览Html区域
     private RelativeLayout rlVideo;// 音视频
-    private ImageView ivNoData;// 无预览授课情况下的展示图片
+    private ImageView ivNoPreviewContent;// 无预览授课内容情况下的展示图片
 
     //    PullDown vPullDown;
     private PullDownView vPullDown;//授课列表下拉刷新、上拉加载更多
@@ -246,6 +247,7 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             omicsList = new ArrayList<TestData>();
             txtList = new ArrayList<String>();
             videoList = new ArrayList<VideoAudio>();
+            fileFocus = new File01();
 
             String catalogIDCurr = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CATALOG_ID_CHOICED);
             if (!ValidateFormatUtils.isEmpty(catalogIDCurr)) {
@@ -269,10 +271,13 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             llPreviewContent = (LinearLayout) allFgView
                     .findViewById(R.id.ll_preview_content_layout_fg_attend_class_detail);
 
-            // 没有数据
-            ivNoData = (ImageView) allFgView
-                    .findViewById(R.id.iv_no_data_layout_aty_attend_class_detail);
-            ivNoData.setVisibility(View.GONE);
+            //没有授课文件
+            llNoFile = (LinearLayout) allFgView
+                    .findViewById(R.id.ll_no_file_layout_fg_attend_class_detail);
+            //没有授课预览内容
+            ivNoPreviewContent = (ImageView) allFgView
+                    .findViewById(R.id.iv_no_preview_content_layout_fg_attend_class_detail);
+            ivNoPreviewContent.setVisibility(View.GONE);
 
             initBoard();
 
@@ -313,9 +318,6 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
 
 //            vPullDown.enableAutoFetchMore(true, 1);
 
-            //没有授课数据
-            llNoFile = (LinearLayout) allFgView
-                    .findViewById(R.id.ll_no_data_layout_fg_attend_class_detail);
             // 音视频
             rlVideo = (RelativeLayout) allFgView.findViewById(R.id.rl_video_content_layout_fg_attend_class_detail);
             rlVideo.setVisibility(View.GONE);
@@ -432,13 +434,13 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                 // 重置页码
                 currentPageNumForFile = 1;
                 // 请求数据
-                requestFileListFromServer();
+                requestFileListFromServer(catalogIDCurr);
             }
 
             @Override
             public void onMore() {
                 currentPageNumForFile = currentPageNumForFile + 1;
-                requestFileListFromServer();
+                requestFileListFromServer(catalogIDCurr);
             }
         });
     }
@@ -446,15 +448,11 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
     /**
      * 从服务器获取授课文件列表
      */
-    private void requestFileListFromServer() {
+    private void requestFileListFromServer(String catalogIDCurr) {
         DataID01 dataID01 = new DataID01();
 
-        if (!TextUtils.isEmpty(VariableUtils.catalogID)) {
-            chapterID = VariableUtils.catalogID;
-        } else {
-            chapterID = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CATALOG_ID_CHOICED);
-        }
-        dataID01.setChid(chapterID);//章节ID
+
+        dataID01.setChid(catalogIDCurr);//章节ID
 
         dataID01.setCid(classID);//班级ID
 
@@ -472,16 +470,13 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (currentPageNumForFile == 1) {// 首页数据
-                            llNoFile.setVisibility(View.VISIBLE);
-                            lstvFiles.setVisibility(View.GONE);
-                        }
-                        vUtils.dismissDialog();
+                        String msg1 = "文件获取失败，请重试";
                         if (!TextUtils.isEmpty(msg)) {
-                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getActivity(), "资源获取失败，请重试", Toast.LENGTH_SHORT).show();
+                            msg1 = msg;
                         }
+                        showNoFileData(msg1);
+
+                        vUtils.dismissDialog();
                     }
                 });
             }
@@ -503,19 +498,8 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                         uiHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if (currentPageNumForFile == 1) {// 首页数据
-                                    llNoFile.setVisibility(View.VISIBLE);
-                                    lstvFiles.setVisibility(View.GONE);
-
-                                    // 刷新显示没有更多数据
-                                    vPullDown.notifyDidNoMore();
-                                    vPullDown.setVisibility(View.GONE);
-                                } else {
-                                    // 刷新显示没有更多数据
-                                    vPullDown.notifyDidNoMore();
-                                    // prlstvFiles.loadMoreComplete();
-                                    Toast.makeText(getActivity(), "没有更多数据啦", Toast.LENGTH_SHORT).show();
-                                }
+                                String msg = "没有更多数据啦";
+                                showNoFileData(msg);
                             }
                         });
                     } else {
@@ -536,10 +520,8 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                                 if (currentPageNumForFile == 1) {
                                     lstvFiles.setSelection(0);
 
-//                                    if (count.equals(fileList.size())) {
                                     // 隐藏刷新模块
                                     vPullDown.notifyDidRefresh();
-//                                    }
 
 //                                prlstvFiles.refreshComplete();
                                 } else {// 非首页数据，焦点定到文末
@@ -553,17 +535,58 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                                 }
                             }
                         });
-                    }
 
-                    fileFocus = fileList.get(0);
-                    if (fileFocus != null) {
-                        requestFileDetailFromServer(fileFocus.getFileType(), fileFocus.getDataID());
+                        if (currentPageNumForFile == 1 && fileList.size() > 0) {
+                            fileFocus = fileList.get(0);
+                            if (fileFocus != null) {
+                                requestFileDetailFromServer(fileFocus.getFileType(), fileFocus.getDataID());
+                            }
+                        }
                     }
 
                     hasLoadOnce = true;
+                } else {
+                    uiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String msg = "没有更多数据啦";
+                            showNoFileData(msg);
+                        }
+                    });
                 }
             }
         });
+    }
+
+    private void showNoFileData(String msg) {
+        if (currentPageNumForFile == 1) {// 首页数据
+            llNoFile.setVisibility(View.VISIBLE);
+            lstvFiles.setVisibility(View.GONE);
+
+            // 刷新显示没有更多数据
+            vPullDown.notifyDidNoMore();
+            vPullDown.setVisibility(View.GONE);
+
+            showNoPreviewContent("暂无预览，请切换授课文件");
+        } else {
+            // 刷新显示没有更多数据
+            vPullDown.notifyDidNoMore();
+            // prlstvFiles.loadMoreComplete();
+
+            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showNoPreviewContent(String msg) {
+        resetAllData();
+
+        setVPagerAdapter(0);
+        ivNoPreviewContent.setVisibility(View.VISIBLE);
+        llWrapper01.setVisibility(View.GONE);
+
+
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        vUtils.dismissDialog();
     }
 
     /**
@@ -573,9 +596,6 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
      */
     private void setVPagerAdapter(int position) {
         vpager.removeAllViews();
-
-        vpager.setVisibility(View.VISIBLE);
-
 
         if (ConstantsForServerUtils.PPT.equals(fileFocus.getFileType()) || ConstantsForServerUtils.IMAGES.equals(fileFocus.getFileType())) {// 图片类
             setPicVPagerAdapter(position);
@@ -918,13 +938,6 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                 // 重新赋值
                 prePosition = position;
 
-//                if (ll01Last != null) {
-//                    ll01Last.setBackgroundResource(R.color.transparent);
-//                }
-//                LinearLayout ll01 = parent.findViewById(R.id.ll_01_layout_adapter_item_for_file_content);
-//                ll01.setBackgroundResource(R.drawable.selector_for_green_stroke_rectangle);
-
-//                ll01Last = ll01;
                 setVPagerAdapter(position);
 //                setGridViewAdapter(position);
 
@@ -1153,13 +1166,12 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        setWordVPagerAdapter(0);
-                        vpager.setVisibility(View.GONE);
+                        String msg1 = "预览失败，请重试";
+                        if (!TextUtils.isEmpty(msg)) {
+                            msg1 = msg;
+                        }
 
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                        ivNoData.setVisibility(View.VISIBLE);
-
-                        vUtils.dismissDialog();
+                        showNoPreviewContent(msg1);
                     }
                 });
             }
@@ -1181,11 +1193,11 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        setWordVPagerAdapter(0);
-                        vpager.setVisibility(View.GONE);
-
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                        ivNoData.setVisibility(View.VISIBLE);
+                        String msg1 = "";
+                        if (!TextUtils.isEmpty(msg)) {
+                            msg1 = msg;
+                        }
+                        showNoPreviewContent(msg1);
 
                         vUtils.dismissDialog();
                     }
@@ -1208,19 +1220,15 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        setVPagerAdapter(0);
-                        vpager.setVisibility(View.GONE);
-
-                        ivNoData.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(), "暂无预览，切换别的文件试试",
-                                Toast.LENGTH_SHORT).show();
+                        String msg = "暂无预览，切换别的文件试试";
+                        showNoPreviewContent(msg);
                     }
                 });
             } else {
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ivNoData.setVisibility(View.GONE);
+                        ivNoPreviewContent.setVisibility(View.GONE);
                     }
                 });
 
@@ -1234,6 +1242,8 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                         public void run() {
                             previewPPT();
                             setGridViewAdapter(newPosition);
+
+                            llWrapper01.setVisibility(View.VISIBLE);
                             setVPagerAdapter(0);
 
                             vUtils.dismissDialog();
@@ -1372,6 +1382,8 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
                                 @Override
                                 public void run() {
                                     previewWord();
+
+                                    llWrapper01.setVisibility(View.VISIBLE);
                                     setVPagerAdapter(0);
                                 }
                             });
@@ -1403,12 +1415,8 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             uiHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    setVPagerAdapter(0);
-                    vpager.setVisibility(View.GONE);
-
-                    ivNoData.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(), "暂无预览，切换文件试试？",
-                            Toast.LENGTH_SHORT).show();
+                    String msg = "暂无预览，切换文件试试？";
+                    showNoPreviewContent(msg);
                 }
             });
         }
@@ -1546,6 +1554,19 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
         return txtList;
     }
 
+    private void resetAllData() {
+        resetPlanList();
+        resetCoursewareList();
+        resetOmicsList();
+        resetTestList();
+        resetTxtList();
+        resetVideoList();
+
+        rightInfoCount = "0";
+        currentPageNumForPreview = 1;
+        fileFocus = new File01();
+    }
+
     /**
      * 销毁播放
      */
@@ -1560,21 +1581,11 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
         switch (i) {
             case ConstantsUtils.AFTER_CLICK_ALL://点击文件列表单项
 //                positionMax = -1;
-                resetPlanList();
-                resetCoursewareList();
-                resetOmicsList();
-                resetTestList();
-                resetTxtList();
-                resetVideoList();
-                rightInfoCount = "0";
-                currentPageNumForPreview = 1;
+                resetAllData();
 
                 if (fileList != null && fileList.size() > 0) {
                     fileFocus = fileList.get(pos);
                     if (fileFocus != null) {
-//                        fileType = fileFocus.getFileType();//文件格式
-//                        fileSource = fileFocus.getSource();//文件来源
-
                         vUtils.showLoadingDialog("");
 
                         requestFileDetailFromServer(fileFocus.getFileType(), ID);
@@ -1837,10 +1848,26 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             }
 
             // 目录ID
-            catalogIDCurr = bundle.getString(ConstantsUtils.CATALOG_ID);
+            String catalogIDCurr = bundle.getString(ConstantsUtils.CATALOG_ID);
             // 目录名称
-            catalogNameCurr = bundle.getString(ConstantsUtils.CATALOG_NAME);
+            String catalogNameCurr = bundle.getString(ConstantsUtils.CATALOG_NAME);
+
+
+            if (!ValidateFormatUtils.isEmpty(catalogIDCurr)) {
+                this.catalogIDCurr = catalogIDCurr;
+                requestFileListFromServer(catalogIDCurr);
+            } else {
+                llNoFile.setVisibility(View.VISIBLE);
+                ivNoPreviewContent.setVisibility(View.VISIBLE);
+
+                resetAllData();
+                setVPagerAdapter(0);
+
+                Toast.makeText(getActivity(), "目录ID为空，请重新选择目录", Toast.LENGTH_SHORT).show();
+            }
+
             if (!ValidateFormatUtils.isEmpty(catalogNameCurr)) {
+                this.catalogNameCurr = catalogNameCurr;
                 tvTitleName.setText(catalogNameCurr);
             }
         }
@@ -1873,7 +1900,10 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
             this.classID = classID;
         }
 
-        requestFileListFromServer();
+        String catalogIDCurr = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CATALOG_ID_CHOICED);
+        if (!TextUtils.isEmpty(catalogIDCurr)) {
+            requestFileListFromServer(catalogIDCurr);
+        }
     }
 
     @Override
