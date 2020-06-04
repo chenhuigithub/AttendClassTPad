@@ -71,7 +71,7 @@ public class KeyValueAdapter extends BaseListAdapter<KeyValue> {
 
     @Override
     protected int getLayoutResID() {
-        return R.layout.layout_v_single_line;
+        return R.layout.layout_v_single_line01;
     }
 
     @SuppressWarnings("deprecation")
@@ -79,7 +79,7 @@ public class KeyValueAdapter extends BaseListAdapter<KeyValue> {
     protected void doAssignValueForView(int position, View resultView,
                                         KeyValue dataObj) {
         TextView tvName = (TextView) resultView
-                .findViewById(R.id.tv_layout_v_single_line);
+                .findViewById(R.id.tv_layout_v_single_line01);
         String name = dataObj.getName();
         String id = dataObj.getId();
 

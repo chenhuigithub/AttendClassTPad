@@ -967,7 +967,6 @@ public class AttendClassDetailFg extends BaseNotPreLoadFg implements InterfacesC
         tvSwitchMaterial = (TextView) allFgView
                 .findViewById(R.id.tv_switch_material_layout_fg_attend_class_detail);
         tvSwitchMaterial.setOnClickListener(new Listeners());
-
     }
 
     private void setGridViewAdapter(int pos) {

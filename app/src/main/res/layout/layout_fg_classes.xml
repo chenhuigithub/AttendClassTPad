@@ -84,10 +84,11 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/tv_online_num_layout_fg_classes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:text="（25人）"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -110,7 +111,7 @@
                     android:fadingEdge="none"
                     android:fadingEdgeLength="0dp"
                     android:listSelector="#00000000"
-                    android:numColumns="11"
+                    android:numColumns="8"
                     android:verticalSpacing="2dp" />
             </LinearLayout>
 
@@ -139,13 +140,12 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/tv_lbl_out_line_num_layout_fg_classes"
+                    android:id="@+id/tv_offline_num_layout_fg_classes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="3dp"
                     android:layout_toRightOf="@id/tv_lbl_out_line_layout_fg_classes"
-                    android:text="（3人）"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
@@ -153,8 +153,8 @@
                     android:id="@+id/tv_lbl_tip_layout_fg_classes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/tv_lbl_out_line_num_layout_fg_classes"
-                    android:layout_toRightOf="@id/tv_lbl_out_line_num_layout_fg_classes"
+                    android:layout_alignBottom="@id/tv_offline_num_layout_fg_classes"
+                    android:layout_toRightOf="@id/tv_offline_num_layout_fg_classes"
                     android:text="发送提醒"
                     android:textColor="@color/blue5"
                     android:textSize="10sp" />

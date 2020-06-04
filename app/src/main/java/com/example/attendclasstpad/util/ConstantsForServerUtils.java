@@ -172,4 +172,10 @@ public class ConstantsForServerUtils {
      */
     public static final String DATAINFO = "DataInfo";
 
+    /**
+     * 用户登录类型（APP类型，授课:2）
+     */
+    public static final String ATTEND_CLASS_T_USER_LOGIN = "2";
+
+
 }

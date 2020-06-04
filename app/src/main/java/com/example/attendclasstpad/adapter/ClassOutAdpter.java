@@ -53,7 +53,7 @@ public class ClassOutAdpter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.gridview_item_out, null);
         }
         ImageView imageView = (ImageView) convertView.findViewById(R.id.img_out);
-        TextView textView = (TextView) convertView.findViewById(R.id.text);
+        TextView textView = (TextView) convertView.findViewById(R.id.tv_name_layout_v_student);
 
         Map<String, Object> map = listItem.get(position);
         imageView.setImageResource((Integer) map.get("ItemImage"));

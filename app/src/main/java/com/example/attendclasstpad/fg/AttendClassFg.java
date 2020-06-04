@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.attendclasstpad.R;
-import com.example.attendclasstpad.R.array;
-import com.example.attendclasstpad.adapter.CatalogGdvAdapter;
-import com.example.attendclasstpad.adapter.CourseCatalogLsvAdapter;
 import com.example.attendclasstpad.adapter.PeriodGridAdapter;
 import com.example.attendclasstpad.callback.ActivityFgInterface.JumpCallback;
 import com.example.attendclasstpad.model.Course;
+import com.example.attendclasstpad.model.KeyValue;
 import com.example.attendclasstpad.model.Lesson;
 import com.example.attendclasstpad.util.Utils;
+import com.example.attendclasstpad.util.ValidateFormatUtils;
+import com.example.attendclasstpad.util.VariableUtils;
+import com.example.attendclasstpad.util.ViewUtils;
+import com.example.attendclasstpad.view.CustomGridView01;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -27,6 +29,7 @@ import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * 上课
@@ -41,12 +44,25 @@ public class AttendClassFg extends BaseNotPreLoadFg {
     private boolean isPrepared;// 标志位，标志已经初始化完成
     private boolean hasLoadOnce;// 是否已被加载过一次，第二次就不再去请求数据了
 
+    private KeyValue periodSelected;// 已选学段
+    private KeyValue subjectSelected;// 已选科目
+    private KeyValue editionSelected;// 已选版本
+    private KeyValue moduleSelected;// 已选模块
+    private ArrayList<String> ids;// 存放id数据的字符串组合
+    private String lastType;// 最后一步点击操作的类型，例如：xd
+    private String jsonLastId = "";// 最后一步点击操作的数据id（后台这么设计，木办法。。。）
+
+    private ViewUtils vUtils;// 布局工具
+
     private View allFgView;// 总布局
     private GridView gdvPeriod;// 学段
     private GridView gdvSubject;// 学科
-    private GridView gdvEdition;// 版本
-    private GridView gdvModule;// 模块
+    //    private GridView gdvEdition;// 版本
+//    private GridView gdvModule;// 模块
     private ListView lsvCourseCatalog;// 课程目录
+
+    private CustomGridView01 gdvModule1;// 版本
+    private CustomGridView01 gdvEdition1;// 模块
 
     @Override
     public void onAttach(Activity activity) {
@@ -66,15 +82,25 @@ public class AttendClassFg extends BaseNotPreLoadFg {
         if (null == allFgView) {
             allFgView = inflater.inflate(R.layout.layout_fg_attend_class, null);
 
+            periodSelected = new KeyValue();
+            subjectSelected = new KeyValue();
+            editionSelected = new KeyValue();
+            moduleSelected = new KeyValue();
+
+            ids = new ArrayList<String>();
+            vUtils = new ViewUtils(getActivity());
+
             gdvPeriod = (GridView) allFgView
                     .findViewById(R.id.gdv_period_layout_fg_attend_class);
             gdvSubject = (GridView) allFgView
                     .findViewById(R.id.gdv_subject_layout_fg_attend_class);
 
-            gdvEdition = (GridView) allFgView
-                    .findViewById(R.id.gdv_edition_layout_fg_attend_class);
-            gdvModule = (GridView) allFgView
-                    .findViewById(R.id.gdv_module_layout_fg_attend_class);
+//            gdvEdition = (GridView) allFgView
+//                    .findViewById(R.id.gdv_edition_layout_fg_attend_class);
+//            gdvModule = (GridView) allFgView
+//                    .findViewById(R.id.gdv_module_layout_fg_attend_class);
+            gdvModule1 = (CustomGridView01) allFgView.findViewById(R.id.gdv_module1_layout_fg_attend_class);
+            gdvEdition1 = (CustomGridView01) allFgView.findViewById(R.id.gdv_edition1_layout_fg_attend_class);
 
             lsvCourseCatalog = (ListView) allFgView
                     .findViewById(R.id.lsv_catalog_layout_fg_attend_class);
@@ -119,40 +145,41 @@ public class AttendClassFg extends BaseNotPreLoadFg {
             });
 
             // 版本
-            String[] editions = getResources().getStringArray(
-                    R.array.arrays_versions);
-            List<String> editionsList = Utils.getList(editions);
-            final PeriodGridAdapter eGdvAdapter = new PeriodGridAdapter(
-                    getActivity(), editionsList);
-            gdvEdition.setAdapter(eGdvAdapter);
-            eGdvAdapter.setCurrentPosition(0);
+//            String[] editions = getResources().getStringArray(
+//                    R.array.arrays_versions);
+//            List<String> editionsList = Utils.getList(editions);
+//            final PeriodGridAdapter eGdvAdapter = new PeriodGridAdapter(
+//                    getActivity(), editionsList);
+//            gdvEdition.setAdapter(eGdvAdapter);
+//            eGdvAdapter.setCurrentPosition(0);
 
-            gdvEdition.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View v,
-                                        int position, long id) {
-                    eGdvAdapter.setCurrentPosition(position);
-                    eGdvAdapter.notifyDataSetChanged();
-                }
-            });
+//            gdvEdition.setOnItemClickListener(new OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View v,
+//                                        int position, long id) {
+//                    eGdvAdapter.setCurrentPosition(position);
+//                    eGdvAdapter.notifyDataSetChanged();
+//                }
+//            });
 
             // 模块
-            String[] modules = getResources().getStringArray(
-                    R.array.arrays_module);
-            List<String> modulesList = Utils.getList(modules);
-            final PeriodGridAdapter mGdvAdapter = new PeriodGridAdapter(
-                    getActivity(), modulesList);
-            gdvModule.setAdapter(mGdvAdapter);
-            mGdvAdapter.setCurrentPosition(0);
+//            String[] modules = getResources().getStringArray(
+//                    R.array.arrays_module);
+//            List<String> modulesList = Utils.getList(modules);
+//            final PeriodGridAdapter mGdvAdapter = new PeriodGridAdapter(
+//                    getActivity(), modulesList);
+//            gdvModule.setAdapter(mGdvAdapter);
+//            mGdvAdapter.setCurrentPosition(0);
+//
+//            gdvModule.setOnItemClickListener(new OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View v,
+//                                        int position, long id) {
+//                    mGdvAdapter.setCurrentPosition(position);
+//                    mGdvAdapter.notifyDataSetChanged();
+//                }
+//            });
 
-            gdvModule.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View v,
-                                        int position, long id) {
-                    mGdvAdapter.setCurrentPosition(position);
-                    mGdvAdapter.notifyDataSetChanged();
-                }
-            });
 
             // 课程目录
             List<Course> courseList = new ArrayList<Course>();
@@ -253,6 +280,172 @@ public class AttendClassFg extends BaseNotPreLoadFg {
         lazyLoad();
 
         return allFgView;
+    }
+
+    /**
+     * 展示版本Gdv布局
+     *
+     * @param list 数据
+     */
+    public void showGdvEdition(final List<KeyValue> list, CustomGridView01 gdv) {
+        resetGdvLayout(gdv);
+
+        for (int i = 0; i < list.size(); i++) {
+            final KeyValue kv = list.get(i);
+//            kv.setName("测试模块名");
+//            kv.setId("ceshi_edition_id");
+//            kv.setChoiced(false);
+
+            View vItem = LayoutInflater.from(getActivity()).inflate(R.layout.layout_v_single_line, null);
+            TextView tvName = vItem.findViewById(R.id.tv_layout_v_single_line);
+            tvName.setText(list.get(i).getName());
+//            tvName.setText("测试模块名");
+            gdv.addChild(vItem);
+
+            if (kv != null) {
+                if (editionSelected != null) {
+                    if (kv.getId().equals(editionSelected.getId())) {
+                        tvName.setBackgroundResource(R.color.clog);
+                        tvName.setTextColor(getActivity().getResources().getColor(R.color.white));
+                    } else {
+                        tvName.setBackgroundResource(R.color.white);
+                        tvName.setTextColor(getActivity().getResources().getColor(
+                                R.color.color_text_title));
+                    }
+                }
+            }
+
+            vItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editionSelected = kv;
+                    readyRequestParameterForEdition();
+
+                    // 显示加载框
+                    vUtils.showLoadingDialog("");
+                    //请求数据
+//                    requestDataFromServer(false);
+                }
+            });
+        }
+    }
+
+    /**
+     * 展示模块Gdv布局
+     *
+     * @param list 数据
+     */
+    public void showGdvModule(final List<KeyValue> list, CustomGridView01 gdv) {
+        resetGdvLayout(gdv);
+
+        for (int i = 0; i < list.size(); i++) {
+            final KeyValue kv = list.get(i);
+//            kv.setName("测试模块名");
+//            kv.setId("ceshi_module_id");
+//            kv.setChoiced(false);
+
+            View vItem = LayoutInflater.from(getActivity()).inflate(R.layout.layout_v_single_line, null);
+            TextView tvName = vItem.findViewById(R.id.tv_layout_v_single_line);
+            tvName.setText(list.get(i).getName());
+//            tvName.setText("测试模块名");
+            gdv.addChild(vItem);
+
+            if (kv != null) {
+                if (moduleSelected != null) {
+                    if (kv.getId().equals(moduleSelected.getId())) {
+                        tvName.setBackgroundResource(R.color.clog);
+                        tvName.setTextColor(getActivity().getResources().getColor(R.color.white));
+                    } else {
+                        tvName.setBackgroundResource(R.color.white);
+                        tvName.setTextColor(getActivity().getResources().getColor(
+                                R.color.color_text_title));
+                    }
+                }
+            }
+
+            vItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    moduleSelected = kv;
+                    readyRequestParameterForModule();
+
+                    // 显示加载框
+                    vUtils.showLoadingDialog("");
+                    //请求数据
+//                    requestDataFromServer(false);
+                }
+            });
+        }
+    }
+
+    private void resetGdvLayout(CustomGridView01 gdv) {
+        if (gdv != null) {
+            gdv.removeAllViews();
+        }
+    }
+
+    /**
+     * 学段
+     */
+    private void readyRequestParameterForPeriod() {
+        jsonLastId = VariableUtils.periodID;
+        lastType = "xd";
+    }
+
+    /**
+     * 学科
+     */
+    private void readyRequestParameterSubject() {
+        // 学段
+        if (!ValidateFormatUtils.isEmpty(VariableUtils.periodID)) {
+            ids.add(VariableUtils.periodID);
+        }
+        // 学科
+        jsonLastId = VariableUtils.subjectID;
+        lastType = "xk";
+    }
+
+    /**
+     * 准备根据版本请求服务器时的所需参数
+     */
+    private void readyRequestParameterForEdition() {
+        // 学段
+        if (!ValidateFormatUtils.isEmpty(VariableUtils.periodID)) {
+            ids.add(VariableUtils.periodID);
+        }
+
+        // 学科
+        if (!ValidateFormatUtils.isEmpty(VariableUtils.subjectID)) {
+            ids.add(VariableUtils.subjectID);
+        }
+
+        // 版本
+        jsonLastId = VariableUtils.editionID;
+        lastType = "bb";
+    }
+
+    /**
+     * 准备根据模块请求服务器时的所需参数
+     */
+    private void readyRequestParameterForModule() {
+        // 学段
+        if (!ValidateFormatUtils.isEmpty(VariableUtils.periodID)) {
+            ids.add(VariableUtils.periodID);
+        }
+
+        // 学科
+        if (!ValidateFormatUtils.isEmpty(VariableUtils.subjectID)) {
+            ids.add(VariableUtils.subjectID);
+        }
+
+        // 版本
+        if (!ValidateFormatUtils.isEmpty(VariableUtils.editionID)) {
+            ids.add(VariableUtils.editionID);
+        }
+
+        // 模块
+        jsonLastId = VariableUtils.modulesID;
+        lastType = "mk";
     }
 
 

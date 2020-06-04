@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,20 +15,26 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.attendclasstpad.R;
 import com.example.attendclasstpad.adapter.ClassAdpter;
+import com.example.attendclasstpad.adapter.StudentGdvAdapter;
 import com.example.attendclasstpad.aty.ChoiceClassActivity;
-import com.example.attendclasstpad.aty.ChoiceTeachingMaterialAty;
 import com.example.attendclasstpad.callback.InterfacesCallback;
-import com.example.attendclasstpad.model.ClassBean;
 import com.example.attendclasstpad.model.Classes;
+import com.example.attendclasstpad.model.DataID01;
+import com.example.attendclasstpad.model.Student;
 import com.example.attendclasstpad.util.ConstantsForPreferencesUtils;
 import com.example.attendclasstpad.util.ConstantsUtils;
 import com.example.attendclasstpad.util.PreferencesUtils;
+import com.example.attendclasstpad.util.ServerDataAnalyzeUtils;
+import com.example.attendclasstpad.util.ServerRequestUtils;
 import com.example.attendclasstpad.util.ValidateFormatUtils;
+import com.example.attendclasstpad.util.ViewUtils;
 import com.example.attendclasstpad.view.CustomListView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * 班级
@@ -36,8 +43,8 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     private boolean isPrepared;// 标志位，标志已经初始化完成
     private boolean hasLoadOnce = false;// 是否已被加载过一次，第二次就不再去请求数据了
 
-    private List<ClassBean> onlineList = new ArrayList<ClassBean>();
-    private List<ClassBean> offlineList = new ArrayList<ClassBean>();
+    private List<Student> onlineList = new ArrayList<Student>();
+    private List<Student> offlineList = new ArrayList<Student>();
     private String classesIDCurr = "";// 班级ID
     private String classesNameCurr = "";// 班级名称
 
@@ -47,9 +54,17 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     private View allFgView;// 总布局
     private CustomListView gridView, gridView_out;
     private TextView tvClassName;//班级名称
-    private ClassAdpter onlineAdapter, offlineAdapter;
+    private StudentGdvAdapter onlineAdapter, offlineAdapter;
+    private ViewUtils vUtils;
+    private ServerRequestUtils sUtils;//网络请求助手
+    private Handler uiHandler;//主线程
+
     // 切换教材、目录
     private TextView tvSwitchMaterial;
+    //在线人数
+    private TextView tvOnlineStudentNum;
+    //离线人数
+    private TextView tvOfflineStudentNum;
 
 
     @Override
@@ -65,9 +80,13 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
 
             classes = new Classes();
             classesIDCurr = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_ID);
+            vUtils = new ViewUtils(getActivity());
+            sUtils = new ServerRequestUtils(getActivity());
+            uiHandler = new Handler(getActivity().getMainLooper());
+
 
             initView(allFgView);
-            initData();
+            initListeners();
         }
 
         // 因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
@@ -82,26 +101,120 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         return allFgView;
     }
 
-    private void initData() {
-        onlineAdapter = new ClassAdpter(getActivity(), onlineList, "在线");
-        gridView.setAdapter(onlineAdapter);
-        offlineAdapter = new ClassAdpter(getActivity(), offlineList, "离线");
-        gridView_out.setAdapter(offlineAdapter);
+    /**
+     * 从服务器获取学生数据
+     */
+    private void requestStudentsFromServer() {
+        DataID01 data = new DataID01();
+        data.setCid(classesIDCurr);
+
+        String jsonStr = com.alibaba.fastjson.JSON.toJSONString(data);
+
+        sUtils.request("getClassUser", jsonStr, "", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener() {
+            @Override
+            public void onFailure(String msg) {
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (vUtils != null) {
+                            vUtils.dismissDialog();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(String msg, JSONObject data, String count) {
+                //在线学生数据
+                JSONArray onLineStudentsArr = ServerDataAnalyzeUtils.getDataAsJSONArray(data, "OnLine");
+                if (onLineStudentsArr != null && onLineStudentsArr.length() > 0) {
+                    onlineList = com.alibaba.fastjson.JSON.parseArray(onLineStudentsArr.toString(), Student.class);
+                }
+
+                //离线学生数据
+                JSONArray offLineStudentsArr = ServerDataAnalyzeUtils.getDataAsJSONArray(data, "OffLine");
+                if (offLineStudentsArr != null && offLineStudentsArr.length() > 0) {
+                    offlineList = com.alibaba.fastjson.JSON.parseArray(onLineStudentsArr.toString(), Student.class);
+                }
+
+
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setOnLineStudentGridAdapter();
+                        setOffLineStudentGridAdapter();
+
+                        if (onlineList.size() > 0) {
+                            tvOnlineStudentNum.setText("( " + String.valueOf(onlineList.size()) + "人 )");
+                        }
+
+                        if (offlineList.size() > 0) {
+                            tvOfflineStudentNum.setText("( " + String.valueOf(offlineList.size()) + "人 )");
+                        }
+
+
+                        if (vUtils != null) {
+                            vUtils.dismissDialog();
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
+    /**
+     * 在线学生数据适配器
+     */
+    private void setOnLineStudentGridAdapter() {
+        if (onlineAdapter == null) {
+            onlineAdapter = new StudentGdvAdapter(getActivity(), onlineList);
+            gridView.setAdapter(onlineAdapter);
+        } else {
+            onlineAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 离线学生数据适配器
+     */
+    private void setOffLineStudentGridAdapter() {
+        if (onlineAdapter == null) {
+            offlineAdapter = new StudentGdvAdapter(getActivity(), offlineList);
+            gridView_out.setAdapter(offlineAdapter);
+        } else {
+            onlineAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 设置监听
+     */
+    private void initListeners() {
         gridView.setOnItemLongClickListener(new OnItemLongClickListener() {// 长按事件
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            int position, long id) {
+                Student student = onlineList.get(position);
+                if (student != null) {
+                    for (int i = 0; i < onlineList.size(); i++) {
+                        if (!isOpenLock) {
+//                        onlineList.get(i).setIcon(R.drawable.openlock);
+//                        ClassAdpter.isopen = true;
 
-                for (int i = 0; i < onlineList.size(); i++) {
-                    if (!isOpenLock) {
-                        onlineList.get(i).setIcon(R.drawable.openlock);
-                        ClassAdpter.isopen = true;
-                    } else {
-                        ClassAdpter.isopen = false;
-                        onlineList.get(i).setIcon(R.drawable.lock_ig);
+                            student.setIslock(false);
+
+                        } else {
+//                        ClassAdpter.isopen = false;
+//
+//                        onlineList.get(i).setIcon(R.drawable.lock_ig);
+                            student.setIslock(true);
+                        }
                     }
                 }
-                onlineAdapter.notifyDataSetChanged();
+
+                setOnLineStudentGridAdapter();
+
                 isOpenLock = !isOpenLock;
                 return false;
             }
@@ -111,11 +224,14 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     public void open() {
         for (int i = 0; i < onlineList.size(); i++) {
             if (!isOpenLock) {
-                onlineList.get(i).setIcon(R.drawable.openlock);
-                ClassAdpter.isopen = true;
+//                onlineList.get(i).setIcon(R.drawable.openlock);
+//                ClassAdpter.isopen = true;
+                onlineList.get(i).setIslock(true);
+
             } else {
                 ClassAdpter.isopen = false;
-                onlineList.get(i).setIcon(R.drawable.lock_ig);
+//                onlineList.get(i).setIcon(R.drawable.lock_ig);
+                onlineList.get(i).setIslock(false);
             }
         }
         onlineAdapter.notifyDataSetChanged();
@@ -136,27 +252,37 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                 .findViewById(R.id.tv_switch_material_layout_fg_classes);
         tvSwitchMaterial.setOnClickListener(new Listeners());
 
+        tvOnlineStudentNum = (TextView) allFgView
+                .findViewById(R.id.tv_online_num_layout_fg_classes);
+        tvOnlineStudentNum.setOnClickListener(new Listeners());
+
+        tvOfflineStudentNum = (TextView) allFgView
+                .findViewById(R.id.tv_offline_num_layout_fg_classes);
+        tvOfflineStudentNum.setOnClickListener(new Listeners());
+
         gridView = (CustomListView) view.findViewById(R.id.gridview);
         gridView_out = (CustomListView) view.findViewById(R.id.gridview_out);
+    }
+
+    /**
+     * 测试数据
+     *
+     * @return
+     */
+    private List<Student> getStudents() {
+        List<Student> list = new ArrayList<Student>();
+        list.clear();
+        for (int i = 0; i < 25; i++) {
+            Student bean = new Student();
+            bean.setName("小喵" + (i + 1));
+            list.add(bean);
+        }
+        return list;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        onlineList.clear();
-        offlineList.clear();
-        for (int i = 0; i < 25; i++) {
-            ClassBean bean = new ClassBean();
-            bean.setResource(R.drawable.on_line_circle);
-            bean.setIconName("小喵" + (i + 1));
-            bean.setIcon(R.drawable.lock_ig);
-            onlineList.add(bean);
-            if (i < 3) {
-                offlineList.add(bean);
-            }
-        }
-        onlineAdapter.notifyDataSetChanged();
-        offlineAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -192,6 +318,9 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
 //        if (!isPrepared || !isVisible || hasLoadOnce) {
 //            return;
 //        }
+
+        vUtils.showLoadingDialog("");
+        requestStudentsFromServer();
     }
 
     /**

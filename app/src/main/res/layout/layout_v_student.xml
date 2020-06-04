@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="@color/white"
-    android:orientation="vertical" >
+    android:gravity="center"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/la"
         android:layout_width="60dp"
-        android:padding="5dp"
-        android:layout_height="60dp" >
+        android:layout_height="60dp"
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/on_ln"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/on_line_circle" />
+            android:background="@drawable/on_line_circle"
+            android:scaleType="fitXY" />
 
         <ImageView
             android:id="@+id/img_lv"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/lock_ig" />
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/lock_ig"
+            android:visibility="visible" />
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/tv_name_layout_v_student"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/black3"
-        android:text="121212" />
+        android:text="121212"
+        android:textColor="@color/black3" />
 
 </LinearLayout>

@@ -1,7 +1,6 @@
 package com.example.attendclasstpad.aty;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -38,9 +37,7 @@ import com.example.attendclasstpad.util.ServerRequestUtils;
 import com.example.attendclasstpad.util.SoftKeyboardStateHelper;
 import com.example.attendclasstpad.util.UpdateManager;
 import com.example.attendclasstpad.util.UrlUtils;
-import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.util.ViewUtils;
-import com.example.attendclasstpad.view.CustomDialog;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -261,6 +258,8 @@ public class LoginActivity extends Activity {
         user.setLoginName(loginName);
         // 登录密码
         user.setLoginPassword(password);
+        //用户登录类型(授课老师登录)
+        user.setType(ConstantsForServerUtils.ATTEND_CLASS_T_USER_LOGIN);
 
         // 附加信息
         AdditionalInfo aInfo = new AdditionalInfo();

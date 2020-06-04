@@ -55,7 +55,7 @@ public class ClassAdpter extends BaseAdapter {
         ViewHolder viewHolder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(
-                    R.layout.gridview_item, null);
+                    R.layout.layout_v_student, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -85,7 +85,7 @@ public class ClassAdpter extends BaseAdapter {
         private ImageView imageLock;
 
         public ViewHolder(View view) {
-            textView = (TextView) view.findViewById(R.id.text);
+            textView = (TextView) view.findViewById(R.id.tv_name_layout_v_student);
             imageView = (ImageView) view.findViewById(R.id.on_ln);
             imageLock = (ImageView) view.findViewById(R.id.img_lv);
         }
