@@ -14,6 +14,7 @@ import com.example.attendclasstpad.fg.AnswerTestPaperQuestionAnalysisFg;
 import com.example.attendclasstpad.fg.AnswerTestPaperStudentAnalysisFg;
 import com.example.attendclasstpad.model.TestPaper;
 import com.example.attendclasstpad.util.ConstantsUtils;
+import com.example.attendclasstpad.util.ValidateFormatUtils;
 import com.example.attendclasstpad.view.CustomViewpager;
 
 import java.io.Serializable;
@@ -27,6 +28,7 @@ public class AnswerTestPaperReportAty extends FragmentActivity {
     private int position_one;
 
     private TestPaper paper;//试卷信息
+    private String paperType = "";//试卷状态(0:未布置，1:正在做题，2:已做完待批阅)
 
     private FragmentManager manager;// Fragment工具
 
@@ -54,7 +56,7 @@ public class AnswerTestPaperReportAty extends FragmentActivity {
         TextView tvPaperName = (TextView) findViewById(R.id.tv_paper_name_layout_answer_test_paper_report);
         tvPaperName.setText(paper.getName());
 
-        sAnalysis = new AnswerTestPaperStudentAnalysisFg();// 学生分析
+        sAnalysis = new AnswerTestPaperStudentAnalysisFg(paperType);// 学生分析
         qAnalysis = new AnswerTestPaperQuestionAnalysisFg();// 试题分析
 
         initTab();
@@ -77,6 +79,12 @@ public class AnswerTestPaperReportAty extends FragmentActivity {
         Serializable ser = bundle.getSerializable(ConstantsUtils.PAPER_INFO);
         if (ser != null) {
             paper = (TestPaper) ser;
+
+            //试卷状态
+            String paperType = paper.getType();
+            if (!ValidateFormatUtils.isEmpty(paperType)) {
+                this.paperType = paperType;
+            }
         }
     }
 

@@ -57,8 +57,6 @@
                 <TextView
                     android:id="@+id/tv_lbl_period_layout_fg_attend_class"
                     style="@style/SingBgForRectangle04"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/dimen_padding_005"
                     android:background="@color/color_content_bg_base"
@@ -100,8 +98,6 @@
                 <TextView
                     android:id="@+id/tv_lbl_subject_layout_fg_attend_class"
                     style="@style/SingBgForRectangle04"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/dimen_padding_005"
                     android:background="@color/color_content_bg_base"
@@ -143,8 +139,6 @@
                 <TextView
                     android:id="@+id/tv_lbl_edition_layout_fg_attend_class"
                     style="@style/SingBgForRectangle04"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/dimen_padding_005"
                     android:background="@color/color_content_bg_base"
@@ -176,8 +170,6 @@
                 <TextView
                     android:id="@+id/tv_lbl_module_layout_fg_attend_class"
                     style="@style/SingBgForRectangle04"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_padding_005"
                     android:background="@color/color_content_bg_base"
                     android:text="模块"

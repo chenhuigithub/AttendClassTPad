@@ -1,5 +1,6 @@
 package com.example.attendclasstpad.fg;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.attendclasstpad.R;
 import com.example.attendclasstpad.adapter.AnswerTestPaperStudentAnalysisAdapter;
@@ -17,6 +19,7 @@ import com.example.attendclasstpad.callback.ActivityFgInterface;
 import com.example.attendclasstpad.model.Test;
 import com.example.attendclasstpad.model.TestPaper;
 import com.example.attendclasstpad.util.ConstantsUtils;
+import com.example.attendclasstpad.util.ValidateFormatUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,15 +28,23 @@ import java.util.List;
 /**
  * 学生（答题结果）分析
  */
+@SuppressLint("ValidFragment")
 public class AnswerTestPaperStudentAnalysisFg extends BaseNotPreLoadFg implements ActivityFgInterface.ICanKnowFgDoSthAboutMenu {
     private boolean isPrepared;// 标志位，标志已经初始化完成
     private boolean hasLoadOnce;// 是否已被加载过一次，第二次就不再去请求数据了
 
     private List<TestPaper> paperList;//试卷
     private List<Test> questionList;//题目
+    private String paperType = "";//试卷状态(0:未布置，1:正在做题，2:已做完待批阅)
 
     private View allFgView;// 总布局
     private ListView lvContent;
+
+    public AnswerTestPaperStudentAnalysisFg(String paperType) {
+        if (!ValidateFormatUtils.isEmpty(paperType)) {
+            this.paperType = paperType;
+        }
+    }
 
     @Nullable
     @Override
@@ -41,6 +52,14 @@ public class AnswerTestPaperStudentAnalysisFg extends BaseNotPreLoadFg implement
         if (null == allFgView) {
             allFgView = View.inflate(getActivity(),
                     R.layout.layout_v_answer_test_paper_student_analysis, null);
+
+            TextView tvStopAnswerQuestion = (TextView) allFgView.findViewById(R.id.tv_stop_layout_v_atps_analysis);
+            if ("1".equals(paperType)) {//正在答题
+                tvStopAnswerQuestion.setVisibility(View.VISIBLE);
+            } else if ("2".equals(paperType)) {//答完题待批阅
+                tvStopAnswerQuestion.setVisibility(View.GONE);
+            }
+
             paperList = new ArrayList<TestPaper>();
             questionList = new ArrayList<Test>();
 
